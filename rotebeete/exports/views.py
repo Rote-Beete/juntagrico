@@ -9,6 +9,7 @@ from juntagrico.entity.share import (
     reason_for_cancellation_choices,
 )
 from juntagrico.entity.subs import Subscription
+from juntagrico.entity.subtypes import SubscriptionType
 from juntagrico.models import Member
 from juntagrico.util.models import q_isactive
 
@@ -32,9 +33,71 @@ ACQUISITION_REASONS = dict(reason_for_acquisition_choices)
 CANCELLATION_REASONS = dict(reason_for_cancellation_choices)
 
 
+def export_subscriptions(request):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = "attachment; filename=Gemüseanteile.csv"
+    writer = csv.DictWriter(response, dialect="unix", fieldnames=[
+        "glv",
+        "geno",
+        "glv-eingang",
+        "primary",
+        "mail",
+        "tel",
+        "mobile",
+        "status",
+        "vs",
+        "size",
+        "price_per_unit",
+        "price",
+    ])
+    writer.writerow({
+        "glv": "GLV-Nr.",
+        "geno": "Geno-Nr.",
+        "glv-eingang": "GLV-Eingang",
+        "primary": "HauptbezieherIn",
+        "mail": "HauptbezieherInEmail",
+        "tel": "HauptbezieherInTelefon",
+        "mobile": "HauptbezieherInMobile",
+        "status": "Status",
+        "vs": "Verteilstation",
+        "size": "Anteil/e",
+        "price_per_unit": "Preis Pro Anteil",
+        "price": "Preis",
+    })
+    sum_units = 0
+    sum_price = 0
+    for subtype in SubscriptionType.objects.order_by("name"):
+        for part in subtype.subscription_parts.all():
+            sub = part.subscription
+            member = sub.primary_member
+            share = member.share_set.first()
+            writer.writerow({
+                "glv": subtype.name,
+                "geno": share.number if share else "",
+                "glv-eingang": "?",
+                "primary": f"{member.last_name}, {member.first_name}",
+                "mail": member.email,
+                "tel": member.phone,
+                "mobile": member.mobile_phone,
+                "status": "?",
+                "vs": sub.depot.name,
+                "size": subtype.size.units,
+                "price_per_unit": subtype.price / subtype.size.units,
+                "price": subtype.price,
+            })
+            sum_units += subtype.size.units
+            sum_price += subtype.price
+    writer.writerow({
+        "size": sum_units,
+        "price": sum_price,
+        "price_per_unit": sum_price / sum_units,
+    })
+    return response
+
+
 def export_depot_list(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=Verteilstationen.csv"
+    response["Content-Disposition"] = "attachment; filename=E-Mail-Adressen.csv"
     writer = csv.DictWriter(response, fieldnames=["name", "email"], dialect="unix")
     writer.writerow({"name": "Verteilstation", "email": "E-Mail-Adresse"})
     for depot in Depot.objects.order_by("name"):
