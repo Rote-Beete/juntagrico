@@ -8,7 +8,9 @@ from juntagrico.entity.share import (
     reason_for_acquisition_choices,
     reason_for_cancellation_choices,
 )
+from juntagrico.entity.subs import Subscription
 from juntagrico.models import Member
+from juntagrico.util.models import q_isactive
 
 FIELDS = [
     "share__number",
@@ -36,9 +38,10 @@ def export_depot_list(request):
     writer = csv.DictWriter(response, fieldnames=["name", "email"], dialect="unix")
     writer.writerow({"name": "Verteilstation", "email": "E-Mail-Adresse"})
     for depot in Depot.objects.order_by("name"):
-        for member in Member.objects.filter(subscriptionmembership__subscription__depot=depot):
-            row = dict(name=depot.name, email=member.email)
-            writer.writerow(row)
+        for sub in Subscription.objects.filter(q_isactive(), depot=depot):
+            for membership in sub.subscriptionmembership_set.all():
+                row = dict(name=depot.name, email=membership.member.email)
+                writer.writerow(row)
     return response
 
 
@@ -49,7 +52,7 @@ def export_depot_overview(request):
     writer.writerow({"name": "Verteilstation", "sub_sum": "Anteile"})
     for depot in Depot.objects.order_by("name"):
         row = dict(name=depot.name)
-        row["sub_sum"], *_ = depot.subscription_set.aggregate(
+        row["sub_sum"], *_ = depot.subscription_set.filter(q_isactive()).aggregate(
             Sum("parts__type__size__units")
         ).values()
         writer.writerow(row)
