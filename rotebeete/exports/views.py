@@ -109,7 +109,7 @@ def export_subscriptions(request):
     return response
 
 
-def export_depot_list(request):
+def export_depot_emails(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = "attachment; filename=E-Mail-Adressen.csv"
     writer = csv.DictWriter(response, fieldnames=["name", "email"], dialect="unix")
@@ -118,6 +118,29 @@ def export_depot_list(request):
         for sub in Subscription.objects.filter(q_isactive(), depot=depot):
             for membership in sub.subscriptionmembership_set.all():
                 row = dict(name=depot.name, email=membership.member.email)
+                writer.writerow(row)
+    return response
+
+
+def export_depot_list(request):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = "attachment; filename=Verteilstationen-Mengen.csv"
+    writer = csv.DictWriter(response, fieldnames=["depot", "glv", "name", "units"], dialect="unix")
+    writer.writerow({
+        "depot": "Verteilstation",
+        "glv": "GLV-Nr.",
+        "name": "Gruppenbezeichnung / Name",
+        "units": "Anteil/e"
+    })
+    for depot in Depot.objects.order_by("name"):
+        for sub in Subscription.objects.filter(q_isactive(), depot=depot):
+            for part in sub.parts.all():
+                row = dict(
+                    depot=depot.name,
+                    glv=part.type.name,
+                    name=sub.nickname if sub.nickname else sub.primary_member,
+                    units=part.type.size.units,
+                )
                 writer.writerow(row)
     return response
 

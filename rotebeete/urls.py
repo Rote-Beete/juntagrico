@@ -19,9 +19,9 @@ from django.urls import path
 import juntagrico
 
 urlpatterns = [
-    path('', include('rotebeete.exports.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^', include('juntagrico.urls')),
+    path('', include('rotebeete.exports.urls')),
     url(r'^$', juntagrico.views.home),
     url(r'^impersonate/', include('impersonate.urls')),
     path('djrichtextfield/', include('djrichtextfield.urls')),

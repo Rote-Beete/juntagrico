@@ -1,0 +1,34 @@
+{% extends "export.html" %}
+
+{% block content %}
+    <div class="row mb-4">
+        <div class="col-md-3">
+            Mitglieder
+        </div>
+        <div class="col-md-9">
+            <a href="{% url 'export-members' %}">
+                exportieren
+            </a>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-3">
+            Gemüseanteile
+        </div>
+        <div class="col-md-9">
+            <a href="{% url 'export-subscriptions' %}">
+                exportieren
+            </a>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-3">
+            E-Mail-Adressen
+        </div>
+        <div class="col-md-9">
+            <a href="{% url 'export-depot-emails' %}">
+                exportieren
+            </a>
+        </div>
+    </div>
+{% endblock %}
