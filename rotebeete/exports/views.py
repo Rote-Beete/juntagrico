@@ -36,13 +36,13 @@ CANCELLATION_REASONS = dict(reason_for_cancellation_choices)
 def get_status(sub: Subscription) -> str:
     status = "undefiniert"
     today = timezone.now().date()
-    if sub.deactivation_date and sub.deactivation_date >= today:
+    if sub.deactivation_date and sub.deactivation_date <= today:
         status = "beendet"
-    elif sub.end_date and sub.end_date < today:
+    elif sub.end_date and sub.end_date >= today:
         status = "gekündigt"
-    elif sub.start_date and sub.start_date < today:
+    elif sub.start_date and sub.start_date > today:
         status = "wartend"
-    elif sub.activation_date and sub.activation_date >= today:
+    elif sub.activation_date and sub.activation_date <= today:
         status = "aktiv"
     return status
 
