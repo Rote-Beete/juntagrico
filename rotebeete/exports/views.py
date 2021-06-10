@@ -33,6 +33,20 @@ ACQUISITION_REASONS = dict(reason_for_acquisition_choices)
 CANCELLATION_REASONS = dict(reason_for_cancellation_choices)
 
 
+def get_status(sub: Subscription) -> str:
+    status = "undefiniert"
+    today = timezone.now().date()
+    if sub.deactivation_date and sub.deactivation_date >= today:
+        status = "beendet"
+    elif sub.end_date and sub.end_date < today:
+        status = "gekündigt"
+    elif sub.start_date and sub.start_date < today:
+        status = "wartend"
+    elif sub.activation_date and sub.activation_date >= today:
+        status = "aktiv"
+    return status
+
+
 def export_subscriptions(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = "attachment; filename=Gemüseanteile.csv"
@@ -74,12 +88,12 @@ def export_subscriptions(request):
             writer.writerow({
                 "glv": subtype.name,
                 "geno": share.number if share else "",
-                "glv-eingang": "?",
+                "glv-eingang": "",
                 "primary": f"{member.last_name}, {member.first_name}",
                 "mail": member.email,
                 "tel": member.phone,
                 "mobile": member.mobile_phone,
-                "status": "?",
+                "status": get_status(sub),
                 "vs": sub.depot.name,
                 "size": subtype.size.units,
                 "price_per_unit": subtype.price / subtype.size.units,
