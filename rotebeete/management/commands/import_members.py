@@ -67,7 +67,10 @@ class Command(BaseCommand):
         self.create_subscription(member, row["glv"], row["kontaktglv"].strip() == "1")
         self.set_basic_data(member, row)
         self.clean(member)
-        member.save()
+        try:
+            member.save()
+        except AttributeError:
+            self.stdout.write(self.style.WARNING("Could not save member: {}".format(member)))
 
     def get_member(self, genonr, mail) -> Member:
         if not mail or mail == "Null":
@@ -98,6 +101,8 @@ class Command(BaseCommand):
                     member.deactivation_date = None
                     member.end_date = None
                     self.stdout.write(self.style.WARNING("Member has quit but still has shares: {}".format(member)))
+                except AttributeError:
+                    self.stdout.write(self.style.WARNING("Could not save member: {}".format(member)))
             else:
                 self.stdout.write(self.style.WARNING("Invalid Tag des Ausscheidens for member {}".format(member)))
             date = self.get_date(row["kuendigung"])

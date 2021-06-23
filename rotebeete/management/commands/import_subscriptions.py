@@ -58,6 +58,7 @@ class Command(BaseCommand):
             sub = self.get_sub(subtype, row)
             self.create_submember(sub, row)
             sub.nickname = row["nick"][:30]
+            sub.activation_date = date.today()
             sub.save()
         except Depot.DoesNotExist:
             self.stdout.write(self.style.WARNING("Invalid VS-Nr: {}".format(row["vsnr"])))
@@ -74,11 +75,14 @@ class Command(BaseCommand):
     def get_sub(self, subtype, row):
         sub = Subscription.objects.filter(parts__type=subtype).first()
         if sub is None:
-            depot = Depot.objects.get(pk=int(row["vsnr"]) + 1)
+            depot_pk = int(row["vsnr"])
+            if depot_pk == 15:
+                depot_pk = 14
+            depot = Depot.objects.get(pk=depot_pk + 1)
             sub = Subscription.objects.create(
                 depot=depot,
                 start_date=date.fromisoformat("2021-07-01"),
-                activation_date=date())
+                activation_date=date.today())
             sub.parts.create(type=subtype)
         return sub
 
