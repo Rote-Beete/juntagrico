@@ -154,9 +154,15 @@ class Command(BaseCommand):
         return None
 
     def clean(self, member):
-        if member.phone == "Null":
-            member.phone = "-"
-        if member.mobile_phone.startswith("genonr:"):
+        if not member.phone or member.phone == "Null" or member.phone == "-":
+            member.phone = "unbekannt"
+        if not member.addr_street or member.addr_street == "Null" or member.addr_street == "-":
+            member.addr_street = "unbekannt"
+        if not member.addr_zipcode or member.addr_zipcode == "Null" or member.addr_zipcode == "-":
+            member.addr_zipcode = "unbekannt"
+        if not member.addr_location or member.addr_location == "Null" or member.addr_location == "-":
+            member.addr_location = "unbekannt"
+        if member.mobile_phone and member.mobile_phone.startswith("genonr:"):
             member.mobile_phone = ""
 
     def create_subscription(self, member, glv, primary):

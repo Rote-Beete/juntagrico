@@ -1,12 +1,5 @@
-import csv
-import sys
-from datetime import date
-
-from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand
-from juntagrico.entity.depot import Depot
-from juntagrico.entity.subtypes import SubscriptionSize, SubscriptionType
-from juntagrico.models import Share, Subscription, SubscriptionMembership
+from juntagrico.models import Subscription
 
 
 class Command(BaseCommand):

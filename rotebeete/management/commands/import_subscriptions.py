@@ -41,8 +41,16 @@ class Command(BaseCommand):
     def import_row(self, row):
         try:
             subtype = self.get_subtype(row["glv"])
+            subtype.shares = 1
             subtype.size = SubscriptionSize.objects.get(units=row["anteile"].replace(",", "."))
-            subtype.price, *_ = row["summe"].split(",")
+            subtype.price, *frac = row["summe"].split(",")
+            if len(frac) > 0:
+                frac, *_ = frac[0].split()
+                if frac != "00":
+                    self.stdout.write(self.style.WARNING("Cannot handle non-integer price: {}".format(row["summe"])))
+            if subtype.price == "":
+                subtype.price = 0
+                self.stdout.write(self.style.WARNING("Invalid price: '{}'".format(row["summe"])))
             subtype.save()
         except SubscriptionSize.DoesNotExist:
             self.stdout.write(self.style.WARNING("Abogröße nicht vorhanden: {}".format(row["anteile"])))
@@ -53,7 +61,7 @@ class Command(BaseCommand):
             sub.save()
         except Depot.DoesNotExist:
             self.stdout.write(self.style.WARNING("Invalid VS-Nr: {}".format(row["vsnr"])))
-        except (Share.DoesNotExist, ValueError):
+        except (Share.DoesNotExist, ValueError, AttributeError):
             self.stdout.write(self.style.WARNING("Invalid GENO: {}".format(row["geno"])))
         except ValidationError:
             self.stdout.write(self.style.WARNING("Multiple use of GENO: {}".format(row["geno"])))
@@ -70,7 +78,7 @@ class Command(BaseCommand):
             sub = Subscription.objects.create(
                 depot=depot,
                 start_date=date.fromisoformat("2021-07-01"),
-                activation_date=date.fromisoformat("2021-07-01"))
+                activation_date=date())
             sub.parts.create(type=subtype)
         return sub
 
