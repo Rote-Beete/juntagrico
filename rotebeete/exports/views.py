@@ -84,15 +84,15 @@ def export_subscriptions(request):
         for part in subtype.subscription_parts.all():
             sub = part.subscription
             member = sub.primary_member
-            share = member.share_set.first()
+            share = member.share_set.first() if member else None
             writer.writerow({
                 "glv": subtype.name,
                 "geno": share.number if share else "",
                 "glv-eingang": "",
-                "primary": f"{member.last_name}, {member.first_name}",
-                "mail": member.email,
-                "tel": member.phone,
-                "mobile": member.mobile_phone,
+                "primary": f"{member.last_name}, {member.first_name}" if member else "",
+                "mail": member.email if member else "",
+                "tel": member.phone if member else "",
+                "mobile": member.mobile_phone if member else "",
                 "status": get_status(sub),
                 "vs": sub.depot.name,
                 "size": subtype.size.units,
