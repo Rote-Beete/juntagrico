@@ -150,7 +150,7 @@ class Command(BaseCommand):
         try:
             if date_str.count(".") >= 2:
                 dd, mm, yy, *_ = date_str.strip().split(".")
-                if yy.startswith("20"):
+                if len(yy) == 4:
                     return date.fromisoformat(f"{yy}-{mm}-{dd}")
                 else:
                     return date.fromisoformat(f"20{yy}-{mm}-{dd}")
