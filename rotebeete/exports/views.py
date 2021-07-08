@@ -161,7 +161,7 @@ def export_depot_overview(request):
 
 def export_members(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=Mitglieder.csv"
+    response["Content-Disposition"] = "attachment; filename=Mitgliederliste_Genossenschaft.csv"
     writer = csv.DictWriter(response, fieldnames=FIELDS, dialect="unix")
     writer.writerow(
         {
