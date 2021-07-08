@@ -124,7 +124,7 @@ def export_depot_emails(request):
 
 def export_depot_list(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=Verteilstationen-Mengen.csv"
+    response["Content-Disposition"] = "attachment; filename=VS_Listen.csv"
     writer = csv.DictWriter(response, fieldnames=["depot", "glv", "name", "units"], dialect="unix")
     writer.writerow({
         "depot": "Verteilstation",
