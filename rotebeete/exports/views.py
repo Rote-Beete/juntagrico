@@ -111,7 +111,7 @@ def export_subscriptions(request):
 
 def export_depot_emails(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=E-Mail-Adressen.csv"
+    response["Content-Disposition"] = "attachment; filename=VS_eMail_Listen.csv"
     writer = csv.DictWriter(response, fieldnames=["name", "email"], dialect="unix")
     writer.writerow({"name": "Verteilstation", "email": "E-Mail-Adresse"})
     for depot in Depot.objects.order_by("name"):
