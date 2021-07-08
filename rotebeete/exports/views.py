@@ -147,7 +147,7 @@ def export_depot_list(request):
 
 def export_depot_overview(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=Verteilstationen.csv"
+    response["Content-Disposition"] = "attachment; filename=Mengen_Übersicht_VS.csv"
     writer = csv.DictWriter(response, fieldnames=["name", "sub_sum"], dialect="unix")
     writer.writerow({"name": "Verteilstation", "sub_sum": "Anteile"})
     for depot in Depot.objects.order_by("name"):
