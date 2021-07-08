@@ -49,7 +49,7 @@ def get_status(sub: Subscription) -> str:
 
 def export_subscriptions(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=Gemüseanteile.csv"
+    response["Content-Disposition"] = "attachment; filename=Gemüseanteile_Übersicht.csv"
     writer = csv.DictWriter(response, dialect="unix", fieldnames=[
         "glv",
         "geno",
