@@ -203,7 +203,7 @@ def export_members(request):
             row["share__reason_for_acquisition"] = ACQUISITION_REASONS.get(
                 row["share__reason_for_acquisition"], ""
             )
-            row["share__reason_for_cancellation"] = ACQUISITION_REASONS.get(
+            row["share__reason_for_cancellation"] = CANCELLATION_REASONS.get(
                 row["share__reason_for_cancellation"], ""
             )
             row["share__count"] = row.get("share__count") - 1
