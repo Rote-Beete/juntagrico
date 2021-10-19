@@ -7,6 +7,7 @@ from juntagrico.entity.depot import Depot
 from juntagrico.entity.share import (
     reason_for_acquisition_choices,
     reason_for_cancellation_choices,
+    Share,
 )
 from juntagrico.entity.subs import Subscription
 from juntagrico.entity.subtypes import SubscriptionType
@@ -194,11 +195,15 @@ def export_members(request):
             "share__reason_for_cancellation": "Grund des Ausscheidens",
         }
     )
+    row_fields = FIELDS[:]
+    row_fields.remove("share__count")
     for row in (
-        Member.objects.annotate(Count("share"))
-        .order_by("share__number")
-        .values(*FIELDS)
+        Member.objects
+        .order_by("share__number", "share__creation_date")
+        .distinct("share__number")
+        .values(*row_fields)
     ):
+        row["share__count"] = Share.objects.filter(number=row["share__number"]).count()
         if row.get("share__count", 0) > 0:
             row["share__reason_for_acquisition"] = ACQUISITION_REASONS.get(
                 row["share__reason_for_acquisition"], ""
