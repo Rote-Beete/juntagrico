@@ -1,4 +1,5 @@
 import csv
+from decimal import Decimal
 
 from django.db.models import Count, Sum
 from django.http import HttpResponse
@@ -97,7 +98,7 @@ def export_subscriptions(request):
                 "status": get_status(sub),
                 "vs": sub.depot.name,
                 "size": subtype.size.units,
-                "price_per_unit": subtype.price / subtype.size.units,
+                "price_per_unit": subtype.price / Decimal(subtype.size.units),
                 "price": subtype.price,
             })
             sum_units += subtype.size.units
@@ -105,7 +106,7 @@ def export_subscriptions(request):
     writer.writerow({
         "size": sum_units,
         "price": sum_price,
-        "price_per_unit": sum_price / sum_units,
+        "price_per_unit": sum_price / Decimal(sum_units),
     })
     return response
 
