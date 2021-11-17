@@ -19,6 +19,7 @@ FIELDS = [
     "share__number",
     "first_name",
     "last_name",
+    "email",
     "addr_street",
     "addr_zipcode",
     "addr_location",
@@ -185,6 +186,7 @@ def export_members(request):
         {
             "first_name": "Vorname",
             "last_name": "Name",
+            "email": "E-Mail-Adresse",
             "addr_street": "Straße",
             "addr_zipcode": "PLZ",
             "addr_location": "Wohnort",
