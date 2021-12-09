@@ -13,7 +13,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {{ request|activemenu:"subscription" }}" href="{% url 'sub-detail' %}">
-            {{ v_subscription }}
+	    Mitgliedschaft
         </a>
     </li>
     <li class="nav-item">
@@ -49,7 +49,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {{ request|activemenu:"membership" }}" href="{% url 'profile' %}">
-            {% trans "Mitgliedschaft" %}
+            {% trans "Persönliche Daten" %}
         </a>
     </li>
     <li class="nav-item">
