@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^impersonate/', include('impersonate.urls')),
     path('djrichtextfield/', include('djrichtextfield.urls')),
     path('admin/defender/', include('defender.urls')),
+    path("oauth/", include('oauth2_provider.urls', namespace='oauth2_provider')),
 ]
