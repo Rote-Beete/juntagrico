@@ -3,6 +3,7 @@
 {% load juntagrico.config %}
 {% load juntagrico.common %}
 {% load juntagrico.subscription %}
+{% load rotebeete %}
 {% block page_title %}
     {% vocabulary "subscription" as v_subscription %}
     <h3>
@@ -56,7 +57,7 @@
                 {% if subscription.state == 'waiting' %}
                 {{ subscription.future_part_overview|overview|safe }}
                 {% else %}
-                {{ subscription.part_overview|overview|safe }}
+                {{ subscription|subscription_overview|safe }}
                 {% endif %}
             </div>
         </div>
