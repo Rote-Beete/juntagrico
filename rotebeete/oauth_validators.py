@@ -10,6 +10,6 @@ class AccountOAuth2Validator(OAuth2Validator):
     def get_additional_claims(self, request):
         return {
             "id": request.user.id,
-            "email": request.user.email,
-            "username": request.user.get_full_name() or request.user.username,
+            "email": request.user.member.email,
+            "username": request.user.member.get_name() or request.user.username,
         }
