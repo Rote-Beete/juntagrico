@@ -35,13 +35,13 @@
             </ul>
         {% endif %}
     </li>
-    {% if b_show_deliveries %}
+    {# {% if b_show_deliveries %} #}
         <li class="nav-item">
             <a class="nav-link {{ request|activemenu:"deliveries" }}" href="{% url 'deliveries' %}">
                 {% trans "Lieferungen" %}
             </a>
         </li>
-    {% endif %}
+    {# {% endif %} #}
     <li class="nav-item">
         <a class="nav-link {{ request|activemenu:"area" }}" href="{% url 'areas' %}">
             {% trans "Tätigkeitsbereiche" %}
