@@ -1,7 +1,8 @@
 import csv
+from datetime import date
 from decimal import Decimal
 
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Q
 from django.http import HttpResponse
 from django.utils import timezone
 from juntagrico.entity.depot import Depot
@@ -123,7 +124,7 @@ def export_depot_emails(request):
     writer.writerow({"name": "Verteilstation", "email": "E-Mail-Adresse"})
     for depot in Depot.objects.order_by("name"):
         for sub in Subscription.objects.filter(q_isactive(), depot=depot):
-            for membership in sub.subscriptionmembership_set.all():
+            for membership in sub.subscriptionmembership_set.filter(Q(leave_date__isnull=True) | Q(leave_date__gte=date.today())):
                 row = dict(name=depot.name, email=membership.member.email)
                 writer.writerow(row)
     return response
