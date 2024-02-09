@@ -1,6 +1,8 @@
-from django import template
+from crispy_forms import layout
+from django import forms, template
 from django.utils.translation import gettext as _
 from juntagrico.entity.subs import Subscription
+from juntagrico.forms import MemberProfileForm
 
 register = template.Library()
 
@@ -15,7 +17,12 @@ def subscription_overview(subscription: Subscription):
 
 
 @register.filter
-def disable_iban(form):
-    form.fields["iban"].disabled = True
-    form.fields['iban'].help_text = form.contact_admin_link(_('Kontaktiere {} um die IBAN zu ändern.'))
+def disable_iban(form: MemberProfileForm):
+    masked_iban = "".join([c if i in [0, 1, 2, 3, 20, 21] else '*' for i, c in enumerate(form.initial["iban"])])
+    form.fields["shadow_iban"] = forms.CharField(
+        initial=masked_iban, disabled=True, label="IBAN", required=False,
+        help_text=form.contact_admin_link(_('Kontaktiere {} um die IBAN zu ändern.')))
+    form.helper.layout.fields.insert(form.helper.layout.fields.index("iban") + 1, "shadow_iban")
+    form.helper.layout.fields.remove("iban")
+    form.helper.layout.fields.append(layout.Field("iban", type="hidden"))
     return form

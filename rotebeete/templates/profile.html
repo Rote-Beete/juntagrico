@@ -28,7 +28,9 @@
     {% endif %}
     <form method="post" class="mb-4">
         {% load rotebeete %}
-        {% crispy memberform|disable_iban %}
+        {% with form=memberform|disable_iban %}
+            {% crispy form %}
+        {% endwith %}
     </form>
     <div class="row mb-2">
         <div class="offset-md-3 col-md-9">
