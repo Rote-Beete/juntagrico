@@ -29,6 +29,13 @@ Das Template für diese Zeile (alle Spalten) wird vollständig überschrieben. �
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
 `rotebeete/templates/snippets/snippet_subscription_change_size.html`).
 
+#### Persönliche Daten
+Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade
+eingespielt werden, sonst werden sie nicht sichtbar.
+* IBAN-Feld wird deaktiviert
+* Template: `rotebeete/templates/profile.html`
+* Filter: `rotebeete.templatetags.rotebeete.disable_iban`
+
 ### Menü Administration
 Das Menü-Template wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
