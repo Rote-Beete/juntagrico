@@ -1,0 +1,9 @@
+{% if member.transition.membership_needs_review %}
+    <div class="alert alert-warning">
+        Bitte bestätige die Korrektheit der untenstehenden Angaben:
+        <form method="post" action="{% url 'confirm-membership-review' %}">
+            {% csrf_token %}
+            <button class="btn btn-success">Meine Angaben sind richtig.</button>
+        </form>
+    </div>
+{% endif %}
