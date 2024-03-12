@@ -9,16 +9,31 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('juntagrico', '0038_alter_depot_options_alter_share_options_and_more'),
+        ("juntagrico", "0037_post_1_5"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='MemberTransition',
+            name="MemberTransition",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data_needs_review', models.BooleanField(default=False)),
-                ('member', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='transition', to='juntagrico.member')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("data_needs_review", models.BooleanField(default=False)),
+                (
+                    "member",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="transition",
+                        to="juntagrico.member",
+                    ),
+                ),
             ],
         ),
     ]
