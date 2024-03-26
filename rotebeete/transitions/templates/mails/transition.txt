@@ -1,0 +1,9 @@
+Bitte überprüfe deine Daten, indem du dich bei Juntagrico anmeldest und den Anweisungen folgst:
+
+{{ serverurl }}
+
+Falls du dein Passwort vergessen hast, setze es bitte hier zurück:
+
+{{ serverurl }}{% url "password_reset" %}
+
+Danke für deine Unterstützung!
