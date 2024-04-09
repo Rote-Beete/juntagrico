@@ -23,7 +23,7 @@ class Command(BaseCommand):
             "serverurl": "https://" + Site.objects.get_current().domain,
         }
         EmailSender.get_sender(
-            organisation_subject("Überprüfe deine Daten"),
+            organisation_subject("Bitte Daten jetzt überprüfen"),
             get_template("mails/transition.txt").render(context),
             bcc=members.values_list("email", flat=True),
         ).send()

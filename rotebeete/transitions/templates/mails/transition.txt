@@ -1,12 +1,16 @@
 {% extends "mails/email.txt" %}
 {% block content %}
-Bitte überprüfe deine Daten, indem du dich bei Juntagrico anmeldest und den Anweisungen folgst:
+Bitte überprüfe zeitnah deine bei uns hinterlegten Daten! Melde dich dazu im Mitgliederbereich an und folge den Anweisungen:
 
 {{ serverurl }}
 
-Falls du dein Passwort vergessen hast, setze es bitte hier zurück:
+Falls du dein Passwort vergessen hast, kannst du es hier zurücksetzen:
 
 {{ serverurl }}{% url "password_reset" %}
 
 Danke für deine Unterstützung!
+
+Solidarische Grüße
+
+Die Mitgliederverwaltung
 {% endblock %}
