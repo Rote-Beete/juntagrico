@@ -1,26 +1,16 @@
 {% extends "base.html" %}
 {% block page_title %}
-    <h1>Daten überprüfen</h1>
+    <h1>Datenaktualisierung</h1>
 {% endblock %}
 {% block content %}
-    <p>Wir bitten dich kurz außer der Reihe um deine Aufmerksamkeit.</p>
-
     <h2>{% if not user.member.transition.data_needs_review %}✔️ {% endif %}Schritt 1: Persönliche Daten</h2>
     <p>Bitte überprüfe deine Anschrift und weitere Angaben unter dem Menüpunkt
-        <a href="{% url 'profile' %}">Persönliche Daten</a> und bestätige dort anschließend die Korrektheit deiner
-        Angaben.</p>
+        <a href="{% url 'profile' %}">Persönliche Daten</a>. Bestätige dort anschließend deren Aktualität.</p>
 
     {% if not user.member.transition.data_needs_review %}
-        <h2>{% if not user.member.transition.membership_needs_review %}✔️ {% endif %}Schritt 2: Mitgliedschaft</h2>
-        <p>Bitte überprüfe deine Anteile und weitere Angaben unter dem Menüpunkt
-            <a href="{% url 'sub-detail' %}">Mitgliedschaft</a> und bestätige dort anschließend die Korrektheit deiner
-            Angaben.</p>
-    {% endif %}
-
-    {% if not user.member.transition.data_needs_review and not user.member.transition.membership_needs_review %}
-        <h2>Vielen Dank!</h2>
-        <p>Du kannst nun <a href="#">deinen zukünftigen Gemüseliefervertrag herunterladen</a>.
-            Das kannst du jederzeit auch unter dem Menüpunkt <a href="{% url 'sub-detail' %}">Mitgliedschaft</a>
-            tun.</p>
+        <h2>{% if not user.member.transition.membership_needs_review %}✔️ {% endif %}Schritt 2: Mitgliedschaft / Gemüseanteil</h2>
+        <p>Bitte überprüfe deine Angaben zu
+            <a href="{% url 'sub-detail' %}">deinem Gemüseanteil und deiner Mitgliedschaft in der Genoss*innenschaft</a>.
+            Bestätige dort anschließend deren Aktualität.</p>
     {% endif %}
 {% endblock %}
