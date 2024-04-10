@@ -9,20 +9,37 @@ register = template.Library()
 
 @register.filter
 def subscription_overview(subscription: Subscription):
-    result = ['<ul>']
+    result = ["<ul>"]
     for part in subscription.active_parts:
-        result.append(f"<li>{part.type.name} / {part.type.size.units}x{part.type.size.product} / {part.type.price} €</li>")
-    result.append('</ul>')
-    return '\n'.join(result)
+        result.append(
+            f"<li>Gemüseanteil:<ul>"
+            f"<li>GLV-Nr.: {part.type.name}</li>"
+            f"<li>Anzahl Anteile: {part.type.size.units}</li>"
+            f"<li>Monatl. Beitrag: {part.type.price} €</li>"
+            f"</ul></li>"
+        )
+    result.append("</ul>")
+    return "\n".join(result)
 
 
 @register.filter
 def disable_iban(form: MemberProfileForm):
-    masked_iban = "".join([c if i in [0, 1, 2, 3, 20, 21] else '*' for i, c in enumerate(form.initial["iban"])])
+    masked_iban = "".join(
+        [
+            c if i in [0, 1, 2, 3, 20, 21] else "*"
+            for i, c in enumerate(form.initial["iban"])
+        ]
+    )
     form.fields["shadow_iban"] = forms.CharField(
-        initial=masked_iban, disabled=True, label="IBAN", required=False,
-        help_text=form.contact_admin_link(_('Kontaktiere {} um die IBAN zu ändern.')))
-    form.helper.layout.fields.insert(form.helper.layout.fields.index("iban") + 1, "shadow_iban")
+        initial=masked_iban,
+        disabled=True,
+        label="IBAN",
+        required=False,
+        help_text=form.contact_admin_link(_("Kontaktiere {} um die IBAN zu ändern.")),
+    )
+    form.helper.layout.fields.insert(
+        form.helper.layout.fields.index("iban") + 1, "shadow_iban"
+    )
     form.helper.layout.fields.remove("iban")
     form.helper.layout.fields.append(layout.Field("iban", type="hidden"))
     return form
