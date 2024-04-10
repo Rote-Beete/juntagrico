@@ -1,9 +1,11 @@
 {% if member.transition.data_needs_review %}
-    <div class="alert alert-warning">
-        Bitte bestätige die Korrektheit der untenstehenden Angaben:
+    <div class="alert alert-danger">
+        <strong>Bitte prüfe die Aktualität der unten stehenden Angaben und speichere mögliche Änderungen.</strong>
         <form method="post" action="{% url 'confirm-data-review' %}">
             {% csrf_token %}
-            <button class="btn btn-success">Meine Angaben sind richtig und eventuelle Änderungen habe ich gespeichert.</button>
+            <button class="btn btn-success">
+                <strong>Meine Angaben sind aktuell. Änderungen habe ich unten gespeichert.</strong>
+            </button>
         </form>
     </div>
 {% endif %}
