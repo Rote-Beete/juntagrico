@@ -55,36 +55,36 @@ def get_status(sub: Subscription) -> str:
 def export_subscriptions(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = "attachment; filename=Gemüseanteile_Übersicht.csv"
-    writer = csv.DictWriter(response, dialect="unix", fieldnames=[
-        "glv",
-        "geno",
-        "glv-eingang",
-        "primary",
-        "mail",
-        "tel",
-        "mobile",
-        "status",
-        "iban",
-        "vs",
-        "size",
-        "price_per_unit",
-        "price",
-    ])
-    writer.writerow({
-        "glv": "GLV-Nr.",
-        "geno": "Geno-Nr.",
-        "glv-eingang": "GLV-Eingang",
-        "primary": "HauptbezieherIn",
-        "mail": "HauptbezieherInEmail",
-        "tel": "HauptbezieherInTelefon",
-        "mobile": "HauptbezieherInMobile",
-        "status": "Status",
-        "iban": "IBAN",
-        "vs": "Verteilstation",
-        "size": "Anteil/e",
-        "price_per_unit": "Preis Pro Anteil",
-        "price": "Preis",
-    })
+    writer = csv.DictWriter(
+        response,
+        dialect="unix",
+        fieldnames=[
+            "glv",
+            "geno",
+            "primary",
+            "mail",
+            "tel",
+            "status",
+            "vs",
+            "size",
+            "price_per_unit",
+            "price",
+        ],
+    )
+    writer.writerow(
+        {
+            "glv": "GLV-Nr.",
+            "geno": "Geno-Nr.",
+            "primary": "HauptbezieherIn",
+            "mail": "HauptbezieherInEmail",
+            "tel": "HauptbezieherInTelefon",
+            "status": "Status",
+            "vs": "Verteilstation",
+            "size": "Anteil/e",
+            "price_per_unit": "Preis Pro Anteil",
+            "price": "Preis",
+        }
+    )
     sum_units = 0
     sum_price = 0
     for subtype in SubscriptionType.objects.order_by("name"):
@@ -92,28 +92,31 @@ def export_subscriptions(request):
             sub = part.subscription
             member = sub.primary_member
             share = member.share_set.first() if member else None
-            writer.writerow({
-                "glv": subtype.name,
-                "geno": share.number if share else "",
-                "glv-eingang": "",
-                "primary": f"{member.last_name}, {member.first_name}" if member else "",
-                "mail": member.email if member else "",
-                "tel": member.phone if member else "",
-                "mobile": member.mobile_phone if member else "",
-                "status": get_status(sub),
-                "iban": member.iban if member else "",
-                "vs": sub.depot.name,
-                "size": subtype.size.units,
-                "price_per_unit": subtype.price / Decimal(subtype.size.units),
-                "price": subtype.price,
-            })
+            writer.writerow(
+                {
+                    "glv": subtype.name,
+                    "geno": share.number if share else "",
+                    "primary": (
+                        f"{member.last_name}, {member.first_name}" if member else ""
+                    ),
+                    "mail": member.email if member else "",
+                    "tel": member.phone if member else "",
+                    "status": get_status(sub),
+                    "vs": sub.depot.name,
+                    "size": subtype.size.units,
+                    "price_per_unit": subtype.price / Decimal(subtype.size.units),
+                    "price": subtype.price,
+                }
+            )
             sum_units += subtype.size.units
             sum_price += subtype.price
-    writer.writerow({
-        "size": sum_units,
-        "price": sum_price,
-        "price_per_unit": sum_price / Decimal(sum_units),
-    })
+    writer.writerow(
+        {
+            "size": sum_units,
+            "price": sum_price,
+            "price_per_unit": sum_price / Decimal(sum_units),
+        }
+    )
     return response
 
 
@@ -124,7 +127,9 @@ def export_depot_emails(request):
     writer.writerow({"name": "Verteilstation", "email": "E-Mail-Adresse"})
     for depot in Depot.objects.order_by("name"):
         for sub in Subscription.objects.filter(q_isactive(), depot=depot):
-            for membership in sub.subscriptionmembership_set.filter(Q(leave_date__isnull=True) | Q(leave_date__gte=date.today())):
+            for membership in sub.subscriptionmembership_set.filter(
+                Q(leave_date__isnull=True) | Q(leave_date__gte=date.today())
+            ):
                 row = dict(name=depot.name, email=membership.member.email)
                 writer.writerow(row)
     return response
@@ -133,13 +138,17 @@ def export_depot_emails(request):
 def export_depot_list(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = "attachment; filename=VS_Listen.csv"
-    writer = csv.DictWriter(response, fieldnames=["depot", "glv", "name", "units"], dialect="unix")
-    writer.writerow({
-        "depot": "Verteilstation",
-        "glv": "GLV-Nr.",
-        "name": "Gruppenbezeichnung / Name",
-        "units": "Anteil/e"
-    })
+    writer = csv.DictWriter(
+        response, fieldnames=["depot", "glv", "name", "units"], dialect="unix"
+    )
+    writer.writerow(
+        {
+            "depot": "Verteilstation",
+            "glv": "GLV-Nr.",
+            "name": "Gruppenbezeichnung / Name",
+            "units": "Anteil/e",
+        }
+    )
     for depot in Depot.objects.order_by("name"):
         for sub in Subscription.objects.filter(q_isactive(), depot=depot):
             for part in sub.parts.all():
@@ -160,16 +169,20 @@ def export_depot_overview(request):
     writer.writerow({"name": "Verteilstation", "sub_sum": "Anteile"})
     for depot in Depot.objects.order_by("name"):
         row = dict(name=depot.name)
-        row["sub_sum"], *_ = depot.subscription_set.filter(q_isactive()).aggregate(
-            Sum("parts__type__size__units")
-        ).values()
+        row["sub_sum"], *_ = (
+            depot.subscription_set.filter(q_isactive())
+            .aggregate(Sum("parts__type__size__units"))
+            .values()
+        )
         writer.writerow(row)
     return response
 
 
 def export_members(request):
     response = HttpResponse(content_type="text/csv")
-    response["Content-Disposition"] = "attachment; filename=Mitgliederliste_Genossenschaft.csv"
+    response["Content-Disposition"] = (
+        "attachment; filename=Mitgliederliste_Genossenschaft.csv"
+    )
     writer = csv.DictWriter(response, fieldnames=FIELDS, dialect="unix")
     writer.writerow(
         {
@@ -207,8 +220,7 @@ def export_members(request):
     row_fields = FIELDS[:]
     row_fields.remove("share__count")
     for row in (
-        Member.objects
-        .order_by("share__number", "share__creation_date")
+        Member.objects.order_by("share__number", "share__creation_date")
         .distinct("share__number")
         .values(*row_fields)
     ):
