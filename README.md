@@ -80,3 +80,16 @@ nicht sichtbar. Template: `rotebeete/templates/export.html`
 
 In `rotebeete/static/css/rotebeete.css` wurden einige CSS-Eigenschaften verändert. Falls sich das Original-CSS von 
 Juntagrico ändert, müssen diese Angaben möglicherweise angepasst werden.
+
+## Development Setup
+
+Create a virtual environment and install juntagrico inside:
+
+```
+python -m venv .venv
+source .venv/bin/activate
+pip install juntagrico==1.6
+# for an old version of django-polymorphic
+pip install setuptools
+pip install django-defender
+```
