@@ -24,7 +24,6 @@ urlpatterns = [
     re_path(r"^", include("juntagrico.urls")),
     path("", include("rotebeete.exports.urls")),
     path("", include("rotebeete.transitions.urls")),
-    re_path(r"^$", juntagrico.views.home),
     re_path(r"^impersonate/", include("impersonate.urls")),
     re_path("djrichtextfield/", include("djrichtextfield.urls")),
     re_path("admin/defender/", include("defender.urls")),
