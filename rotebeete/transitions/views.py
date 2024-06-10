@@ -32,7 +32,7 @@ class DownloadDeliveryContract(View):
         season_years = f"{temporal.start_of_business_year().year}/{temporal.end_of_business_year().year}"
         context = {
             "member": member,
-            "geno_number": share.number,
+            "geno_number": share.number if share else "",
             "depot": depot,
             "share_amount": share_amount,
             "subscription": subscription,
