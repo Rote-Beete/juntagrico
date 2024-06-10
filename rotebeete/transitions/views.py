@@ -24,10 +24,10 @@ class ReviewView(TemplateView):
 class DownloadDeliveryContract(View):
     def get(self, request: HttpRequest):
         member = request.user.member
-        share_amount = member.active_shares_count
         subscription = member.subscription_current
         share = member.active_shares.first()
         subtype = subscription.active_parts.first().type
+        share_amount = subtype.size.units
         depot = subscription.depot.name
         season_years = f"{temporal.start_of_business_year().year}/{temporal.end_of_business_year().year}"
         context = {
