@@ -45,6 +45,10 @@ class DownloadDeliveryContract(View):
             },
             "monthly_fee": subtype.price,
         }
+        if request.GET.get("debug_html", False):
+            return render(
+                request, "transitions/vegetable_delivery_contract.html", context
+            )
         return render_to_pdf_http(
             "transitions/vegetable_delivery_contract.html",
             context,
