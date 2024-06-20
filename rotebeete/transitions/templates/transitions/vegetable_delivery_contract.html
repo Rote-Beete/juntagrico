@@ -19,7 +19,7 @@
                 left: 50pt;
                 width: 500pt;
                 top: 50pt;
-                height: 750pt;
+                height: 650pt;
             }
 
             @frame header_frame {
@@ -91,11 +91,11 @@
     <table>
         <tr>
             <td><strong>GLV-Nr.</strong></td>
-            <td><strong>Anzahl Anteile</strong></td>
+            <td><strong>Anzahl Gemüseanteile</strong></td>
             <td>
                 <strong>Monatlicher Beitrag</strong>
                 <br>
-                inkl. 9,5% MWst.
+                inkl. 9% MWst.
             </td>
         </tr>
         <tr>
@@ -108,7 +108,7 @@
     <table>
         <tr>
             <td>Spitzname Anteil</td>
-            <td class="box">{{ subscription.recipients_display_name }}</td>
+            <td class="box">{{ subscription.nickname|default:"-" }}</td>
         </tr>
         <tr>
             <td>Verteilstation</td>
@@ -145,7 +145,7 @@
         </tr>
     </table>
 
-    <h3>Persönliche Angaben Hauptbezieher*in</h3>
+    <h3>Weitere registrierte Mitessende</h3>
 
     <table>
         {% for person in co_members %}
@@ -181,6 +181,10 @@
         {% endblocktrans %}
     </p>
     {% endblock %}
+
+    <div id="footer_content">
+        Seite <pdf:pagenumber> von <pdf:pagecount>
+    </div>
 </body>
 
 </html>
