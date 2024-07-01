@@ -255,7 +255,7 @@
             </div>
         {% endif %}
 
-        {% if subscription.state == 'active' and subscription.primary_member.id == request.user.id %}
+        {% if subscription.state == 'active' and primary %}
             <div class="row mb-3">
                 <div class="col-md-3">
                     {% trans "GLV-Download" %}
