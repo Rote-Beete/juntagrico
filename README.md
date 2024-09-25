@@ -8,7 +8,7 @@ unsere Anpassungen wirkungslos.
 ### Menü "Dein Menu ..." (Benutzermenü)
 Das Menü-Template wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt 
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template: 
-`rotebeete/templates/menu/user_menu.html`).
+`rotebeete/templates/juntagrico/menu/user.html`).
 
 #### Mitgliedschaft
 Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade
