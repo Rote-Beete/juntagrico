@@ -1,26 +1,9 @@
 from crispy_forms import layout
 from django import forms, template
 from django.utils.translation import gettext as _
-from juntagrico.entity.subs import Subscription
 from juntagrico.forms import MemberProfileForm
 
 register = template.Library()
-
-
-@register.filter
-def subscription_overview(subscription: Subscription):
-    result = ["<ul>"]
-    for part in subscription.active_parts:
-        result.append(
-            f"<li>Gemüseanteil:<ul>"
-            f"<li>GLV-Nr.: {part.type.name}</li>"
-            f"<li>Anzahl Anteile: {part.type.size.units}</li>"
-            f"<li>Monatl. Beitrag: {part.type.price} €</li>"
-            f"</ul></li>"
-        )
-    result.append("</ul>")
-    return "\n".join(result)
-
 
 @register.filter
 def disable_iban(form: MemberProfileForm):

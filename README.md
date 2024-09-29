@@ -11,9 +11,9 @@ werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei
 `rotebeete/templates/juntagrico/menu/user.html`).
 
 #### Mitgliedschaft
-Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade
-eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/subscription.html`, Filter: `rotebeete.templatetags.rotebeete.subscription_overview`).
+Manche Templates für die Seite werden vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade
+eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (veränderte Templates:
+`rotebeete/templates/my/subscription/single.html`, `rotebeete/templates/my/subscription/snippets/part_list.html` neu: `rotebeete/templates/my/subscription/snippets/download_delivery_contract.html`).
 
 #### Mitgliedschaft ➜ Genossenschaftsanteile verwalten
 Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade 
