@@ -39,7 +39,7 @@ eingespielt werden, sonst werden sie nicht sichtbar.
 ### Menü Administration
 Das Menü-Template wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/menu/admin_menu.html`).
+`rotebeete/templates/juntagrico/menu/admin.html`).
 
 #### Listen ➜ Mengenübersicht
 * Pfad: `/rb/export/depots`
