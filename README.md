@@ -37,9 +37,21 @@ eingespielt werden, sonst werden sie nicht sichtbar.
 * Filter: `rotebeete.templatetags.rotebeete.disable_iban`
 
 ### Menü Administration
-Das Menü-Template wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
+
+#### Gemüseanteile ➜ Aktive
+Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/juntagrico/menu/admin.html`).
+`rotebeete/templates/management_lists/subscriptions.html`).
+
+#### Arbeitseinsätze ➜ Übersicht
+Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
+werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
+`rotebeete/templates/management_lists/assignments.html`).
+
+#### Listen
+Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
+werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
+`rotebeete/templates/juntagrico/menu/admin/lists.html`).
 
 #### Listen ➜ Mengenübersicht
 * Pfad: `/rb/export/depots`
