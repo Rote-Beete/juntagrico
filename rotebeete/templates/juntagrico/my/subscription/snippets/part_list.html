@@ -47,15 +47,15 @@
                             {% endif %}
                         {% endwith %}
                         {% if subscription.primary_member == member %}
-                            {% if can_change_part %}
+                            {% comment %} {% if can_change_part %}
                                 <a href="{% url 'part-change' part.id %}" class="btn btn-primary">
                                     {% trans "ändern" %}
                                 </a>
-                            {% endif %}
+                            {% endif %} {% endcomment %}
                             {% if part.subscription.future_parts.is_normal.count == 1 %}
                                 {% if part.subscription.state != 'canceled' and  part.subscription.state != 'inactive' %}
                                     <a href="{% url 'sub-cancel' subscription.id %}" class="btn btn-danger">
-                                        {% blocktrans %}{{ v_subscription }} komplett künden{% endblocktrans %}
+                                        {% blocktrans %}{{ v_subscription }} komplett kündigen{% endblocktrans %}
                                     </a>
                                 {% endif %}
                             {% elif part.subscription.future_parts.is_normal.count > 1 %}
@@ -81,14 +81,14 @@
     <div class="mt-3">
         {% if subscription.primary_member == member %}
             {% if not subscription.canceled %}
-                <a href="{% url 'part-order' subscription.id %}" class="btn btn-primary mb-3">
+                {% comment %} <a href="{% url 'part-order' subscription.id %}" class="btn btn-primary mb-3">
                     {% trans "Weitere Bestandteile bestellen" %}
                 </a>
                 {% if has_extra %}
                     <a href="{% url 'extra-order' subscription.id %}" class="btn btn-outline-primary mb-3">
                         {% trans "Zusatzabos bestellen" %}
                     </a>
-                {% endif %}
+                {% endif %} {% endcomment %}
             {% else %}
                 {% vocabulary "subscription_pl" as v_subscription_pl %}
                 <i>{% blocktrans %}Für gekündigte {{ v_subscription_pl }} können keine Bestandteile bestellt werden.{% endblocktrans %}</i>
