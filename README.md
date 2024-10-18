@@ -90,5 +90,8 @@ nicht sichtbar. Template: `rotebeete/templates/export.html`
 
 ### Gestaltung
 
-In `rotebeete/static/css/rotebeete.css` wurden einige CSS-Eigenschaften verändert. Falls sich das Original-CSS von 
-Juntagrico ändert, müssen diese Angaben möglicherweise angepasst werden.
+In `rotebeete/static/rotebeete/css/rotebeete.css` wurden einige CSS-Eigenschaften verändert. Falls sich das Original-CSS von Juntagrico ändert, müssen diese Angaben möglicherweise angepasst werden. 
+
+### Logo
+
+In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS-Eigenschaften von `juntagrico_logo` sowie der Name und die Endung der gewünschten Datei geändert werden. Der Pfad `rotebeete/static/rotebeete/img/<DATEI>` sollte dennoch beibehalten werden.

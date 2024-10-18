@@ -1,0 +1,24 @@
+a {
+    color: #4e9a06 !important;
+}
+
+a[href*="logout"] {
+    color: black !important;
+}
+
+.nav-link {
+    font-weight: bold;
+}
+
+.nav-link.yellow {
+    color: #c17d11 !important;
+}
+
+.juntagrico_logo {
+    background: url(/static/rotebeete/img/logo.jpg) center center;  /* note that {app} is omitted before "/static" */
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    width: 400px;  /* adjust to image with */
+    height: 260px;  /* adjust to image height */
+}
