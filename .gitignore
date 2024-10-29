@@ -7,3 +7,7 @@ rotebeete/debug.log
 rotebeete/settings.py
 /data
 .venv
+.local
+settings.py
+requirements.txt
+
