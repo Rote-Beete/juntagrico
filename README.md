@@ -43,11 +43,6 @@ Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
 `rotebeete/templates/management_lists/subscriptions.html`).
 
-#### Arbeitseinsätze ➜ Übersicht
-Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
-werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/management_lists/assignments.html`).
-
 #### Listen
 Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
