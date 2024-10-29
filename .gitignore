@@ -5,5 +5,5 @@ manage.py
 oidc.key
 rotebeete/debug.log
 rotebeete/settings.py
-rotebeete/static/
+/data
 .venv
