@@ -6,3 +6,6 @@ oidc.key
 rotebeete/debug.log
 rotebeete/settings.py
 rotebeete/static/
+.local
+.python-version
+
