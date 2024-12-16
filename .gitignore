@@ -11,3 +11,6 @@ rotebeete/settings.py
 settings.py
 requirements.txt
 
+.local
+.python-version
+

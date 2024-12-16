@@ -10,7 +10,7 @@
     {% if not user.member.transition.data_needs_review %}
         <h2>{% if not user.member.transition.membership_needs_review %}✔️ {% endif %}Schritt 2: Mitgliedschaft / Gemüseanteil</h2>
         <p>Bitte überprüfe deine Angaben zu
-            <a href="{% url 'sub-detail' %}">deinem Gemüseanteil und deiner Mitgliedschaft in der Genoss*innenschaft</a>.
+            <a href="{% url 'subscription-landing' %}">deinem Gemüseanteil und deiner Mitgliedschaft in der Genoss*innenschaft</a>.
             Bestätige dort anschließend deren Aktualität.</p>
     {% endif %}
 {% endblock %}
