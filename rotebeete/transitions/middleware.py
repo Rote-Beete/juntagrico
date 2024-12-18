@@ -1,13 +1,13 @@
 from django.http import HttpRequest
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 DENIED_URL_PATHS = [
-    reverse("areas"),
-    reverse("contact"),
-    reverse("deliveries"),
-    reverse("home"),
-    reverse("jobs"),
+    reverse_lazy("areas"),
+    reverse_lazy("contact"),
+    reverse_lazy("deliveries"),
+    reverse_lazy("home"),
+    reverse_lazy("jobs"),
 ]
 
 
@@ -21,7 +21,7 @@ class ReviewMiddleware:
             if (
                 (transition.data_needs_review or transition.membership_needs_review)
                 and request.path in DENIED_URL_PATHS
-                and request.path != reverse("review")
+                and request.path != reverse_lazy("review")
             ):
                 return redirect("review")
         except AttributeError:
