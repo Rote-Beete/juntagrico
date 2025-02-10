@@ -35,14 +35,6 @@ INSTALLED_APPS = [
     # 'juntagrico_test_addon',
 ]
 
-DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': 'rotebeete',
-        'USER': 'rotebeete',
-        'PASSWORD': '123456',
-    }
-}
 
 ROOT_URLCONF = "rotebeete.urls"
 
