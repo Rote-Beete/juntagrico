@@ -1,7 +1,6 @@
 __pycache__/
 .idea/
 db.sqlite3
-manage.py
 oidc.key
 rotebeete/debug.log
 /data
