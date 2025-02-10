@@ -1,3 +1,15 @@
+## Entwicklungsumgebung:
+
+poetry installieren und folgende commands ausführen:
+
+```
+poetry install
+poetry run ./manage.py migrate
+poetry run ./manage.py createsuperuser
+poetry run ./manage.py create_member_for_superusers
+poetry run ./manage.py runserver
+```
+
 ## Dokumentation von Anpassungen
 *zur händischen Überprüfung der Funktionalität nach Upgrades*
 
