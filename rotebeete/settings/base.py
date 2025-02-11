@@ -1,18 +1,12 @@
 import os
+from pathlib import Path
 
-DEBUG = True
-ALLOWED_HOSTS = ["localhost"]
-
-ORGANISATION_WEBSITE = {
-    "name": "rotebeete.org",
-    "url": "https://rotebeete.org"
-}
+ORGANISATION_WEBSITE = "rotebeete.org"
 ADMINPORTAL_NAME = "juntagrico.rotebeete.org"
 ADMINPORTAL_SERVER_URL = "juntagrico.rotebeete.org"
 
-SECRET_KEY = "dev"
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
 
 IMPERSONATE = {
     "REDIRECT_URL": "/my/profile",
@@ -29,26 +23,18 @@ INSTALLED_APPS = [
     "impersonate",
     "rotebeete",
     "juntagrico",
-    "fontawesomefree",
-    "import_export",
     "crispy_forms",
     "adminsortable2",
     "djrichtextfield",
-    # "defender",
+    "defender",
     "polymorphic",
-    # "oauth2_provider",
-    # TODO: do we need to move this above the "juntagrico" entry?
+    "oauth2_provider",
     "rotebeete.transitions",
+    'import_export',
     # enable only to test addon stuff
     # 'juntagrico_test_addon',
 ]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "db.sqlite3",
-    }
-}
 
 ROOT_URLCONF = "rotebeete.urls"
 
@@ -78,12 +64,7 @@ def whitelist_email_from_env(var_env_name):
         WHITELIST_EMAILS.append(email)
 
 
-if DEBUG is True:
-    for key in os.environ.keys():
-        if key.startswith("JUNTAGRICO_EMAIL_WHITELISTED"):
-            whitelist_email_from_env(key)
-
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = DATA_DIR / "public" / "static"
 STATIC_URL = "/static/"
 
 LANGUAGE_CODE = "de-DE"
@@ -141,14 +122,14 @@ TEMPLATES = [
 ]
 
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/my/home"
 
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 
-LOCALE_PATHS = (os.path.join(BASE_DIR, "juntagrico/locale"),)
+LOCALE_PATHS = (BASE_DIR/"juntagrico/locale",)
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-CRISPY_FAIL_SILENTLY = not DEBUG
+CRISPY_FAIL_SILENTLY = True
 
 DJRICHTEXTFIELD_CONFIG = {
     "js": ["/static/juntagrico/external/tinymce/tinymce.min.js"],
@@ -178,6 +159,8 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 DEFENDER_BEHIND_REVERSE_PROXY = True
 DEFENDER_LOCKOUT_URL = "https://rotebeete.org/organisation/kontakt/"
+DEFENDER_REDIS_URL = "redis://127.0.0.1:6379/0"
+
 
 ORGANISATION_NAME = "SoLaWi Rote Beete"
 ORGANISATION_LONG_NAME = (
@@ -194,9 +177,7 @@ ORGANISATION_ADDRESS = {
 ORGANISATION_PHONE = "034298-495168"
 BUSINESS_YEAR_START = {"day": 1, "month": 7}
 BUSINESS_YEAR_CANCELATION_MONTH = 3
-CONTACTS = {
-    "general": "invalid@rotebeete.invalid"
-}
+CONTACTS = {"info":"invalid@rotebeete.invalid"}
 VOCABULARY = {
     "member": "Mitglied",
     "member_pl": "Mitglieder",
@@ -216,4 +197,4 @@ VOCABULARY = {
     "package": "Kiste",
 }
 
-IMPORT_EXPORT_EXPORT_PERMISSION_CODE = 'view'
+STYLES = {"static":["rotebeete/css/rotebeete.css"]}

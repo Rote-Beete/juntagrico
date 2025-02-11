@@ -1,14 +1,11 @@
 __pycache__/
 .idea/
 db.sqlite3
-manage.py
 oidc.key
 rotebeete/debug.log
-rotebeete/settings.py
 /data
 .venv
 .local
-settings.py
 requirements.txt
 
 .local
