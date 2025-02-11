@@ -1,5 +1,4 @@
 import csv
-import sys
 from datetime import date
 
 from django.core.exceptions import ValidationError
@@ -10,18 +9,18 @@ from juntagrico.models import Share, Subscription, SubscriptionMembership
 
 
 COLS = [
-    "glv",         # ok
-    "geno",        # ok
+    "glv",  # ok
+    "geno",  # ok
     "status",
     "glv2",
     "statut",
     "datenschutz",
-    "nick",        # ok
+    "nick",  # ok
     "mail",
-    "vsnr",        # ok
-    "anteile",     # ok
+    "vsnr",  # ok
+    "anteile",  # ok
     "jeanteil",
-    "summe",       # ok
+    "summe",  # ok
 ]
 
 
@@ -36,24 +35,38 @@ class Command(BaseCommand):
                 if len(row["glv"]) == 3:
                     self.import_row(row)
                 else:
-                    self.stdout.write(self.style.WARNING("Invalid GL-Vnr: {}".format(row["glv"])))
+                    self.stdout.write(
+                        self.style.WARNING("Invalid GL-Vnr: {}".format(row["glv"]))
+                    )
 
     def import_row(self, row):
         try:
             subtype = self.get_subtype(row["glv"])
             subtype.shares = 1
-            subtype.size = SubscriptionSize.objects.get(units=row["anteile"].replace(",", "."))
+            subtype.size = SubscriptionSize.objects.get(
+                units=row["anteile"].replace(",", ".")
+            )
             subtype.price, *frac = row["summe"].split(",")
             if len(frac) > 0:
                 frac, *_ = frac[0].split()
                 if frac != "00":
-                    self.stdout.write(self.style.WARNING("Cannot handle non-integer price: {}".format(row["summe"])))
+                    self.stdout.write(
+                        self.style.WARNING(
+                            "Cannot handle non-integer price: {}".format(row["summe"])
+                        )
+                    )
             if subtype.price == "":
                 subtype.price = 0
-                self.stdout.write(self.style.WARNING("Invalid price: '{}'".format(row["summe"])))
+                self.stdout.write(
+                    self.style.WARNING("Invalid price: '{}'".format(row["summe"]))
+                )
             subtype.save()
         except SubscriptionSize.DoesNotExist:
-            self.stdout.write(self.style.WARNING("Abogröße nicht vorhanden: {}".format(row["anteile"])))
+            self.stdout.write(
+                self.style.WARNING(
+                    "Abogröße nicht vorhanden: {}".format(row["anteile"])
+                )
+            )
         try:
             sub = self.get_sub(subtype, row)
             self.create_submember(sub, row)
@@ -61,15 +74,22 @@ class Command(BaseCommand):
             sub.activation_date = date.today()
             sub.save()
         except Depot.DoesNotExist:
-            self.stdout.write(self.style.WARNING("Invalid VS-Nr: {}".format(row["vsnr"])))
+            self.stdout.write(
+                self.style.WARNING("Invalid VS-Nr: {}".format(row["vsnr"]))
+            )
         except (Share.DoesNotExist, ValueError, AttributeError):
-            self.stdout.write(self.style.WARNING("Invalid GENO: {}".format(row["geno"])))
+            self.stdout.write(
+                self.style.WARNING("Invalid GENO: {}".format(row["geno"]))
+            )
         except ValidationError:
-            self.stdout.write(self.style.WARNING("Multiple use of GENO: {}".format(row["geno"])))
+            self.stdout.write(
+                self.style.WARNING("Multiple use of GENO: {}".format(row["geno"]))
+            )
 
     def get_subtype(self, glv):
         subtype, _ = SubscriptionType.objects.get_or_create(
-            name=glv, defaults={"required_assignments": 3, "price": 0, "size_id": 2})
+            name=glv, defaults={"required_assignments": 3, "price": 0, "size_id": 2}
+        )
         return subtype
 
     def get_sub(self, subtype, row):
@@ -82,7 +102,8 @@ class Command(BaseCommand):
             sub = Subscription.objects.create(
                 depot=depot,
                 start_date=date.fromisoformat("2021-07-01"),
-                activation_date=date.today())
+                activation_date=date.today(),
+            )
             sub.parts.create(type=subtype)
         return sub
 

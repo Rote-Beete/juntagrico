@@ -27,9 +27,9 @@ class Command(BaseCommand):
         }
         recipients = members.values_list("email", flat=True)
         for i in range(len(recipients) // 10 + 1):
-            print(f"Sending chunk {i+1} ...")
+            print(f"Sending chunk {i + 1} ...")
             EmailSender.get_sender(
                 organisation_subject("Bitte Daten jetzt überprüfen"),
                 get_template("mails/transition.txt").render(context),
-                bcc=recipients[i*10:i*10+10],
+                bcc=recipients[i * 10 : i * 10 + 10],
             ).send()

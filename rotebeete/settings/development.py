@@ -1,4 +1,5 @@
 from .base import *  # noqa: F401, F403
+import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -13,12 +14,12 @@ ALLOWED_HOSTS = ["*"]
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
     }
 }
 
 for key in os.environ.keys():
     if key.startswith("JUNTAGRICO_EMAIL_WHITELISTED"):
-        whitelist_email_from_env(key)
+        whitelist_email_from_env(key)  # noqa: F405
 
 CRISPY_FAIL_SILENTLY = False

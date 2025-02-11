@@ -2,7 +2,7 @@ import csv
 from datetime import date
 from decimal import Decimal
 
-from django.db.models import Count, Sum, Q
+from django.db.models import Sum, Q
 from django.http import HttpResponse
 from django.utils import timezone
 from juntagrico.entity.depot import Depot
