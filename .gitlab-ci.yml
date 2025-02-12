@@ -1,0 +1,45 @@
+stages:
+  - test
+
+variables:
+  POETRY_VERSION: 1.8.5
+
+default:
+  image: python:3.12-alpine
+
+.setup-pipx: &setup-pipx
+  - which pipx >/dev/null || pip install pipx && export PATH="$(pipx environment --value PIPX_BIN_DIR):$PATH"
+
+.setup-poetry: &setup-poetry
+  - *setup-pipx
+  - which poetry >/dev/null || pipx install "poetry==$POETRY_VERSION"
+
+.lint:
+  stage: test
+  before_script:
+    - *setup-poetry
+    - poetry install --only=dev
+
+ruff:
+  extends: .lint
+  script:
+    - poetry run ruff check .
+    - poetry run ruff format --check .
+
+djlint:
+  extends: .lint
+  script:
+    # djlint includes a default exclude of "build" that is matched against
+    # the entire path of the file and thus will include paths like `/builds/rokoli/rotebeete`
+    # resulting in no files being found for linting m)
+    # see: https://github.com/djlint/djLint/issues/1028
+    - poetry run djlint --exclude '--none--' --use-gitignore --check .
+
+test:
+  stage: test
+  before_script:
+    - apk add postgresql-dev
+    - *setup-poetry
+    - poetry install --with=test
+  script:
+    - poetry run pytest
