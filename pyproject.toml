@@ -20,6 +20,7 @@ pytest-django = "^4.10.0"
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.9.6"
 ipython = "^8.32.0"
+djlint = "^1.36.4"
 
 [build-system]
 requires = ["poetry-core"]
@@ -30,3 +31,6 @@ exclude = ["**/migrations/**"]
 
 [tool.ruff.format]
 quote-style = "preserve"
+
+[tool.djlint]
+ignore = "H006,H031,H030"
