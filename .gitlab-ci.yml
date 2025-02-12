@@ -1,0 +1,29 @@
+image: python:3.12-alpine
+
+variables:
+  POETRY_VERSION: 1.8.5
+
+before_script:
+  - apk add --no-cache gcc musl-dev postgresql-dev python3-dev pipx
+  - pipx install poetry=="$POETRY_VERSION"
+  - export PATH=/root/.local/bin:$PATH
+  - poetry install --with dev,test
+
+stages:
+  - test
+
+ruff:
+  stage: test
+  script:
+    - poetry run ruff check .
+    - poetry run ruff format --check .
+
+djlint:
+  stage: test
+  script:
+    - poetry run djlint . --check
+
+test:
+  stage: test
+  script:
+    - poetry run pytest

@@ -4,9 +4,7 @@
 {% load juntagrico.config %}
 {% block page_title %}
     {% vocabulary "share_pl" as v_share_pl %}
-    <h3>
-        {% blocktrans %}{{ v_share_pl }} Verwalten{% endblocktrans %}
-    </h3>
+    <h3>{% blocktrans %}{{ v_share_pl }} Verwalten{% endblocktrans %}</h3>
 {% endblock %}
 {% block content %}
     {% vocabulary "share_pl" as v_share_pl %}
@@ -17,20 +15,26 @@
         {% blocktrans %}Hier kannst du eine Bescheinigung über deine {{ v_share_pl }} der letzten Jahre herunterladen{% endblocktrans %}:
     </p>
     {% if certificate_years %}
-        <form action="{% url 'share-certificate' %}" method="get" class="form-inline">
+        <form action="{% url 'share-certificate' %}"
+              method="get"
+              class="form-inline">
             <div class="form-group">
                 <select class="form-control" id="year_select" name="year">
                     {% for year in certificate_years %}
-                    <option value="{{ year }}"{% if forloop.last %} selected="selected"{% endif %}>{{ year }}</option>
+                        <option value="{{ year }}"
+                                {% if forloop.last %}selected="selected"{% endif %}>{{ year }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <input type="submit" value="{% trans "Bescheinigung" %} {% trans "herunterladen" %}" class="btn btn-primary">
+            <input type="submit"
+                   value="{% trans "Bescheinigung" %} {% trans "herunterladen" %}"
+                   class="btn btn-primary">
         </form>
     {% else %}
-        <p class="font-italic">Keine {{ v_share_pl }} der vergangenen Jahre gefunden. Wenn du seit diesem Jahr {{ v_share_pl }} hälst, steht dir hier nächstes Jahr eine Bescheinigung zur Verfügung.</p>
+        <p class="font-italic">
+            Keine {{ v_share_pl }} der vergangenen Jahre gefunden. Wenn du seit diesem Jahr {{ v_share_pl }} hälst, steht dir hier nächstes Jahr eine Bescheinigung zur Verfügung.
+        </p>
     {% endif %}
-
     <h4>{% trans "Übersicht" %}</h4>
     {% if shares|length == 0 %}
         {% blocktrans %}Du hast noch keine {{ v_share_pl }}{% endblocktrans %}
@@ -39,25 +43,16 @@
             <table id="filter-table" class="table">
                 <thead>
                     <tr>
-                        <th>
-                            {% trans "Nummer" %}
-                        </th>
-                        <th>
-                            {% trans "Status" %}
-                        </th>
-                        <th>
-                        </th>
+                        <th>{% trans "Nummer" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for share in shares %}
                         <tr>
-                            <td>
-                                {{ share.identifier }}
-                            </td>
-                            <td>
-                                {{ share.state_text }}
-                            </td>
+                            <td>{{ share.identifier }}</td>
+                            <td>{{ share.state_text }}</td>
                             <td>
                                 {% if forloop.first %}
                                     {% blocktrans %}Du brauchst mindestens 1 {{ v_share }}{% endblocktrans %}
@@ -68,7 +63,8 @@
                                 {% elif ibanempty %}
                                     <a href="{% url 'profile' %}">{% blocktrans %}Kann gekündigt werden, sobald eine IBAN hinterlegt ist{% endblocktrans %}</a>
                                 {% elif  share.cancelled_date is None and share.paid_date is not None %}
-                                    <a href="{% url 'share-cancel' share.id %}"class="btn btn-success"
+                                    <a href="{% url 'share-cancel' share.id %}"
+                                       class="btn btn-success"
                                        onclick="return confirm('{% blocktrans %} Möchtest du sicher diese/s/n {{ v_share }} verbindlich kündigen? {% endblocktrans%}')">
                                         {% trans "kündigen" %}
                                     </a>
@@ -80,12 +76,11 @@
             </table>
         </div>
     {% endif %}
-    <script>
-    </script>
+    <script></script>
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" src="/static/juntagrico/external/bootstrap-input-spinner.js">
-    </script>
+    <script type="text/javascript"
+            src="/static/juntagrico/external/bootstrap-input-spinner.js"></script>
     <script type="text/javascript" src="/static/juntagrico/external/require.min.js" data-main="/static/juntagrico/js/initChangeExtra.js">
     </script>
 {% endblock %}

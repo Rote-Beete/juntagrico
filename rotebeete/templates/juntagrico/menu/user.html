@@ -7,72 +7,53 @@
 {% vocabulary "subscription" as v_subscription %}
 <ul class="main-menu nav flex-column">
     <li>
-        <h5>
-            {% blocktrans with fn=request.user.member.first_name %}Dein Menu {{ fn }}{% endblocktrans %}
-        </h5>
+        <h5>{% blocktrans with fn=request.user.member.first_name %}Dein Menu {{ fn }}{% endblocktrans %}</h5>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request|activemenu:"subscription" }}" href="{% url 'subscription-landing' %}">
-	    Mitgliedschaft
-        </a>
+        <a class="nav-link {{ request|activemenu:"subscription" }}"
+           href="{% url 'subscription-landing' %}">Mitgliedschaft</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request|activemenu:"jobs" }}" href="{% url 'jobs' %}">
-            {% trans "Mitarbeitskalender" %}
-        </a>
+        <a class="nav-link {{ request|activemenu:"jobs" }}"
+           href="{% url 'jobs' %}">{% trans "Mitarbeitskalender" %}</a>
         {% if request|activemenu:"jobs" == 'active' %}
             <ul class="nav flex-column sub-menu">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'memberjobs' %}">
-                        {% trans "Meine Einsätze" %}
-                    </a>
+                    <a class="nav-link" href="{% url 'memberjobs' %}">{% trans "Meine Einsätze" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'jobs-all' %}">
-                        {% trans "Aktuelle und vergangene Einsätze" %}
-                    </a>
+                    <a class="nav-link" href="{% url 'jobs-all' %}">{% trans "Aktuelle und vergangene Einsätze" %}</a>
                 </li>
             </ul>
         {% endif %}
     </li>
     {# {% if b_show_deliveries %} #}
-        <li class="nav-item">
-            <a class="nav-link {{ request|activemenu:"deliveries" }}" href="{% url 'deliveries' %}">
-                {% trans "Lieferungen" %}
-            </a>
-        </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request|activemenu:"deliveries" }}"
+           href="{% url 'deliveries' %}">{% trans "Lieferungen" %}</a>
+    </li>
     {# {% endif %} #}
     <li class="nav-item">
-        <a class="nav-link {{ request|activemenu:"area" }}" href="{% url 'areas' %}">
-            {% trans "Tätigkeitsbereiche" %}
-        </a>
+        <a class="nav-link {{ request|activemenu:"area" }}"
+           href="{% url 'areas' %}">{% trans "Tätigkeitsbereiche" %}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request|activemenu:"membership" }}" href="{% url 'profile' %}">
-            {% trans "Persönliche Daten" %}
-        </a>
+        <a class="nav-link {{ request|activemenu:"membership" }}"
+           href="{% url 'profile' %}">{% trans "Persönliche Daten" %}</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ request|activemenu:"contact" }}" href="{% url 'contact' %}">
-            {% trans "Kontakt" %}
-        </a>
+        <a class="nav-link {{ request|activemenu:"contact" }}"
+           href="{% url 'contact' %}">{% trans "Kontakt" %}</a>
     </li>
     {% for user_menu in l_user_menus %}
         {% include user_menu %}
     {% endfor %}
-    <li class="separator">
-    </li>
+    <li class="separator"></li>
     <li class="nav-item">
-        <a class="nav-link" href="https://forum.rotebeete.org/">
-            Forum
-        </a>
-        <a class="nav-link" href="https://wiki.rotebeete.org/">
-            Wiki
-        </a>
+        <a class="nav-link" href="https://forum.rotebeete.org/">Forum</a>
+        <a class="nav-link" href="https://wiki.rotebeete.org/">Wiki</a>
     </li>
     <li class=" nav-item main-menu-small">
-        <a class="nav-link yellow" href="{% url 'logout' %}">
-            {% trans "Abmelden" %}
-        </a>
+        <a class="nav-link yellow" href="{% url 'logout' %}">{% trans "Abmelden" %}</a>
     </li>
 </ul>
