@@ -1,190 +1,179 @@
+{# djlint:off H025 #}
 {% load i18n %}
 {% load juntagrico.config %}
 <!DOCTYPE html>
 <html lang="de">
-
-<head>
-    <title>Gemüseliefervertrag</title>
-    <meta charset="utf-8">
-    <style>
-        body {
-            font-family: Helvetica;
-            font-size: 12pt;
-        }
-
-        @page {
-            size: A4;
-
-            @frame content_frame {
-                left: 50pt;
-                width: 500pt;
-                top: 50pt;
-                height: 650pt;
+    <head>
+        <title>Gemüseliefervertrag</title>
+        <meta charset="utf-8">
+        <style>
+            body {
+                font-family: Helvetica;
+                font-size: 12pt;
             }
 
-            @frame header_frame {
-                -pdf-frame-content: header_content;
-                left: 50pt;
-                width: 512pt;
-                top: 50pt;
-                height: 20pt;
-                text-align: center;
+            @page {
+                size: A4;
+
+                @frame content_frame {
+                    left: 50pt;
+                    width: 500pt;
+                    top: 50pt;
+                    height: 650pt;
+                }
+
+                @frame header_frame {
+                    -pdf-frame-content: header_content;
+                    left: 50pt;
+                    width: 512pt;
+                    top: 50pt;
+                    height: 20pt;
+                    text-align: center;
+                }
+
+                @frame footer_frame {
+                    -pdf-frame-content: footer_content;
+                    left: 50pt;
+                    width: 512pt;
+                    top: 760pt;
+                    height: 90pt;
+                    text-align: center;
+                }
             }
 
-            @frame footer_frame {
-                -pdf-frame-content: footer_content;
-                left: 50pt;
-                width: 512pt;
-                top: 760pt;
-                height: 90pt;
-                text-align: center;
+            h2 {
+                margin-bottom: 2em;
+                font-weight: normal;
             }
-        }
 
-        h2 {
-            margin-bottom: 2em;
-            font-weight: normal;
-        }
+            .box {
+                border: 1px solid #000;
+                padding: .3em;
+            }
 
-        .box {
-            border: 1px solid #000;
-            padding: .3em;
-        }
-
-        table {
-            margin: 2em 0;
-        }
-    </style>
-</head>
-
-<!--
+            table {
+                margin: 2em 0;
+            }
+        </style>
+    </head>
+    <!--
     NEW VARIABLES:
 
     organisation.logo_url: url
 
 -->
-
-<body>
-    {% block content %}
-    {% vocabulary "share" as v_share %}
-    {% vocabulary "share_pl" as v_share_pl %}
-    {% vocabulary "member" as v_member %}
-    {% vocabulary "subscription" as v_subscription %}
-    {% config "organisation_address" as organisation_address %}
-    {% config "currency" as currency %}
-
-    <div>
-        {{ organisation_address.name }}<br>
-        {% if organisation_address.extra %}
-        {{ organisation_address.extra }}<br>
-        {% endif %}
-        {{ organisation_address.street }} {{ organisation_address.number }}, {{ organisation_address.zip }}
-        {{ organisation_address.city }}<br>
-        {% config "info_email" %}
-    </div>
-
-    <h1>Gemüseliefervertrag (GLV)</h1>
-    <h2>Saison {{ business_year.years }}</h2>
-
-    <h3>Daten zum Gemüseanteil</h3>
-
-    <table>
-        <tr>
-            <td><strong>GLV-Nr.</strong></td>
-            <td><strong>Anzahl Gemüseanteile</strong></td>
-            <td>
-                <strong>Monatlicher Beitrag</strong>
+    <body>
+        {% block content %}
+            {% vocabulary "share" as v_share %}
+            {% vocabulary "share_pl" as v_share_pl %}
+            {% vocabulary "member" as v_member %}
+            {% vocabulary "subscription" as v_subscription %}
+            {% config "organisation_address" as organisation_address %}
+            {% config "currency" as currency %}
+            <div>
+                {{ organisation_address.name }}
                 <br>
-                inkl. 9% MWst.
-            </td>
-        </tr>
-        <tr>
-            <td class="box">{{ glv_number }}</td>
-            <td class="box">{{ share_amount }}</td>
-            <td class="box">{{ monthly_fee }} €</td>
-        </tr>
-    </table>
-
-    <table>
-        <tr>
-            <td>Spitzname Anteil</td>
-            <td class="box">{{ subscription.nickname|default:"-" }}</td>
-        </tr>
-        <tr>
-            <td>Verteilstation</td>
-            <td class="box">{{ depot }}</td>
-        </tr>
-    </table>
-
-    <h3>Persönliche Angaben Hauptbezieher*in</h3>
-
-    <table>
-        <tr>
-            <td>Name, Vorname</td>
-            <td class="box">{{ member.last_name }}, {{ member.first_name }}</td>
-        </tr>
-        <tr>
-            <td>Straße, Nr.</td>
-            <td class="box">{{ member.addr_street }}</td>
-        </tr>
-        <tr>
-            <td>PLZ, Ort</td>
-            <td class="box"> {{ member.addr_zipcode }} {{ member.addr_location }}</td>
-        </tr>
-        <tr>
-            <td>E-Mail-Adresse</td>
-            <td class="box">{{ member.email }}</td>
-        </tr>
-        <tr>
-            <td>Telefon</td>
-            <td class="box">{{ member.phone }}</td>
-        </tr>
-        <tr>
-            <td>Genossenschaftsnummer</td>
-            <td class="box">{{ geno_number }}</td>
-        </tr>
-    </table>
-
-    <h3>Weitere registrierte Mitessende</h3>
-
-    <table>
-        {% for person in co_members %}
-        <tr>
-            <td>Name, Vorname</td>
-            <td class="box">{{ person.last_name }}, {{ person.first_name }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h3>Vertragsinformationen</h3>
-
-    <p class="main_text">
-        Für die Saison vom {{ business_year.date_start }} bis {{ business_year.date_end }} verpflichte ich mich den oben
-        genannten
-        Beitrag zu zahlen.
-        Der Betrag wird jeweils bis zum 28. des Vormonats per Lastschriftmandat eingezogen.
-    </p>
-
-    <p>
-        Mindestens 3 Arbeitseinsätze auf dem Acker sind verpflichtend.
-    </p>
-    <p>
-        {% blocktrans %}
+                {% if organisation_address.extra %}
+                    {{ organisation_address.extra }}
+                    <br>
+                {% endif %}
+                {{ organisation_address.street }} {{ organisation_address.number }}, {{ organisation_address.zip }}
+                {{ organisation_address.city }}
+                <br>
+                {% config "info_email" %}
+            </div>
+            <h1>Gemüseliefervertrag (GLV)</h1>
+            <h2>Saison {{ business_year.years }}</h2>
+            <h3>Daten zum Gemüseanteil</h3>
+            <table>
+                <tr>
+                    <td>
+                        <strong>GLV-Nr.</strong>
+                    </td>
+                    <td>
+                        <strong>Anzahl Gemüseanteile</strong>
+                    </td>
+                    <td>
+                        <strong>Monatlicher Beitrag</strong>
+                        <br>
+                        inkl. 9% MWst.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="box">{{ glv_number }}</td>
+                    <td class="box">{{ share_amount }}</td>
+                    <td class="box">{{ monthly_fee }} €</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>Spitzname Anteil</td>
+                    <td class="box">{{ subscription.nickname|default:"-" }}</td>
+                </tr>
+                <tr>
+                    <td>Verteilstation</td>
+                    <td class="box">{{ depot }}</td>
+                </tr>
+            </table>
+            <h3>Persönliche Angaben Hauptbezieher*in</h3>
+            <table>
+                <tr>
+                    <td>Name, Vorname</td>
+                    <td class="box">{{ member.last_name }}, {{ member.first_name }}</td>
+                </tr>
+                <tr>
+                    <td>Straße, Nr.</td>
+                    <td class="box">{{ member.addr_street }}</td>
+                </tr>
+                <tr>
+                    <td>PLZ, Ort</td>
+                    <td class="box">{{ member.addr_zipcode }} {{ member.addr_location }}</td>
+                </tr>
+                <tr>
+                    <td>E-Mail-Adresse</td>
+                    <td class="box">{{ member.email }}</td>
+                </tr>
+                <tr>
+                    <td>Telefon</td>
+                    <td class="box">{{ member.phone }}</td>
+                </tr>
+                <tr>
+                    <td>Genossenschaftsnummer</td>
+                    <td class="box">{{ geno_number }}</td>
+                </tr>
+            </table>
+            <h3>Weitere registrierte Mitessende</h3>
+            <table>
+                {% for person in co_members %}
+                    <tr>
+                        <td>Name, Vorname</td>
+                        <td class="box">{{ person.last_name }}, {{ person.first_name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <h3>Vertragsinformationen</h3>
+            <p class="main_text">
+                Für die Saison vom {{ business_year.date_start }} bis {{ business_year.date_end }} verpflichte ich mich den oben
+                genannten
+                Beitrag zu zahlen.
+                Der Betrag wird jeweils bis zum 28. des Vormonats per Lastschriftmandat eingezogen.
+            </p>
+            <p>Mindestens 3 Arbeitseinsätze auf dem Acker sind verpflichtend.</p>
+            <p>
+                {% blocktrans %}
         Der Vertrag verlängert sich automatisch um ein weiteres Jahr, wenn er nicht bis zum 31.03. gekündigt wird.
         Sollte bis spätestens 6 Wochen vor Beginn der neuen Saison kein Gebot abgegeben werden, so wird ein monatlicher
         Beitrag von 110% des aktuellen Richtwertes festgesetzt.
         {% endblocktrans %}
-    </p>
-    <p>
-        {% blocktrans %}
+            </p>
+            <p>
+                {% blocktrans %}
         Alle weiteren Vertragsbedingungen unter: <a href="https://rotebeete.org/agb">https://rotebeete.org/agb</a>
         {% endblocktrans %}
-    </p>
-    {% endblock %}
-
-    <div id="footer_content">
-        Seite <pdf:pagenumber> von <pdf:pagecount>
-    </div>
-</body>
-
+            </p>
+        {% endblock %}
+        <div id="footer_content">
+            Seite <pdf:pagenumber> von <pdf:pagecount>
+        </div>
+    </body>
 </html>

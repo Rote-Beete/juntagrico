@@ -1,24 +1,15 @@
 {% extends "export.html" %}
-
 {% block content %}
     <div class="row mb-4">
-        <div class="col-md-3">
-            Mitglieder
-        </div>
+        <div class="col-md-3">Mitglieder</div>
         <div class="col-md-9">
-            <a href="{% url 'export-members' %}">
-                exportieren
-            </a>
+            <a href="{% url 'export-members' %}">exportieren</a>
         </div>
     </div>
     <div class="row mb-4">
-        <div class="col-md-3">
-            Gemüseanteile
-        </div>
+        <div class="col-md-3">Gemüseanteile</div>
         <div class="col-md-9">
-            <a href="{% url 'export-subscriptions' %}">
-                exportieren
-            </a>
+            <a href="{% url 'export-subscriptions' %}">exportieren</a>
         </div>
     </div>
 {% endblock %}

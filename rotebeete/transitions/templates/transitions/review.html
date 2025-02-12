@@ -1,16 +1,23 @@
 {% extends "base.html" %}
-{% block page_title %}
-    <h1>Datenaktualisierung</h1>
-{% endblock %}
+{% block page_title %}<h1>Datenaktualisierung</h1>{% endblock %}
 {% block content %}
-    <h2>{% if not user.member.transition.data_needs_review %}✔️ {% endif %}Schritt 1: Persönliche Daten</h2>
-    <p>Bitte überprüfe deine Anschrift und weitere Angaben unter dem Menüpunkt
-        <a href="{% url 'profile' %}">Persönliche Daten</a>. Bestätige dort anschließend deren Aktualität.</p>
-
+    <h2>
+        {% if not user.member.transition.data_needs_review %}✔️{% endif %}
+        Schritt 1: Persönliche Daten
+    </h2>
+    <p>
+        Bitte überprüfe deine Anschrift und weitere Angaben unter dem Menüpunkt
+        <a href="{% url 'profile' %}">Persönliche Daten</a>. Bestätige dort anschließend deren Aktualität.
+    </p>
     {% if not user.member.transition.data_needs_review %}
-        <h2>{% if not user.member.transition.membership_needs_review %}✔️ {% endif %}Schritt 2: Mitgliedschaft / Gemüseanteil</h2>
-        <p>Bitte überprüfe deine Angaben zu
+        <h2>
+            {% if not user.member.transition.membership_needs_review %}✔️{% endif %}
+            Schritt 2: Mitgliedschaft / Gemüseanteil
+        </h2>
+        <p>
+            Bitte überprüfe deine Angaben zu
             <a href="{% url 'subscription-landing' %}">deinem Gemüseanteil und deiner Mitgliedschaft in der Genoss*innenschaft</a>.
-            Bestätige dort anschließend deren Aktualität.</p>
+            Bestätige dort anschließend deren Aktualität.
+        </p>
     {% endif %}
 {% endblock %}
