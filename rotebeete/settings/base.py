@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "oauth2_provider",
     "rotebeete.transitions",
     'import_export',
+    'biddings',
     # enable only to test addon stuff
     # 'juntagrico_test_addon',
 ]
