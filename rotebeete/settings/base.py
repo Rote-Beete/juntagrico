@@ -126,7 +126,7 @@ LOGIN_REDIRECT_URL = "/my/home"
 
 SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 
-LOCALE_PATHS = (BASE_DIR/"juntagrico/locale",)
+LOCALE_PATHS = (BASE_DIR / "juntagrico/locale",)
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 CRISPY_FAIL_SILENTLY = True
@@ -177,7 +177,7 @@ ORGANISATION_ADDRESS = {
 ORGANISATION_PHONE = "034298-495168"
 BUSINESS_YEAR_START = {"day": 1, "month": 7}
 BUSINESS_YEAR_CANCELATION_MONTH = 3
-CONTACTS = {"info":"invalid@rotebeete.invalid"}
+CONTACTS = {"info": "invalid@rotebeete.invalid"}
 VOCABULARY = {
     "member": "Mitglied",
     "member_pl": "Mitglieder",
@@ -197,4 +197,4 @@ VOCABULARY = {
     "package": "Kiste",
 }
 
-STYLES = {"static":["rotebeete/css/rotebeete.css"]}
+STYLES = {"static": ["rotebeete/css/rotebeete.css"]}

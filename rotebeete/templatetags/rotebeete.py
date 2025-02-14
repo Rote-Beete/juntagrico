@@ -5,6 +5,7 @@ from juntagrico.forms import MemberProfileForm
 
 register = template.Library()
 
+
 @register.filter
 def disable_iban(form: MemberProfileForm):
     masked_iban = "".join(

@@ -1,7 +1,12 @@
 from django.urls import path
 
-from rotebeete.exports.views import export_members, export_depot_overview, export_depot_list, export_subscriptions, \
-    export_depot_emails
+from rotebeete.exports.views import (
+    export_members,
+    export_depot_overview,
+    export_depot_list,
+    export_subscriptions,
+    export_depot_emails,
+)
 
 urlpatterns = [
     path('rb/export/depots', export_depot_overview, name='lists-depot-amountoverview'),
