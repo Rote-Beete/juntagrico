@@ -2,6 +2,7 @@ from time import sleep
 from django.test import TestCase
 from django.utils import timezone
 from biddings.tests.mixins import BiddingRoundMixin, MemberMixin
+from biddings.models import Bid
 
 
 class BiddingRoundTestCase(BiddingRoundMixin, TestCase):
@@ -31,12 +32,16 @@ class BidTestCase(MemberMixin, BiddingRoundMixin, TestCase):
         self.bidding_round = self.get_or_create_bidding_round()
 
     def test_create_bid(self):
-        bid = Bid.objects.create(
-            bidding_round=self.bidding_round,
-            participant=self.participant,
-            green_contribution_amount=10,
-            yello_contribution_amount=15,
-            red_contribution_amount=20,
-            number_of_shares=3,
-            comment="Some comments...",
-        )
+        data = {
+            "bidding_round": self.bidding_round,
+            "participant": self.participant,
+            "green_contribution_amount": 10,
+            "yellow_contribution_amount": 15,
+            "red_contribution_amount": 20,
+            "number_of_shares": 3,
+            "comment": "Some comments...",
+        }
+        bid, _ = Bid.objects.get_or_create(defaults=data)
+
+        for field_name, value in data.items():
+            assert getattr(bid, field_name) == value
