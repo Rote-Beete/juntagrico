@@ -1,16 +1,15 @@
 from time import sleep
 from django.test import TestCase
-
-from biddings.models import BiddingRound
 from django.utils import timezone
+from biddings.tests.mixins import BiddingRoundMixin
 
 
-class BiddingRoundTestCase(TestCase):
+class BiddingRoundTestCase(BiddingRoundMixin, TestCase):
     def setUp(self):
         self.start_time = timezone.now()
         self.end_time = self.start_time + timezone.timedelta(days=6, hours=3)
-        self.bidding_round = BiddingRound.objects.create(
-            start_time=self.start_time, end_time=self.end_time
+        self.bidding_round = self.get_or_create_bidding_round(
+            self.start_time, self.end_time
         )
 
     def test_create_bidding_round_with_valid_times(self):
