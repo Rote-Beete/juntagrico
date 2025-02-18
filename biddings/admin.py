@@ -1,3 +1,4 @@
-# from django.contrib import admin
+from django.contrib import admin
+from biddings.models import BiddingRound
 
-# Register your models here.
+admin.site.register(BiddingRound)
