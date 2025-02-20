@@ -209,6 +209,7 @@ STYLES = {"static": ["rotebeete/css/rotebeete.css"]}
 
 WHITELIST_EMAILS = []
 
+
 def whitelist_email_from_env(var_env_name):
     email = os.environ.get(var_env_name)
     if email:
