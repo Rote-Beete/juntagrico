@@ -1,12 +1,28 @@
 import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
+from bnb.env import Environment
 
 ORGANISATION_WEBSITE = "rotebeete.org"
 ADMINPORTAL_NAME = "juntagrico.rotebeete.org"
 ADMINPORTAL_SERVER_URL = "juntagrico.rotebeete.org"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
+load_dotenv(BASE_DIR / ".env")
+load_dotenv(BASE_DIR / ".env.local")
+env = Environment("ROTEBEETE_")
+
+
+DATA_DIR = env.get("DATA_DIR", cast=Path, default=BASE_DIR / "data")
+DATA_DIR.mkdir(exist_ok=True)
+
+SECRET_KEY = env.get("SECRET_KEY", default="") or None
+
+DEBUG = env.is_true("DEBUG", default=False)
+
+ALLOWED_HOSTS = env.get_list("ALLOWED_HOSTS", default=["localhost"])
+
 
 IMPERSONATE = {
     "REDIRECT_URL": "/my/profile",
@@ -55,15 +71,6 @@ MIDDLEWARE = [
 ]
 
 DEFAULT_FROM_EMAIL = "no-reply@rotebeete.org"
-
-WHITELIST_EMAILS = []
-
-
-def whitelist_email_from_env(var_env_name):
-    email = os.environ.get(var_env_name)
-    if email:
-        WHITELIST_EMAILS.append(email)
-
 
 STATIC_ROOT = DATA_DIR / "public" / "static"
 STATIC_URL = "/static/"
@@ -122,6 +129,12 @@ TEMPLATES = [
     },
 ]
 
+
+DATABASES = {
+    "default": dj_database_url.parse(
+        env.get("DATABASE_URL", default=f"sqlite:///{DATA_DIR / 'db.sqlite'}"),
+    )
+}
 
 LOGIN_REDIRECT_URL = "/my/home"
 
@@ -199,3 +212,18 @@ VOCABULARY = {
 }
 
 STYLES = {"static": ["rotebeete/css/rotebeete.css"]}
+
+CRISPY_FAIL_SILENTLY = False
+
+WHITELIST_EMAILS = []
+
+
+def whitelist_email_from_env(var_env_name):
+    email = os.environ.get(var_env_name)
+    if email:
+        WHITELIST_EMAILS.append(email)
+
+
+for key in os.environ.keys():
+    if key.startswith("JUNTAGRICO_EMAIL_WHITELISTED"):
+        whitelist_email_from_env(key)

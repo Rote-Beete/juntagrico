@@ -6,9 +6,5 @@ rotebeete/debug.log
 /data
 .venv
 .local
-requirements.txt
-.local
-.python-version
-.env
 .env.local
-
+.python-version
