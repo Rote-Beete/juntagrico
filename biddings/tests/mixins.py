@@ -1,6 +1,9 @@
 from django.utils import timezone
+from juntagrico.admin import SubscriptionProduct, SubscriptionSize, SubscriptionType
 from biddings.models import BiddingRound
-from juntagrico.models import Member
+from juntagrico.models import Member, Subscription
+from juntagrico.entity.depot import Depot
+from juntagrico.entity.location import Location
 
 
 class BiddingRoundMixin:
@@ -23,7 +26,9 @@ class BiddingRoundMixin:
 
 
 class MemberMixin:
-    def get_or_create_member(self, email, **kwargs):
+    def get_or_create_member(self, email=None, **kwargs):
+        if not email:
+            email = "test@roko.li"
         data = {
             'first_name': 'first_name',
             'last_name': 'last_name',
@@ -38,3 +43,64 @@ class MemberMixin:
         data.update(kwargs)
         member, _ = Member.objects.get_or_create(defaults=data)
         return member
+
+
+class SubscriptionMixin(MemberMixin):
+    def get_or_create_location(self, **kwargs):
+        data = {
+            'name': "location",
+            'latitude': '12.513',
+            'longitude': '1.314',
+            'addr_street': 'Fakestreet 123',
+            'addr_zipcode': '1000',
+            'addr_location': 'Faketown',
+            'description': 'Place to be',
+        }
+        data.update(kwargs)
+        location, _ = Location.objects.get_or_create(defaults=data)
+        return location
+
+    def get_or_create_depot(self, **kwargs):
+        data = {
+            'name': 'depot',
+            'contact': self.get_or_create_member(email="test@roko.li"),
+            'weekday': 1,
+            'location': self.get_or_create_location(),
+        }
+        data.update(kwargs)
+        depot, _ = Depot.objects.get_or_create(defaults=data)
+        return depot
+
+    def get_or_create_subscription(self, primary_member=None, **kwargs):
+        data = {
+            'depot': self.get_or_create_depot(),
+            'start_date': '2017-01-01',
+        }
+        data.update(kwargs)
+        subcription, _ = Subscription.objects.get_or_create(defaults=data)
+
+        subcription.parts.create(
+            type=SubscriptionType.objects.create(
+                required_assignments=3,
+                price=10,
+                size=SubscriptionSize.objects.create(
+                    units=3.5,
+                    product=SubscriptionProduct.objects.create(name="Product 1"),
+                ),
+            )
+        )
+
+        subcription.parts.create(
+            type=SubscriptionType.objects.create(
+                required_assignments=2,
+                price=12,
+                size=SubscriptionSize.objects.create(
+                    units=2,
+                    product=SubscriptionProduct.objects.create(name="Product 2"),
+                ),
+            )
+        )
+
+        subcription.primary_member = primary_member
+
+        return subcription
