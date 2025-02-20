@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('juntagrico', '0041_alter_depot_options_alter_share_options_and_more'),
+        ('juntagrico', '0040_post_1_6'),
         ('biddings', '0001_initial'),
     ]
 
