@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from juntagrico.models import Member
+from juntagrico.models import Subscription
 
 
 class BiddingRound(models.Model):
@@ -20,11 +20,11 @@ class Bid(models.Model):
         related_name="bids",
         verbose_name=_("Bidding Round"),
     )
-    participant = models.ForeignKey(
-        Member,
+    subscription = models.ForeignKey(
+        Subscription,
         on_delete=models.PROTECT,
         related_name="bids",
-        verbose_name=_("Bid's Participant"),
+        verbose_name=_("Subscription"),
     )
     green_contribution_amount = models.DecimalField(
         max_digits=6, decimal_places=2, verbose_name=_("Green Contribution Amount")
@@ -35,7 +35,13 @@ class Bid(models.Model):
     red_contribution_amount = models.DecimalField(
         max_digits=6, decimal_places=2, verbose_name=_("Red Contribution Amount")
     )
-    number_of_shares = models.PositiveIntegerField(
-        verbose_name=_("Bid's Number of Shares")
-    )
+
     comment = models.TextField(verbose_name=_("Bid's Comment"))
+
+    def get_number_of_shares(self):
+        return sum(
+            [part.type.size.units for part in self.subscription.active_and_future_parts]
+        )
+
+    def get_primary_member(self):
+        return self.subscription.primary_member

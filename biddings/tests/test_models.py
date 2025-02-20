@@ -1,7 +1,7 @@
 from time import sleep
 from django.test import TestCase
 from django.utils import timezone
-from biddings.tests.mixins import BiddingRoundMixin, MemberMixin
+from biddings.tests.mixins import BiddingRoundMixin, SubscriptionMixin
 from biddings.models import Bid
 
 
@@ -26,22 +26,28 @@ class BiddingRoundTestCase(BiddingRoundMixin, TestCase):
         assert self.bidding_round.is_active is False
 
 
-class BidTestCase(MemberMixin, BiddingRoundMixin, TestCase):
+class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
     def setUp(self):
-        self.participant = self.get_or_create_member(email="test@roko.li")
+        self.primary_member = self.get_or_create_member(email="test@roko.li")
+        self.subscription = self.get_or_create_subscription(
+            primary_member=self.primary_member
+        )
         self.bidding_round = self.get_or_create_bidding_round()
 
     def test_create_bid(self):
         data = {
             "bidding_round": self.bidding_round,
-            "participant": self.participant,
+            "subscription": self.subscription,
             "green_contribution_amount": 10,
             "yellow_contribution_amount": 15,
             "red_contribution_amount": 20,
-            "number_of_shares": 3,
             "comment": "Some comments...",
         }
         bid, _ = Bid.objects.get_or_create(defaults=data)
 
         for field_name, value in data.items():
             assert getattr(bid, field_name) == value
+
+        assert bid.get_number_of_shares() == 5.5
+
+        assert bid.get_primary_member() == self.primary_member
