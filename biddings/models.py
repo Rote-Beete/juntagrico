@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from juntagrico.models import Subscription
@@ -48,3 +49,6 @@ class Bid(models.Model):
 
     def get_primary_member(self):
         return self.subscription.primary_member
+
+    def get_absolute_url(self):
+        return reverse("biddingrounds")
