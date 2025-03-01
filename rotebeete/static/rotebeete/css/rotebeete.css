@@ -22,3 +22,38 @@ a[href*="logout"] {
     width: 400px;  /* adjust to image with */
     height: 260px;  /* adjust to image height */
 }
+
+/* Style only for the biddings table */
+.biddings {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.biddings th, .biddings td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+.biddings th {
+    background-color: #f4f4f4;
+}
+.biddings .round-header {
+    font-weight: bold;
+    background-color: #e0e0e0;
+}
+.biddings .sub-item {
+    background-color: #f9f9f9;
+}
+.biddings .sub-item td {
+    padding-left: 30px;
+}
+.biddings .no-bids {
+    background-color: #f9f9f9;
+    font-style: italic;
+    padding-left: 30px;
+}
+.biddings .actions {
+    color: blue;
+    cursor: pointer;
+    margin-right: 10px;
+}

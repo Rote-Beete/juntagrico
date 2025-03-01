@@ -13,7 +13,7 @@ class BiddingRound(models.Model):
         return self.start_time <= timezone.now() <= self.end_time
 
     def __str__(self):
-        return f"BiddingRound {self.start_time.date()} -- {self.end_time.date()} ({'not ' if not self.is_active else ''}active)"
+        return f"Bidding Round {self.start_time.date()} -- {self.end_time.date()} ({'not ' if not self.is_active else ''}active)"
 
 
 class Bid(models.Model):
