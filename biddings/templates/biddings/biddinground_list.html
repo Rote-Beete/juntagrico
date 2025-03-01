@@ -9,6 +9,9 @@
         <div>
             {% for bidding_round in bidding_rounds %}
                 <div>{% trans "Beitragsrunde" %} {{ bidding_round.end_time.year }}</div>
+                {% if bidding_round.is_active %}
+                    <a href={% url "create_bid" bidding_round.pk %}>{% trans "Neues Gebot abgeben" %}</a>
+                {% endif %}
                 {% with bids=bidding_round|get_bids:request.user %}
                     {% if bids %}
                         <table class="biddings">
@@ -18,6 +21,12 @@
                                     <td class="green">{{ bid.green_contribution_amount }}</td>
                                     <td class="yellow">{{ bid.yellow_contribution_amount }}</td>
                                     <td class="red">{{ bid.red_contribution_amount }}</td>
+                                    <td>
+                                        {% if bidding_round.is_active %}
+                                            <a class="btn" href={% url "update_bid" bid.pk %}>Update</a>
+                                            <a class="btn delete" href={% url "delete_bid" bid.pk %}>Delete</a>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </table>
