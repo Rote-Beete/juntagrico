@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load biddings_extras %}
+{% load i18n %}
+{% block page_title %}
+    <h3>{% trans "Beitragsrunden" %}</h3>
+{% endblock %}
+{% block content %}
+    {% if bidding_rounds %}
+        <div>
+            {% for bidding_round in bidding_rounds %}
+                <div>{% trans "Beitragsrunde" %} {{ bidding_round.end_time.year }}</div>
+                {% with bids=bidding_round|get_bids:request.user %}
+                    {% if bids %}
+                        <table class="biddings">
+                            {% for bid in bids %}
+                                <tr>
+                                    <td>{{ bid.subscription }}</td>
+                                    <td class="green">{{ bid.green_contribution_amount }}</td>
+                                    <td class="yellow">{{ bid.yellow_contribution_amount }}</td>
+                                    <td class="red">{{ bid.red_contribution_amount }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <p class="no-bids">
+                            {% trans "Keine Gebote" %}
+                            <p>
+                            {% endif %}
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endblock %}

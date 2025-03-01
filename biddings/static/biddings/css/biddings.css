@@ -1,0 +1,32 @@
+
+.biddings {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.biddings td {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+.no-bids {
+    font-style: italic;
+    padding-left: 30px;
+}
+
+.green {
+    font-weight: bold;
+    color: green;
+}
+
+.yellow {
+    font-weight: bold;
+    color: orange;
+}
+
+.red {
+    font-weight: bold;
+    color: red;
+}
