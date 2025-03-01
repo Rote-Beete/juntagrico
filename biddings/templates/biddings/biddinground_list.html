@@ -1,78 +1,41 @@
 {% extends "base.html" %}
+{% load biddings_extras %}
 {% load i18n %}
 {% block page_title %}
     <h3>{% trans "Beitragsrunden" %}</h3>
 {% endblock %}
 {% block content %}
-{% comment %} {% if biddingrounds %} {% endcomment %}
-{% comment %} <table class="table biddingrounds-table">
-    <thead>
-        <tr>
-            <th>{% trans "Beginn" %}</th>
-            <th>{% trans "End" %}</th>
-            <th>{% trans "Monatl. Beitrag" %}</th>
-            <th>{% trans "Status" %}</th>
-            <th></th>
-        </tr>
-    </thead>
-    <div>{{ biddinground }}</div>
-</table> {% endcomment %}
+    {% if bidding_rounds %}
+        <div>
+            {% for bidding_round in bidding_rounds %}
+                <div>Beitragsrunde {{ bidding_round.end_time.year }}</div>
+                {% if bidding_round.is_active%}
+                <a href={% url "create_bid" bidding_round.pk %}>Neues Gebot abgeben</a>
+                {% endif %}
+                {% with bids=bidding_round|get_bids:request.user %}
+                    {% if bids %}
+                    <table class="biddings">
+                        {% for bid in bids %}
+                            <tr>
+                                <td>{{ bid.subscription }}</td>
+                                <td class="green">{{ bid.green_contribution_amount }}</td>
+                                <td class="yellow">{{ bid.yellow_contribution_amount }}</td>
+                                <td class="red">{{ bid.red_contribution_amount }}</td>
+                                <td>
+                                    {% if bidding_round.is_active %}
+                                    <a class="btn" href={% url "update_bid" bid.pk%}>Update</a>
+                                    <a class="btn delete" href={% url "delete_bid" bid.pk%}>Delete</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% else %}
+                        <p class="no-bids">Keine Gebote<p>
+                    {% endif %}
+                {% endwith%}
 
-<table class="biddings">
-    <tbody>
-        <!-- 2025 -->
-        <tr class="round-header">
-            <td colspan="2">Beitragsrunde 2025 <span style="color: green; font-weight: normal;">Neues Gebot abgeben</span></td>
-        </tr>
-        <tr class="sub-item">
-            <td>1. Gebot: ...</td>
-            <td>
-                <span class="actions">Update</span>
-                <span class="actions">Delete</span>
-            </td>
-        </tr>
-        <tr class="sub-item">
-            <td>2. Gebot: ...</td>
-            <td>
-                <span class="actions">Update</span>
-                <span class="actions">Delete</span>
-            </td>
-        </tr>
-
-        <!-- 2024 -->
-        <tr class="round-header">
-            <td colspan="2">Beitragsrunde 2024</td>
-        </tr>
-        <tr class="no-bids">
-            <td colspan="2">Keine Gebote</td>
-        </tr>
-
-        <!-- 2023 -->
-        <tr class="round-header">
-            <td colspan="2">Beitragsrunde 2023</td>
-        </tr>
-        <tr class="sub-item">
-            <td>1. Gebot: ...</td>
-            <td></td>
-        </tr>
-        <tr class="sub-item">
-            <td>2. Gebot: ...</td>
-            <td></td>
-        </tr>
-
-        <!-- 2022 -->
-        <tr class="round-header">
-            <td colspan="2">Beitragsrunde 2022</td>
-        </tr>
-        <tr class="sub-item">
-            <td>1. Gebot: ...</td>
-            <td></td>
-        </tr>
-    </tbody>
-</table>
-
-{% comment %} {% endfor %} {% endcomment %}
-{% comment %} {% endif %} {% endcomment %}
-{% comment %} {% for biddinground in biddingrounds%} {% endcomment %}
-
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

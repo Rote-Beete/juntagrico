@@ -1,0 +1,70 @@
+
+/* Style only for the biddings table */
+.biddings {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.biddings td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    /* text-align: left; */
+}
+
+
+.no-bids {
+    font-style: italic;
+    padding-left: 30px;
+}
+
+.green {
+    font-weight: bold;
+    color: green;
+}
+
+.yellow {
+    font-weight: bold;
+    color: orange;
+}
+
+.red {
+    font-weight: bold;
+    color: red;
+}
+
+.button {
+    border: 1px solid green;
+    border-radius: 10%;
+    color: green;
+    background-color: transparent;
+}
+
+.btn.delete {
+    color: red !important;
+    border-color: red;
+}
+
+.btn {
+    padding: 7px 14px;
+    color: green;
+    font-size: 16px;
+    border: 1px solid green;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transition: 0.3s ease;
+    color:  green;
+    background-color: beige;
+}
+
+
+.errorlist {
+    color: red;
+    font-size: medium;
+    margin-bottom: 3px;
+}
+
