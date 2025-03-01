@@ -1,3 +1,9 @@
-# from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
 
-# Create your views here.
+from biddings.models import BiddingRound
+
+
+class ListBiddingroundView(LoginRequiredMixin, ListView):
+    model = BiddingRound
+    context_object_name = "bidding_rounds"

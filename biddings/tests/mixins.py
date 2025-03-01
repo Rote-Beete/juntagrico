@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.urls import reverse
 from juntagrico.admin import SubscriptionProduct, SubscriptionSize, SubscriptionType
 from biddings.models import BiddingRound
 from juntagrico.models import Member, Subscription
@@ -104,3 +105,15 @@ class SubscriptionMixin(MemberMixin):
         subcription.primary_member = primary_member
 
         return subcription
+
+
+class ViewPermissionsMixin:
+    def check_login_required(self, url, method="get"):
+        if method == "get":
+            response = self.client.get(url)
+        elif method == "post":
+            response = self.client.post(url)
+        else:
+            raise ValueError
+        assert response.status_code == 302
+        assert response["Location"] == f"{reverse('login')}?next={url}"
