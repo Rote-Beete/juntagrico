@@ -10,7 +10,9 @@
             <div class="bidding-round">
                 {% if bidding_round.is_active %}
                     <p>{% trans "Beitragsrunde:" %} {{ bidding_round.start_time }} - {{ bidding_round.end_time }}</p>
-                    <a href={% url "create_bid" bidding_round.pk %}>{% trans "Neues Gebot abgeben" %}</a>
+                    {% if not bidding_round|get_bids:request.user %}
+                        <a href={% url "create_bid" bidding_round.pk %}>{% trans "Neues Gebot abgeben" %}</a>
+                    {% endif %}
                 {% elif bidding_round.is_in_future %}
                     <p>{% trans "Beitragsrunde:" %} {{ bidding_round.start_time }} - {{ bidding_round.end_time }}</p>
                     <p class="no-bids">{% trans "Noch keine Gebote möglich" %}</p>
