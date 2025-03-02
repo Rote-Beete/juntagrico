@@ -40,7 +40,7 @@ class Bid(models.Model):
         max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot")
     )
 
-    comment = models.TextField(verbose_name=_("Kommentar"))
+    comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
 
     def get_number_of_shares(self):
         return sum(
