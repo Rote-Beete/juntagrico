@@ -6,15 +6,15 @@ from juntagrico.models import Subscription
 
 
 class BiddingRound(models.Model):
-    start_time = models.DateTimeField(verbose_name=_("Bidding Start Time"))
-    end_time = models.DateTimeField(verbose_name=_("Bidding End Time"))
+    start_time = models.DateTimeField(verbose_name=_("Startzeit"))
+    end_time = models.DateTimeField(verbose_name=_("Endzeit"))
 
     @property
     def is_active(self):
         return self.start_time <= timezone.now() <= self.end_time
 
     def __str__(self):
-        return f"Bidding Round: {self.start_time.date()} -- {self.end_time.date()} ({'not ' if not self.is_active else ''}active)"
+        return f"Beitragsrunde: {self.start_time.date()} -- {self.end_time.date()} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
@@ -22,25 +22,25 @@ class Bid(models.Model):
         "BiddingRound",
         on_delete=models.CASCADE,
         related_name="bids",
-        verbose_name=_("Bidding Round"),
+        verbose_name=_("Beitragsrunde"),
     )
     subscription = models.ForeignKey(
         Subscription,
         on_delete=models.PROTECT,
         related_name="bids",
-        verbose_name=_("Subscription"),
+        verbose_name=_("Gemüseanteil"),
     )
     green_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Green Contribution Amount")
+        max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot")
     )
     yellow_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Yellow Contribution Amount")
+        max_digits=6, decimal_places=2, verbose_name=_("Gelbes Gebot")
     )
     red_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Red Contribution Amount")
+        max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot")
     )
 
-    comment = models.TextField(verbose_name=_("Comment"))
+    comment = models.TextField(verbose_name=_("Kommentar"))
 
     def get_number_of_shares(self):
         return sum(
