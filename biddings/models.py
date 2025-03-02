@@ -24,11 +24,12 @@ class Bid(models.Model):
         related_name="bids",
         verbose_name=_("Beitragsrunde"),
     )
-    subscription = models.ForeignKey(
+    subscription = models.OneToOneField(
         Subscription,
         on_delete=models.PROTECT,
-        related_name="bids",
+        related_name="bid",
         verbose_name=_("Gemüseanteil"),
+        unique=True,
     )
     green_contribution_amount = models.DecimalField(
         max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot")

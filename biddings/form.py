@@ -31,7 +31,7 @@ class BidCreateForm(BidForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["subscription"].queryset = Subscription.objects.filter(
-            primary_member__user=user
+            primary_member__user=user, bid=None
         )
 
 
