@@ -9,6 +9,9 @@ class BiddingRound(models.Model):
     start_time = models.DateTimeField(verbose_name=_("Startzeit"))
     end_time = models.DateTimeField(verbose_name=_("Endzeit"))
 
+    class Meta:
+        ordering = ["-start_time"]
+
     @property
     def is_active(self):
         return self.start_time <= timezone.now() <= self.end_time
