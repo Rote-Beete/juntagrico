@@ -1,9 +1,15 @@
+.bidding-round { 
+    margin-bottom: 50px;
+}
+
+.bidding-round p {
+    margin: 2px;
+}
 
 .biddings {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
-    margin-left: 30px;
+    margin: 20px 30px;
 }
 
 .biddings td {
