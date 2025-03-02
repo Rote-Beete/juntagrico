@@ -13,6 +13,10 @@ class BiddingRound(models.Model):
     def is_active(self):
         return self.start_time <= timezone.now() <= self.end_time
 
+    @property
+    def is_in_future(self):
+        return self.start_time > timezone.now()
+
     def __str__(self):
         return f"Beitragsrunde: {self.start_time.date()} -- {self.end_time.date()} ({'not ' if not self.is_active else ''}aktiv)"
 
