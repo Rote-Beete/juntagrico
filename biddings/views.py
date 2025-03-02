@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -44,10 +44,13 @@ class CreateBidView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class UpdateBidView(LoginRequiredMixin, UpdateView):
+class UpdateBidView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Bid
     form_class = BidUpdateForm
     template_name = "biddings/bid_update_form.html"
+
+    def test_func(self):
+        return self.get_object().subscription.primary_member.user == self.request.user
 
 
 class DeleteBidView(LoginRequiredMixin, DeleteView):
