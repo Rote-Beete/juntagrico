@@ -1,10 +1,12 @@
 from django.test import TestCase
+import pytest
 from biddings.tests.mixins import (
     BiddingRoundMixin,
     MemberMixin,
     ViewPermissionsMixin,
 )
 from django.urls import reverse
+from django.conf import settings
 
 
 class BiddingRoundViewsTestCase(
@@ -12,6 +14,14 @@ class BiddingRoundViewsTestCase(
 ):
     def setUp(self):
         self.primary_member = self.get_or_create_member(email="test@roko.li")
+
+    # Required, otherweise these tests would fail in CI because the default value of SECRET_KEY is empty.
+    @pytest.fixture(autouse=True)
+    def override_secret_key(self):
+        settings.SECRET_KEY = "test-secret-key"
+
+    def test_secret_key(self):
+        assert settings.SECRET_KEY == "test-secret-key"
 
     def test_list_login_required(self):
         url = reverse("biddingrounds")
