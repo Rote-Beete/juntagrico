@@ -8,6 +8,7 @@
         {% trans "Beitragsrunde:" %} {{ object.bidding_round.start_time.date }} - {{ object.bidding_round.end_time.date }}
     </p>
     <p>{% trans "Gemüseanteil:" %} {{ object.subscription }}</p>
+    <p>{% trans "Hauptbezieher*in:" %} {{ object.subscription.primary_member }}</p>
     <form method="post" novalidate>
         {% csrf_token %}
         {{ form.as_p }}
