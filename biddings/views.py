@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from biddings.form import BidCreateForm, BidUpdateForm
@@ -43,3 +44,4 @@ class UpdateBidView(LoginRequiredMixin, UpdateView):
 
 class DeleteBidView(LoginRequiredMixin, DeleteView):
     model = Bid
+    success_url = reverse_lazy("biddingrounds")
