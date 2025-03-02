@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from biddings.form import BidForm
+from biddings.form import BidCreateForm, BidUpdateForm
 from biddings.models import Bid, BiddingRound
 
 
@@ -13,7 +13,14 @@ class ListBiddingroundView(LoginRequiredMixin, ListView):
 
 class CreateBidView(LoginRequiredMixin, CreateView):
     model = Bid
-    form_class = BidForm
+    form_class = BidCreateForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["bidding_round"] = BiddingRound.objects.get(
+            pk=self.kwargs["bidding_round_pk"]
+        )
+        return context
 
     def form_valid(self, form):
         bidding_round = get_object_or_404(
@@ -22,15 +29,16 @@ class CreateBidView(LoginRequiredMixin, CreateView):
         form.instance.bidding_round = bidding_round
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
 
 class UpdateBidView(LoginRequiredMixin, UpdateView):
     model = Bid
-    form_class = BidForm
-
-    def form_valid(self, form):
-        bidding_round = get_object_or_404(BiddingRound, pk=self.kwargs["pk"])
-        form.instance.bidding_round = bidding_round
-        return super().form_valid(form)
+    form_class = BidUpdateForm
+    template_name = "biddings/bid_update_form.html"
 
 
 class DeleteBidView(LoginRequiredMixin, DeleteView):
