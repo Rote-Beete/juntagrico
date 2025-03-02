@@ -5,13 +5,20 @@
 {% endblock %}
 {% block content %}
     <p>{% trans "Beitragsrunde:" %} {{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
-    <form method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input class="btn" type="submit" value="Save">
-        {% if object %}
-            <a class="btn delete" href={% url "delete_bid" object.pk %}>Delete</a>
-        {% endif %}
-        <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
-    </form>
-{% endblock %}
+    {% if user_has_subscriptions %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn" type="submit" value="Save">
+            {% if object %}
+                <a class="btn delete" href={% url "delete_bid" object.pk %}>Delete</a>
+            {% endif %}
+            <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
+        </form>
+    {% else %}
+        <p>
+            {% trans "Es gibt keinen Gemüseanteil, wofür du Hauptbezieher*in bist." %}
+            <p>
+                <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
+            {% endif %}
+        {% endblock %}

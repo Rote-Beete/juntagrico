@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from juntagrico.models import Subscription
 
 from biddings.form import BidCreateForm, BidUpdateForm
 from biddings.models import Bid, BiddingRound
@@ -20,6 +21,13 @@ class CreateBidView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["bidding_round"] = BiddingRound.objects.get(
             pk=self.kwargs["bidding_round_pk"]
+        )
+        context["user_has_subscriptions"] = (
+            True
+            if Subscription.objects.filter(
+                primary_member__user=self.request.user, bid=None
+            )
+            else False
         )
         return context
 
