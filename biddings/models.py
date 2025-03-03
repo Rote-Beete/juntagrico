@@ -49,6 +49,12 @@ class Bid(models.Model):
 
     comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
 
+    class Meta:
+        ordering = [
+            "-bidding_round__start_time",
+            "subscription__primary_member__first_name",
+        ]
+
     def get_number_of_shares(self):
         return sum(
             [part.type.size.units for part in self.subscription.active_and_future_parts]
