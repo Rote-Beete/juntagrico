@@ -205,7 +205,7 @@ VOCABULARY = {
     "package": "Kiste",
 }
 
-STYLES = {"static": ["rotebeete/css/rotebeete.css"]}
+STYLES = {"static": ["rotebeete/css/rotebeete.css", "biddings/css/biddings.css"]}
 
 WHITELIST_EMAILS = []
 

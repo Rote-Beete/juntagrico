@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block page_title %}
+    <h3>{% trans "Gebot Löchen" %}</h3>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <p>{% trans "Gebot Löchen" %}? "{{ object.subscription }}"</p>
+        {{ form }}
+        <input class="btn delete" type="submit" value="Löchen">
+        <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
+    </form>
+{% endblock %}
