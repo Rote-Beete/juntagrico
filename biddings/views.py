@@ -24,9 +24,7 @@ class CreateBidView(LoginRequiredMixin, CreateView):
         )
         context["user_has_subscriptions"] = (
             True
-            if Subscription.objects.filter(
-                primary_member__user=self.request.user, bid=None
-            )
+            if Subscription.objects.filter(primary_member__user=self.request.user)
             else False
         )
         return context
@@ -40,7 +38,7 @@ class CreateBidView(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs["user"] = self.request.user
         return kwargs
 
 
