@@ -21,7 +21,7 @@ class BiddingRound(models.Model):
         return self.start_time > timezone.now()
 
     def __str__(self):
-        return f"Beitragsrunde: {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
+        return f"Beitragsrunde({self.pk}): {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
@@ -59,3 +59,6 @@ class Bid(models.Model):
 
     def get_absolute_url(self):
         return reverse("biddingrounds")
+
+    def __str__(self):
+        return f"Gebot({self.pk}): {self.bidding_round.start_time.date()} {self.subscription} {self.get_primary_member()}"
