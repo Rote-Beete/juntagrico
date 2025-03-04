@@ -21,7 +21,7 @@ class BiddingRound(models.Model):
         return self.start_time > timezone.now()
 
     def __str__(self):
-        return f"Beitragsrunde: {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
+        return f"Beitragsrunde({self.pk}): {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
@@ -31,12 +31,11 @@ class Bid(models.Model):
         related_name="bids",
         verbose_name=_("Beitragsrunde"),
     )
-    subscription = models.OneToOneField(
+    subscription = models.ForeignKey(
         Subscription,
         on_delete=models.PROTECT,
-        related_name="bid",
+        related_name="bids",
         verbose_name=_("Gemüseanteil"),
-        unique=True,
     )
     green_contribution_amount = models.DecimalField(
         max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot")
@@ -50,6 +49,12 @@ class Bid(models.Model):
 
     comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
 
+    class Meta:
+        ordering = [
+            "-bidding_round__start_time",
+            "subscription__primary_member__first_name",
+        ]
+
     def get_number_of_shares(self):
         return sum(
             [part.type.size.units for part in self.subscription.active_and_future_parts]
@@ -60,3 +65,6 @@ class Bid(models.Model):
 
     def get_absolute_url(self):
         return reverse("biddingrounds")
+
+    def __str__(self):
+        return f"Gebot({self.pk}): {self.bidding_round.start_time.date()} {self.subscription} {self.get_primary_member()}"

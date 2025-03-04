@@ -23,6 +23,11 @@
                     {% with bids=bidding_round|get_bids:request.user %}
                         {% if bids %}
                             <table class="biddings">
+                                <col width="50px">
+                                <col width="20px">
+                                <col width="20px">
+                                <col width="20px">
+                                <col width="40px">
                                 {% for bid in bids %}
                                     <tr>
                                         <td>{{ bid.subscription }}</td>

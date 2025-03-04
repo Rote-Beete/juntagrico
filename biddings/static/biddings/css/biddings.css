@@ -10,6 +10,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 20px 30px;
+    table-layout: fixed;
 }
 
 .biddings td {

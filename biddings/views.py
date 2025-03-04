@@ -1,9 +1,12 @@
+import csv
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from juntagrico.models import Subscription
-
+from django.http import HttpResponse
 from biddings.form import BidCreateForm, BidUpdateForm
 from biddings.models import Bid, BiddingRound
 
@@ -24,9 +27,7 @@ class CreateBidView(LoginRequiredMixin, CreateView):
         )
         context["user_has_subscriptions"] = (
             True
-            if Subscription.objects.filter(
-                primary_member__user=self.request.user, bid=None
-            )
+            if Subscription.objects.filter(primary_member__user=self.request.user)
             else False
         )
         return context
@@ -40,7 +41,7 @@ class CreateBidView(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs["user"] = self.request.user
         return kwargs
 
 
@@ -56,3 +57,59 @@ class UpdateBidView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class DeleteBidView(LoginRequiredMixin, DeleteView):
     model = Bid
     success_url = reverse_lazy("biddingrounds")
+
+
+@login_required
+def export_bidding_rounds(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    return render(
+        request,
+        "biddings/biddinground_export_list.html",
+        context={"biddingrounds": BiddingRound.objects.all()},
+    )
+
+
+@login_required
+def export_bidding_round(request, bidding_round_pk):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    bidding_round = get_object_or_404(BiddingRound, pk=bidding_round_pk)
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = (
+        f"attachment; filename=Beitragsrunde {bidding_round.start_time.date()} {bidding_round.end_time.date()}.csv"
+    )
+    writer = csv.DictWriter(
+        response,
+        fieldnames=[
+            "primary_member",
+            "subscprition",
+            "green_bid",
+            "yellow_bid",
+            "red_bid",
+            "comment",
+        ],
+        dialect="unix",
+    )
+    writer.writerow(
+        {
+            "primary_member": "Hauptbezieher*in",
+            "subscprition": "Gemüseanteil",
+            "green_bid": "Grünes Gebot",
+            "yellow_bid": "Gelbes Gebot",
+            "red_bid": "Rotes Gebot",
+            "comment": "Kommentar",
+        }
+    )
+    for bid in bidding_round.bids.all():
+        row = dict(
+            primary_member=bid.subscription.primary_member,
+            subscprition=bid.subscription,
+            green_bid=bid.green_contribution_amount,
+            yellow_bid=bid.yellow_contribution_amount,
+            red_bid=bid.red_contribution_amount,
+            comment=bid.comment,
+        )
+        writer.writerow(row)
+
+    return response
