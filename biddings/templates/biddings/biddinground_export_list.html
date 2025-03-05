@@ -6,7 +6,7 @@
 {% block content %}
     {% for biddinground in biddingrounds %}
         <p>
-            <a href={% url "export-bidding-round" biddinground.pk %}>exportieren:</a>{{ biddinground }}
+            <a href={% url "export-bidding-round" biddinground.pk %}>exportieren:</a> {{ biddinground }}
         </p>
     {% endfor %}
 {% endblock %}
