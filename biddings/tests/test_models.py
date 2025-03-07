@@ -48,6 +48,6 @@ class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
         for field_name, value in data.items():
             assert getattr(bid, field_name) == value
 
-        assert bid.get_number_of_shares() == 5.5
+        assert bid.get_size() == 5.5
 
         assert bid.get_primary_member() == self.primary_member

@@ -55,16 +55,21 @@ class Bid(models.Model):
             "subscription__primary_member__first_name",
         ]
 
-    def get_number_of_shares(self):
-        return sum(
-            [part.type.size.units for part in self.subscription.active_and_future_parts]
-        )
+    def get_absolute_url(self):
+        return reverse("biddingrounds")
 
     def get_primary_member(self):
         return self.subscription.primary_member
 
-    def get_absolute_url(self):
-        return reverse("biddingrounds")
+    def get_size(self):
+        return sum(
+            [part.type.size.units for part in self.subscription.active_and_future_parts]
+        )
+
+    def get_type_names(self):
+        return ", ".join(
+            [part.type.name for part in self.subscription.active_and_future_parts]
+        )
 
     def __str__(self):
         return f"Gebot({self.pk}): {self.bidding_round.start_time.date()} {self.subscription} {self.get_primary_member()}"
