@@ -2,22 +2,22 @@
 {% load biddings_extras %}
 {% load i18n %}
 {% block page_title %}
-    <h3>{% trans "Beitragsrunden" %}</h3>
+    <h3>{% trans "Bietrunden" %}</h3>
 {% endblock %}
 {% block content %}
     {% if bidding_rounds %}
         {% for bidding_round in bidding_rounds %}
             <div class="bidding-round">
                 {% if bidding_round.is_active %}
-                    <p>{% trans "Beitragsrunde:" %} {{ bidding_round.start_time }} - {{ bidding_round.end_time }}</p>
+                    <p>{% trans "Bietrunde:" %} {{ bidding_round.start_time }} - {{ bidding_round.end_time }}</p>
                     {% if not bidding_round|get_bids:request.user %}
                         <a href={% url "create_bid" bidding_round.pk %}>{% trans "Neues Gebot abgeben" %}</a>
                     {% endif %}
                 {% elif bidding_round.is_in_future %}
-                    <p>{% trans "Beitragsrunde:" %} {{ bidding_round.start_time }} - {{ bidding_round.end_time }}</p>
+                    <p>{% trans "Bietrunde:" %} {{ bidding_round.start_time }} - {{ bidding_round.end_time }}</p>
                     <p class="no-bids">{% trans "Noch keine Gebote möglich" %}</p>
                 {% else %}
-                    <p>{% trans "Beitragsrunde" %} {{ bidding_round.end_time.year }}</p>
+                    <p>{% trans "Bietrunde" %} {{ bidding_round.end_time.year }}</p>
                 {% endif %}
                 {% if bidding_round.is_active or not  bidding_round.is_in_future %}
                     {% with bids=bidding_round|get_bids:request.user %}

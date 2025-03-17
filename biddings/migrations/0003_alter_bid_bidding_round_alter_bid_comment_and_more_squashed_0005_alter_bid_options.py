@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='bid',
             name='bidding_round',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bids', to='biddings.biddinground', verbose_name='Beitragsrunde'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='bids', to='biddings.biddinground', verbose_name='Bietrunde'),
         ),
         migrations.AlterField(
             model_name='bid',

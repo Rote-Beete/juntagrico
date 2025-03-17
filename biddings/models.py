@@ -21,7 +21,7 @@ class BiddingRound(models.Model):
         return self.start_time > timezone.now()
 
     def __str__(self):
-        return f"Beitragsrunde({self.pk}): {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
+        return f"Bietrunde({self.pk}): {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
@@ -29,7 +29,7 @@ class Bid(models.Model):
         "BiddingRound",
         on_delete=models.CASCADE,
         related_name="bids",
-        verbose_name=_("Beitragsrunde"),
+        verbose_name=_("Bietrunde"),
     )
     subscription = models.ForeignKey(
         Subscription,

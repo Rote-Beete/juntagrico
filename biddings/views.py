@@ -77,7 +77,7 @@ def export_bidding_round(request, bidding_round_pk):
     bidding_round = get_object_or_404(BiddingRound, pk=bidding_round_pk)
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = (
-        f"attachment; filename=Beitragsrunde {bidding_round.start_time.date()} {bidding_round.end_time.date()}.csv"
+        f"attachment; filename=Bietrunde {bidding_round.start_time.date()} {bidding_round.end_time.date()}.csv"
     )
     writer = csv.DictWriter(
         response,
