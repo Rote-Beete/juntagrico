@@ -101,7 +101,8 @@ class SubscriptionMixin(MemberMixin):
         )
 
         subcription.primary_member = primary_member
-        subcription.subscriptionmembership_set.create(member=primary_member)
+        if primary_member:
+            subcription.subscriptionmembership_set.create(member=primary_member)
 
         return subcription
 
