@@ -6,6 +6,7 @@ from juntagrico.models import Subscription
 
 
 class BiddingRound(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_("Name"))
     start_time = models.DateTimeField(verbose_name=_("Startzeit"))
     end_time = models.DateTimeField(verbose_name=_("Endzeit"))
 
@@ -21,7 +22,7 @@ class BiddingRound(models.Model):
         return self.start_time > timezone.now()
 
     def __str__(self):
-        return f"Bietrunde({self.pk}): {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
+        return f"Bietrunde({self.pk}): {self.name} {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
