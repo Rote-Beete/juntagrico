@@ -5,6 +5,7 @@ from django.utils import timezone
 from juntagrico.entity.subs import Subscription
 from juntagrico.entity.member import Member
 
+
 class BiddingRound(models.Model):
     name = models.CharField(max_length=200, verbose_name=_("Name"))
     start_time = models.DateTimeField(verbose_name=_("Startzeit"))
@@ -12,7 +13,7 @@ class BiddingRound(models.Model):
     guiding_value = models.DecimalField(
         max_digits=6, decimal_places=2, verbose_name=_("Richtwert"), null=True
     )
-    
+
     class Meta:
         ordering = ["-start_time"]
 
@@ -53,13 +54,13 @@ class Bid(models.Model):
     )
 
     green_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot")
+        max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot (Komfortzone)")
     )
     yellow_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Gelbes Gebot")
+        max_digits=6, decimal_places=2, verbose_name=_("Gelbes Gebot (Machbar)")
     )
     red_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot")
+        max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot (Schmerzgrenze)")
     )
 
     comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
