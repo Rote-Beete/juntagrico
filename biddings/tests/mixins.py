@@ -27,7 +27,9 @@ class BiddingRoundMixin:
 
 
 class MemberMixin:
-    def get_or_create_member(self, email="test@roko.li", first_name="John", last_name="Tester", **kwargs):
+    def get_or_create_member(
+        self, email="test@roko.li", first_name="John", last_name="Tester", **kwargs
+    ):
         data = {
             'first_name': first_name,
             'last_name': last_name,

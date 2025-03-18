@@ -1,14 +1,19 @@
 {% extends "base.html" %}
+{% load biddings_extras %}
 {% load i18n %}
 {% block page_title %}
     <h3>{% trans "Bietrunden Gebot" %}</h3>
 {% endblock %}
 {% block content %}
-    <p>{% trans "Bietrunde:" %} {{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
-    {% if user_has_subscriptions %}
+    <p class="bidding-round__name">{{ bidding_round.name }}</p>
+    <p>{{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
+    {% if subscription %}
+        <p>{{ subscription|get_name }}</p>
+        <p>{% trans "Hauptbezieher*in:" %} {{ subscription.primary_member }}</p>
+        <p> Bieter*in: {{ request.user.member}}
         <form method="post" novalidate>
             {% csrf_token %}
-            {{ form.as_p }}
+            {% include "biddings/bid_form_snippet.html" %}
             <input class="btn" type="submit" value="Save">
             {% if object %}
                 <a class="btn delete" href={% url "delete_bid" object.pk %}>Delete</a>
@@ -17,8 +22,8 @@
         </form>
     {% else %}
         <p>
-            {% trans "Es gibt keinen Gemüseanteil, wofür du Hauptbezieher*in bist." %}
+            {% trans "Es gibt keinen Gemüseanteil, wofür du Bezieher*in bist." %}
             <p>
                 <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
-            {% endif %}
-        {% endblock %}
+    {% endif %}
+{% endblock %}

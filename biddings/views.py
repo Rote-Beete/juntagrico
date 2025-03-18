@@ -5,7 +5,6 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
-from juntagrico.models import Subscription
 from django.http import HttpResponse
 from biddings.form import BidCreateForm, BidUpdateForm
 from biddings.models import Bid, BiddingRound
@@ -16,7 +15,12 @@ class ListBiddingroundView(LoginRequiredMixin, ListView):
     context_object_name = "bidding_rounds"
 
 
-class CreateBidView(LoginRequiredMixin, CreateView):
+class _UserSubscriptionMixin:
+    def _get_subscription(self):
+        return self.request.user.member.subscriptionmembership_set.first().subscription
+
+
+class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
     model = Bid
     form_class = BidCreateForm
 
@@ -25,38 +29,42 @@ class CreateBidView(LoginRequiredMixin, CreateView):
         context["bidding_round"] = BiddingRound.objects.get(
             pk=self.kwargs["bidding_round_pk"]
         )
-        context["user_has_subscriptions"] = (
-            True
-            if Subscription.objects.filter(primary_member__user=self.request.user)
-            else False
-        )
+        context["subscription"] = self._get_subscription()
         return context
 
     def form_valid(self, form):
         bidding_round = get_object_or_404(
             BiddingRound, pk=self.kwargs["bidding_round_pk"]
         )
+        form.instance.bidder = self.request.user.member
         form.instance.bidding_round = bidding_round
+        form.instance.subscription = self._get_subscription()
         return super().form_valid(form)
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs["user"] = self.request.user
-        return kwargs
 
-
-class UpdateBidView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class UpdateBidView(
+    LoginRequiredMixin, UserPassesTestMixin, UpdateView, _UserSubscriptionMixin
+):
     model = Bid
     form_class = BidUpdateForm
-    template_name = "biddings/bid_update_form.html"
+    template_name = "biddings/bid_form.html"
 
     def test_func(self):
-        return self.get_object().subscription.primary_member.user == self.request.user
+        return self.request.user.member == self.get_object().bidder
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["bidding_round"] = self.get_object().bidding_round
+        context["subscription"] = self._get_subscription()
+        return context
 
 
-class DeleteBidView(LoginRequiredMixin, DeleteView):
+class DeleteBidView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Bid
     success_url = reverse_lazy("biddingrounds")
+
+    def test_func(self):
+        return self.request.user.member == self.get_object().bidder
 
 
 @login_required

@@ -53,8 +53,12 @@ class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
         assert bid.get_primary_member() == self.primary_member
 
     def test_get_all_members(self):
-        member_1 = self.get_or_create_member(email="member1@roko.li", first_name="Mani", last_name="something")
-        member_2 = self.get_or_create_member(email="member2@roko.li", first_name="Mona", last_name="Else")
+        member_1 = self.get_or_create_member(
+            email="member1@roko.li", first_name="Mani", last_name="something"
+        )
+        member_2 = self.get_or_create_member(
+            email="member2@roko.li", first_name="Mona", last_name="Else"
+        )
 
         self.subscription.subscriptionmembership_set.create(member=member_1)
         self.subscription.subscriptionmembership_set.create(member=member_2)

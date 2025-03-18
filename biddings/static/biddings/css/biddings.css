@@ -1,9 +1,14 @@
-.bidding-round { 
+.bidding-round__list { 
     margin-bottom: 50px;
 }
 
-.bidding-round p {
+.bidding-round__list p {
     margin: 2px;
+}
+
+.bidding-round__name {
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .biddings {
@@ -62,4 +67,10 @@
     color: red;
     font-size: medium;
     margin-bottom: 3px;
+}
+
+
+#id_red_contribution_amount, #id_yellow_contribution_amount, #id_green_contribution_amount {
+    width: 140px;
+    max-width: auto;
 }
