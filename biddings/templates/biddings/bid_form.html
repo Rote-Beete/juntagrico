@@ -5,7 +5,7 @@
     <h3>{% trans "Bietrunden Gebot" %}</h3>
 {% endblock %}
 {% block content %}
-    <p class="bidding-round__name">{{ bidding_round.name }}</p>
+    <p class="font-weight-bold h2">{{ bidding_round.name }}</p>
     <p>{{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
     {% if subscription %}
         <p>{{ subscription|get_name }}</p>
@@ -30,7 +30,7 @@
             </form>
         {% else %}
             <p>
-                {% trans "Es gibt keinen Gemüseanteil, wofür du Bezieher*in bist." %}
+                {% trans "Du hast keine Gemüseanteil-Mitgliedschaft." %}
                 <p>
                     <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
                 {% endif %}

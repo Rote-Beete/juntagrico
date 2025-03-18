@@ -35,6 +35,7 @@ class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
         self.bidding_round = self.get_or_create_bidding_round()
         self.data = {
             "bidding_round": self.bidding_round,
+            "bidder": self.primary_member,
             "subscription": self.subscription,
             "green_contribution_amount": 10,
             "yellow_contribution_amount": 15,
