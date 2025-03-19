@@ -8,7 +8,7 @@
     {% if bidding_rounds %}
         {% for bidding_round in bidding_rounds %}
             <div class="bidding-round__list">
-                <p class="bidding-round__name">{{ bidding_round.name }}</p>
+                <p class="font-weight-bold">{{ bidding_round.name }}</p>
                 <p>{{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
                 {% if bidding_round.is_active %}
                     {% if not bidding_round|get_bids:request.user %}

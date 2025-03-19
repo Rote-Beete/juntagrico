@@ -88,4 +88,4 @@ class Bid(models.Model):
         )
 
     def __str__(self):
-        return f"Gebot({self.pk}): {self.bidding_round.start_time.date()} {self.subscription} {self.get_primary_member()}"
+        return f"Gebot({self.pk}): {self.bidding_round.name} {self.bidding_round.start_time.date()} {self.bidder} {self.subscription} {self.get_primary_member()}"

@@ -73,7 +73,7 @@ def export_bidding_rounds(request):
     return render(
         request,
         "biddings/biddinground_export_list.html",
-        context={"biddingrounds": BiddingRound.objects.all()},
+        context={"bidding_rounds": BiddingRound.objects.all()},
     )
 
 
@@ -89,7 +89,9 @@ def export_bidding_round(request, bidding_round_pk):
     writer = csv.DictWriter(
         response,
         fieldnames=[
+            "subscprition_id",
             "subscprition_type_names",
+            "bidder",
             "primary_member",
             "subscription_size",
             "green_bid",
@@ -101,7 +103,9 @@ def export_bidding_round(request, bidding_round_pk):
     )
     writer.writerow(
         {
+            "subscprition_id": "Kennzahl",
             "subscprition_type_names": "GVL-Nr.",
+            "bidder": "Bieter*in",
             "primary_member": "Hauptbezieher*in",
             "subscription_size": "Anzahl Anteile",
             "green_bid": "Grünes Gebot",
@@ -112,7 +116,9 @@ def export_bidding_round(request, bidding_round_pk):
     )
     for bid in bidding_round.bids.all():
         row = dict(
+            subscprition_id=bid.subscription.id,
             subscprition_type_names=bid.get_type_names(),
+            bidder=bid.bidder,
             primary_member=bid.get_primary_member(),
             subscription_size=bid.get_size(),
             green_bid=bid.green_contribution_amount,
