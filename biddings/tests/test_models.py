@@ -33,21 +33,36 @@ class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
             primary_member=self.primary_member
         )
         self.bidding_round = self.get_or_create_bidding_round()
-
-    def test_create_bid(self):
-        data = {
+        self.data = {
             "bidding_round": self.bidding_round,
+            "bidder": self.primary_member,
             "subscription": self.subscription,
             "green_contribution_amount": 10,
             "yellow_contribution_amount": 15,
             "red_contribution_amount": 20,
             "comment": "Some comments...",
         }
-        bid, _ = Bid.objects.get_or_create(defaults=data)
 
-        for field_name, value in data.items():
+    def test_create_bid(self):
+        bid, _ = Bid.objects.get_or_create(**self.data)
+
+        for field_name, value in self.data.items():
             assert getattr(bid, field_name) == value
 
         assert bid.get_size() == 5.5
 
         assert bid.get_primary_member() == self.primary_member
+
+    def test_get_all_members(self):
+        member_1 = self.get_or_create_member(
+            email="member1@roko.li", first_name="Mani", last_name="something"
+        )
+        member_2 = self.get_or_create_member(
+            email="member2@roko.li", first_name="Mona", last_name="Else"
+        )
+
+        self.subscription.subscriptionmembership_set.create(member=member_1)
+        self.subscription.subscriptionmembership_set.create(member=member_2)
+
+        bid, _ = Bid.objects.get_or_create(defaults=self.data)
+        assert bid.subscription.recipients == [self.primary_member, member_1, member_2]

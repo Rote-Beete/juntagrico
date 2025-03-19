@@ -1,5 +1,4 @@
 from django.forms import ModelForm, ValidationError
-from juntagrico.models import Subscription
 from django.utils.translation import gettext_lazy as _
 from biddings.models import Bid
 
@@ -23,19 +22,7 @@ class BidForm(ModelForm):
         return cleaned_data
 
 
-class BidCreateForm(BidForm):
-    class Meta:
-        model = Bid
-        exclude = ["bidding_round"]
-
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["subscription"].queryset = Subscription.objects.filter(
-            primary_member__user=user
-        )
-
-
 class BidUpdateForm(BidForm):
     class Meta:
         model = Bid
-        exclude = ["bidding_round", "subscription"]
+        exclude = ["bidding_round", "subscription", "bidder"]

@@ -2,12 +2,17 @@ from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from juntagrico.models import Subscription
+from juntagrico.entity.subs import Subscription
+from juntagrico.entity.member import Member
 
 
 class BiddingRound(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_("Name"))
     start_time = models.DateTimeField(verbose_name=_("Startzeit"))
     end_time = models.DateTimeField(verbose_name=_("Endzeit"))
+    guiding_value = models.DecimalField(
+        max_digits=6, decimal_places=2, verbose_name=_("Richtwert"), null=True
+    )
 
     class Meta:
         ordering = ["-start_time"]
@@ -21,30 +26,41 @@ class BiddingRound(models.Model):
         return self.start_time > timezone.now()
 
     def __str__(self):
-        return f"Bietrunde({self.pk}): {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
+        return f"Bietrunde({self.pk}): {self.name} {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
+    bidder = models.ForeignKey(
+        Member,
+        related_name='bidder',
+        null=False,
+        blank=False,
+        on_delete=models.PROTECT,
+        verbose_name=_("Bieter*in"),
+    )
+
     bidding_round = models.ForeignKey(
         "BiddingRound",
         on_delete=models.CASCADE,
         related_name="bids",
         verbose_name=_("Bietrunde"),
     )
+
     subscription = models.ForeignKey(
         Subscription,
         on_delete=models.PROTECT,
         related_name="bids",
         verbose_name=_("Gemüseanteil"),
     )
+
     green_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot")
+        max_digits=6, decimal_places=2, verbose_name=_("Grünes Gebot (Komfortzone)")
     )
     yellow_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Gelbes Gebot")
+        max_digits=6, decimal_places=2, verbose_name=_("Gelbes Gebot (Machbar)")
     )
     red_contribution_amount = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot")
+        max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot (Schmerzgrenze)")
     )
 
     comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
@@ -72,4 +88,4 @@ class Bid(models.Model):
         )
 
     def __str__(self):
-        return f"Gebot({self.pk}): {self.bidding_round.start_time.date()} {self.subscription} {self.get_primary_member()}"
+        return f"Gebot({self.pk}): {self.bidding_round.name} {self.bidding_round.start_time.date()} {self.bidder} {self.subscription} {self.get_primary_member()}"

@@ -22,17 +22,17 @@ class BiddingRoundMixin:
         }
 
         data.update(kwargs)
-        bidding_round, _ = BiddingRound.objects.get_or_create(defaults=data)
+        bidding_round, _ = BiddingRound.objects.get_or_create(**data)
         return bidding_round
 
 
 class MemberMixin:
-    def get_or_create_member(self, email=None, **kwargs):
-        if not email:
-            email = "test@roko.li"
+    def get_or_create_member(
+        self, email="test@roko.li", first_name="John", last_name="Tester", **kwargs
+    ):
         data = {
-            'first_name': 'first_name',
-            'last_name': 'last_name',
+            'first_name': first_name,
+            'last_name': last_name,
             'email': email,
             'addr_street': 'addr_street',
             'addr_zipcode': '1234',
@@ -42,7 +42,7 @@ class MemberMixin:
             'confirmed': True,
         }
         data.update(kwargs)
-        member, _ = Member.objects.get_or_create(defaults=data)
+        member, _ = Member.objects.get_or_create(**data)
         return member
 
 
@@ -58,7 +58,7 @@ class SubscriptionMixin(MemberMixin):
             'description': 'Place to be',
         }
         data.update(kwargs)
-        location, _ = Location.objects.get_or_create(defaults=data)
+        location, _ = Location.objects.get_or_create(**data)
         return location
 
     def get_or_create_depot(self, **kwargs):
@@ -69,7 +69,7 @@ class SubscriptionMixin(MemberMixin):
             'location': self.get_or_create_location(),
         }
         data.update(kwargs)
-        depot, _ = Depot.objects.get_or_create(defaults=data)
+        depot, _ = Depot.objects.get_or_create(**data)
         return depot
 
     def get_or_create_subscription(self, primary_member=None, **kwargs):
@@ -78,7 +78,7 @@ class SubscriptionMixin(MemberMixin):
             'start_date': '2017-01-01',
         }
         data.update(kwargs)
-        subcription, _ = Subscription.objects.get_or_create(defaults=data)
+        subcription, _ = Subscription.objects.get_or_create(**data)
 
         subcription.parts.create(
             type=SubscriptionType.objects.create(
@@ -103,6 +103,8 @@ class SubscriptionMixin(MemberMixin):
         )
 
         subcription.primary_member = primary_member
+        if primary_member:
+            subcription.subscriptionmembership_set.create(member=primary_member)
 
         return subcription
 
