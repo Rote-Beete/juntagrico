@@ -17,7 +17,12 @@ class ListBiddingroundView(LoginRequiredMixin, ListView):
 
 class _UserSubscriptionMixin:
     def _get_subscription(self):
-        return self.request.user.member.subscriptionmembership_set.first().subscription
+        try:
+            return (
+                self.request.user.member.subscriptionmembership_set.first().subscription
+            )
+        except AttributeError:
+            return None
 
 
 class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
