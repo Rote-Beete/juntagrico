@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.http import HttpResponse
-from biddings.form import BidCreateForm, BidUpdateForm
+from biddings.form import BidUpdateForm
 from biddings.models import Bid, BiddingRound
 
 
@@ -22,7 +22,7 @@ class _UserSubscriptionMixin:
 
 class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
     model = Bid
-    form_class = BidCreateForm
+    form_class = BidUpdateForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,7 +47,6 @@ class UpdateBidView(
 ):
     model = Bid
     form_class = BidUpdateForm
-    template_name = "biddings/bid_form.html"
 
     def test_func(self):
         return self.request.user.member == self.get_object().bidder

@@ -22,12 +22,6 @@ class BidForm(ModelForm):
         return cleaned_data
 
 
-class BidCreateForm(BidForm):
-    class Meta:
-        model = Bid
-        exclude = ["bidding_round", "subscription", "bidder"]
-
-
 class BidUpdateForm(BidForm):
     class Meta:
         model = Bid
