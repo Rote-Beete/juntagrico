@@ -8,6 +8,7 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.http import HttpResponse
 from biddings.form import BidUpdateForm
 from biddings.models import Bid, BiddingRound
+from juntagrico.entity.subtypes import SubscriptionType
 
 
 class ListBiddingroundView(LoginRequiredMixin, ListView):
@@ -24,6 +25,12 @@ class _UserSubscriptionMixin:
         except AttributeError:
             return None
 
+    def _get_subscription_size(self):
+        if self._get_subscription():
+            return SubscriptionType.objects.filter(
+                subscription_parts__in=self._get_subscription().active_and_future_parts
+            )[0].size
+
 
 class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
     model = Bid
@@ -36,6 +43,11 @@ class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
         )
         context["subscription"] = self._get_subscription()
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'initial': {'subscription_size': self._get_subscription_size()}})
+        return kwargs
 
     def form_valid(self, form):
         bidding_round = get_object_or_404(
@@ -89,7 +101,7 @@ def export_bidding_round(request, bidding_round_pk):
     bidding_round = get_object_or_404(BiddingRound, pk=bidding_round_pk)
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = (
-        f"attachment; filename=Bietrunde {bidding_round.start_time.date()} {bidding_round.end_time.date()}.csv"
+        f"attachment; filename=Bietrunde {bidding_round.name} {bidding_round.start_time.date()} {bidding_round.end_time.date()}.csv"
     )
     writer = csv.DictWriter(
         response,

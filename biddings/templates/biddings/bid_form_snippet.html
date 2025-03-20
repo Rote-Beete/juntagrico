@@ -1,3 +1,9 @@
+<div class="row mb-3">
+    <div class="col d-flex flex-column">
+        <label for="{{ form.subscription_size.id_for_label }}">{{ form.subscription_size.label }}:</label>
+        {{ form.subscription_size }}
+    </div>
+</div>
 <div>
     <ul class="errorlist nonfield">
         {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}

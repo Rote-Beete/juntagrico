@@ -25,10 +25,12 @@
                                 <col width="20px">
                                 <col width="20px">
                                 <col width="20px">
+                                <col width="20px">
                                 <col width="40px">
                                 {% for bid in bids %}
                                     <tr>
                                         <td>{{ bid.subscription|get_name }}</td>
+                                        <td>{{ bid.subscription_size }}</td>
                                         <td class="green">{{ bid.green_contribution_amount }}</td>
                                         <td class="yellow">{{ bid.yellow_contribution_amount }}</td>
                                         <td class="red">{{ bid.red_contribution_amount }}</td>

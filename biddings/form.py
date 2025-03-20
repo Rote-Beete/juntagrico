@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from biddings.models import Bid
 
 
-class BidForm(ModelForm):
+class BidUpdateForm(ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
         green, yellow, red = [
@@ -21,8 +21,6 @@ class BidForm(ModelForm):
                 raise ValidationError(_("Falsche Reihenfolge der Beitragshöhen"))
         return cleaned_data
 
-
-class BidUpdateForm(BidForm):
     class Meta:
         model = Bid
         exclude = ["bidding_round", "subscription", "bidder"]

@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from juntagrico.entity.subs import Subscription
+from juntagrico.entity.subtypes import SubscriptionSize
 from juntagrico.entity.member import Member
 
 
@@ -11,7 +12,11 @@ class BiddingRound(models.Model):
     start_time = models.DateTimeField(verbose_name=_("Startzeit"))
     end_time = models.DateTimeField(verbose_name=_("Endzeit"))
     guiding_value = models.DecimalField(
-        max_digits=6, decimal_places=2, verbose_name=_("Richtwert"), null=True
+        max_digits=6,
+        decimal_places=2,
+        verbose_name=_("Richtwert"),
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -63,12 +68,21 @@ class Bid(models.Model):
         max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot (Schmerzgrenze)")
     )
 
+    subscription_size = models.ForeignKey(
+        SubscriptionSize,
+        on_delete=models.PROTECT,
+        related_name='bid',
+        verbose_name=_('Gewünschte Anzal der Anteile'),
+        null=True,
+        blank=True,
+    )
+
     comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
 
     class Meta:
         ordering = [
             "-bidding_round__start_time",
-            "subscription__primary_member__first_name",
+            "subscription_id",
         ]
 
     def get_absolute_url(self):
