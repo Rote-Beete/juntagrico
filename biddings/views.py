@@ -26,10 +26,12 @@ class _UserSubscriptionMixin:
             return None
 
     def _get_subscription_size(self):
-        if self._get_subscription():
+        try:
             return SubscriptionType.objects.filter(
                 subscription_parts__in=self._get_subscription().active_and_future_parts
             )[0].size
+        except (IndexError, AttributeError):
+            return None
 
 
 class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):

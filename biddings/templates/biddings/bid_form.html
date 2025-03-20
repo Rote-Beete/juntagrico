@@ -7,7 +7,7 @@
 {% block content %}
     <p class="font-weight-bold h2">{{ bidding_round.name }}</p>
     <p>{{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
-    {% if subscription %}
+    {% if subscription and subscription.size %}
         <p>{{ subscription|get_name }}</p>
         <p>{% trans "Hauptbezieher*in:" %} {{ subscription.primary_member }}</p>
         <p>
@@ -30,7 +30,7 @@
             </form>
         {% else %}
             <p>
-                {% trans "Du hast keine Gemüseanteil-Mitgliedschaft." %}
+                {% trans "Du hast keine gültige Gemüseanteil-Mitgliedschaft." %}
                 <p>
                     <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
                 {% endif %}
