@@ -4,6 +4,9 @@
         {{ form.subscription_size }}
     </div>
 </div>
+<div class="mb-4">
+    Bitte trag das monatliche Gesamgebot <span class="h3">je ganzem (!) Anteil</span> (bspw. {{ bidding_round.guiding_value }}€) ein.
+</div>
 <div>
     <ul class="errorlist nonfield">
         {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
