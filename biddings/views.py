@@ -108,7 +108,6 @@ def export_bidding_round(request, bidding_round_pk):
     writer = csv.DictWriter(
         response,
         fieldnames=[
-            "subscprition_id",
             "subscprition_type_names",
             "bidder",
             "primary_member",
@@ -122,7 +121,6 @@ def export_bidding_round(request, bidding_round_pk):
     )
     writer.writerow(
         {
-            "subscprition_id": "Kennzahl",
             "subscprition_type_names": "GVL-Nr.",
             "bidder": "Bieter*in",
             "primary_member": "Hauptbezieher*in",
@@ -135,7 +133,6 @@ def export_bidding_round(request, bidding_round_pk):
     )
     for bid in bidding_round.bids.all():
         row = dict(
-            subscprition_id=bid.subscription.id,
             subscprition_type_names=bid.get_type_names(),
             bidder=bid.bidder,
             primary_member=bid.get_primary_member(),
@@ -146,5 +143,18 @@ def export_bidding_round(request, bidding_round_pk):
             comment=bid.comment,
         )
         writer.writerow(row)
+
+    writer.writerow(
+        {
+            "subscprition_type_names": "",
+            "bidder": "",
+            "primary_member": "",
+            "subscription_size": f"Summe: {bidding_round.get_sum_of_subscription_sizes()}",
+            "green_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount("green")}",
+            "yellow_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount("yellow")}",
+            "red_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount("red")}",
+            "comment": "",
+        }
+    )
 
     return response

@@ -30,6 +30,26 @@ class BiddingRound(models.Model):
     def is_in_future(self):
         return self.start_time > timezone.now()
 
+    def get_sum_of_subscription_sizes(self):
+        return sum(bid.get_size() for bid in self.bids.all())
+    
+    def get_average_bid_amount(self, color):
+        valid_colors = {
+            "green": "green_contribution_amount",
+            "yellow": "yellow_contribution_amount",
+            "red": "red_contribution_amount",
+        }
+
+        if color not in valid_colors:
+            raise ValueError("Invalid color. Choose 'green', 'yellow', or 'red'.")
+
+        bids = self.bids.all()
+        if not bids.exists():
+            return 0
+
+        total_amount = sum(getattr(bid, valid_colors[color]) for bid in bids)
+        return round(total_amount / bids.count(), 2)
+    
     def __str__(self):
         return f"Bietrunde({self.pk}): {self.name} {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
