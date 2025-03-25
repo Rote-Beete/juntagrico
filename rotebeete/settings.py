@@ -277,7 +277,7 @@ DEFENDER_REDIS_URL = "redis://127.0.0.1:6379/0"
 # https://github.com/requarks/wiki/discussions/6384
 
 try:
-    oidc_key_filename = env.get("OIDC_RSA_PRIVATE_KEY_FILE", default="") or None
+    oidc_key_filename = os.getenv("OIDC_RSA_PRIVATE_KEY_FILE")
     with open(oidc_key_filename, "r") as key_file:
         oidc_key = key_file.read()
 
