@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='biddinground',
             name='season',
-            field=models.CharField(default=0.9995061728395062, max_length=200, verbose_name='Saison'),
+            field=models.CharField(default="2024/2025", max_length=200, verbose_name='Saison'),
             preserve_default=False,
         ),
         migrations.AlterField(
