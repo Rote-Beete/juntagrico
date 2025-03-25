@@ -7,8 +7,12 @@ from juntagrico.entity.subtypes import SubscriptionSize
 
 
 class BiddingRound(models.Model):
-    name = models.CharField(max_length=200, verbose_name=_("Name"))
-    season = models.CharField(max_length=200, verbose_name=_("Saison"))
+    name = models.CharField(
+        max_length=200, verbose_name=_("Name"), null=True, blank=True
+    )
+    season = models.CharField(
+        max_length=200, verbose_name=_("Saison"), null=True, blank=True
+    )
     start_time = models.DateTimeField(verbose_name=_("Startzeit"))
     end_time = models.DateTimeField(verbose_name=_("Endzeit"))
     guiding_value = models.DecimalField(
