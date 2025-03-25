@@ -27,5 +27,6 @@ class BidUpdateForm(ModelForm):
         exclude = ["bidding_round", "subscription"]
 
     subscription_size = ModelChoiceField(
-        queryset=SubscriptionSize.objects.order_by('units'), label="Subscription Size"
+        queryset=SubscriptionSize.objects.order_by('units'),
+        label=Bid._meta.get_field("subscription_size").verbose_name,
     )
