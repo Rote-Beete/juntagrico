@@ -10,6 +10,8 @@ from biddings.form import BidUpdateForm
 from biddings.models import Bid, BiddingRound
 from juntagrico.entity.subtypes import SubscriptionType
 
+from biddings.templatetags.biddings_extras import get_user_subscription
+
 
 class ListBiddingroundView(LoginRequiredMixin, ListView):
     model = BiddingRound
@@ -18,12 +20,8 @@ class ListBiddingroundView(LoginRequiredMixin, ListView):
 
 class _UserSubscriptionMixin:
     def _get_subscription(self):
-        try:
-            return (
-                self.request.user.member.subscriptionmembership_set.first().subscription
-            )
-        except AttributeError:
-            return None
+        # Juntagrico allows a member to have multiple subscriptions but rote beete is using at the moment only one subscription per member.
+        return get_user_subscription(self.request.user)
 
     def _get_subscription_size(self):
         try:
@@ -55,7 +53,6 @@ class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
         bidding_round = get_object_or_404(
             BiddingRound, pk=self.kwargs["bidding_round_pk"]
         )
-        form.instance.bidder = self.request.user.member
         form.instance.bidding_round = bidding_round
         form.instance.subscription = self._get_subscription()
         return super().form_valid(form)
@@ -68,7 +65,10 @@ class UpdateBidView(
     form_class = BidUpdateForm
 
     def test_func(self):
-        return self.request.user.member == self.get_object().bidder
+        return (
+            self.request.user.member in self.get_object().subscription.recipients
+            or self.request.user.member == self.get_object().subscription.primary_member
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,7 +82,10 @@ class DeleteBidView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy("biddingrounds")
 
     def test_func(self):
-        return self.request.user.member == self.get_object().bidder
+        return (
+            self.request.user.member in self.get_object().subscription.recipients
+            or self.request.user.member == self.get_object().subscription.primary_member
+        )
 
 
 @login_required
@@ -109,7 +112,6 @@ def export_bidding_round(request, bidding_round_pk):
         response,
         fieldnames=[
             "subscprition_type_names",
-            "bidder",
             "primary_member",
             "subscription_size",
             "green_bid",
@@ -122,7 +124,6 @@ def export_bidding_round(request, bidding_round_pk):
     writer.writerow(
         {
             "subscprition_type_names": "GVL-Nr.",
-            "bidder": "Bieter*in",
             "primary_member": "Hauptbezieher*in",
             "subscription_size": "Anzahl Anteile",
             "green_bid": "Grünes Gebot",
@@ -134,7 +135,6 @@ def export_bidding_round(request, bidding_round_pk):
     for bid in bidding_round.bids.all():
         row = dict(
             subscprition_type_names=bid.get_type_names(),
-            bidder=bid.bidder,
             primary_member=bid.get_primary_member(),
             subscription_size=bid.get_size(),
             green_bid=bid.green_contribution_amount,
@@ -147,12 +147,11 @@ def export_bidding_round(request, bidding_round_pk):
     writer.writerow(
         {
             "subscprition_type_names": "",
-            "bidder": "",
             "primary_member": "",
             "subscription_size": f"Summe: {bidding_round.get_sum_of_subscription_sizes()}",
-            "green_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount("green")}",
-            "yellow_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount("yellow")}",
-            "red_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount("red")}",
+            "green_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount('green')}",
+            "yellow_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount('yellow')}",
+            "red_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount('red')}",
             "comment": "",
         }
     )

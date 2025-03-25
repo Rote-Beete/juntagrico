@@ -11,15 +11,15 @@
                 <p class="font-weight-bold">{{ bidding_round.name }}</p>
                 <p>{{ bidding_round.start_time.date }} - {{ bidding_round.end_time.date }}</p>
                 {% if bidding_round.is_active %}
-                    {% if not bidding_round|get_bids:request.user %}
+                    {% if not bidding_round|get_bid:request.user %}
                         <a href={% url "create_bid" bidding_round.pk %}>{% trans "Neues Gebot abgeben" %}</a>
                     {% endif %}
                 {% elif bidding_round.is_in_future %}
                     <p class="no-bids">{% trans "Noch keine Gebote möglich" %}</p>
                 {% endif %}
                 {% if bidding_round.is_active or not bidding_round.is_in_future %}
-                    {% with bids=bidding_round|get_bids:request.user %}
-                        {% if bids %}
+                    {% with bid=bidding_round|get_bid:request.user %}
+                        {% if bid %}
                             <table class="biddings">
                                 <col width="50px">
                                 <col width="20px">
@@ -27,23 +27,21 @@
                                 <col width="20px">
                                 <col width="20px">
                                 <col width="40px">
-                                {% for bid in bids %}
-                                    <tr>
-                                        <td>{{ bid.subscription|get_name }}</td>
-                                        <td>{{ bid.subscription_size }}</td>
-                                        <td class="green">{{ bid.green_contribution_amount }}</td>
-                                        <td class="yellow">{{ bid.yellow_contribution_amount }}</td>
-                                        <td class="red">{{ bid.red_contribution_amount }}</td>
-                                        <td>
-                                            {% if bidding_round.is_active %}
-                                                <a class="btn" href={% url "update_bid" bid.pk %}>Update</a>
-                                                <a class="btn delete" href={% url "delete_bid" bid.pk %}>Delete</a>
-                                            {% else %}
-                                                <p>Keine Änderungen mehr möglich</p>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                                <tr>
+                                    <td>{{ bid.subscription|get_name }}</td>
+                                    <td>{{ bid.subscription_size }}</td>
+                                    <td class="green">{{ bid.green_contribution_amount }}</td>
+                                    <td class="yellow">{{ bid.yellow_contribution_amount }}</td>
+                                    <td class="red">{{ bid.red_contribution_amount }}</td>
+                                    <td>
+                                        {% if bidding_round.is_active %}
+                                            <a class="btn" href={% url "update_bid" bid.pk %}>Update</a>
+                                            <a class="btn delete" href={% url "delete_bid" bid.pk %}>Delete</a>
+                                        {% else %}
+                                            <p>Keine Änderungen mehr möglich</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
                             </table>
                         {% else %}
                             <p class="no-bids">

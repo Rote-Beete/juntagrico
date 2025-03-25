@@ -7,9 +7,21 @@ from django.db.models import F, Sum
 register = template.Library()
 
 
+def get_user_subscription(user):
+    try:
+        return user.member.subscriptionmembership_set.first().subscription
+    except AttributeError:
+        return None
+
+
 @register.filter
-def get_bids(bidding_round, user):
-    return Bid.objects.filter(bidding_round=bidding_round, bidder__user=user)
+def get_bid(bidding_round, user):
+    # Juntagrico allows a member to have multiple subscriptions but rote beete is using at the moment only one subscription per member. For now we are We are only
+    subscription = get_user_subscription(user)
+    try:
+        return Bid.objects.get(bidding_round=bidding_round, subscription=subscription)
+    except Bid.DoesNotExist:
+        return None
 
 
 @register.filter

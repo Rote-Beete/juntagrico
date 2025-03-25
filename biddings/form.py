@@ -23,4 +23,4 @@ class BidUpdateForm(ModelForm):
 
     class Meta:
         model = Bid
-        exclude = ["bidding_round", "subscription", "bidder"]
+        exclude = ["bidding_round", "subscription"]

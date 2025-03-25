@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from juntagrico.entity.subs import Subscription
 from juntagrico.entity.subtypes import SubscriptionSize
-from juntagrico.entity.member import Member
 
 
 class BiddingRound(models.Model):
@@ -32,7 +31,7 @@ class BiddingRound(models.Model):
 
     def get_sum_of_subscription_sizes(self):
         return sum(bid.get_size() for bid in self.bids.all())
-    
+
     def get_average_bid_amount(self, color):
         valid_colors = {
             "green": "green_contribution_amount",
@@ -49,21 +48,12 @@ class BiddingRound(models.Model):
 
         total_amount = sum(getattr(bid, valid_colors[color]) for bid in bids)
         return round(total_amount / bids.count(), 2)
-    
+
     def __str__(self):
         return f"Bietrunde({self.pk}): {self.name} {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
 
 
 class Bid(models.Model):
-    bidder = models.ForeignKey(
-        Member,
-        related_name='bidder',
-        null=False,
-        blank=False,
-        on_delete=models.PROTECT,
-        verbose_name=_("Bieter*in"),
-    )
-
     bidding_round = models.ForeignKey(
         "BiddingRound",
         on_delete=models.CASCADE,
@@ -122,4 +112,4 @@ class Bid(models.Model):
         )
 
     def __str__(self):
-        return f"Gebot({self.pk}): {self.bidding_round.name} {self.bidding_round.start_time.date()} {self.bidder} {self.subscription} {self.get_primary_member()}"
+        return f"Gebot({self.pk}): {self.bidding_round.name} {self.bidding_round.start_time.date()} {self.subscription} {self.get_primary_member()}"
