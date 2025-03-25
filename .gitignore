@@ -7,4 +7,5 @@ rotebeete/debug.log
 .venv
 .local
 .env.local
+.env
 .python-version
