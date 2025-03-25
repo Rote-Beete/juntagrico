@@ -7,7 +7,14 @@
 {% block content %}
     <form method="post">
         {% csrf_token %}
-        <p>{% trans "Gebot Löchen" %}? "{{ object.subscription|get_name }}"</p>
+        <p>{% trans "Gebot Löchen" %}?</p>
+        <p>{{ object.subscription|get_name }}</p>
+        <p>Gewüschte Anteile: {{ bid.subscription_size }}</p>
+        <div class="d-flex flex-inline ">
+            <p class="green pr-3">{{ bid.green_contribution_amount }}</p>
+            <p class="yellow pr-3">{{ bid.yellow_contribution_amount }}</p>
+            <p class="red">{{ bid.red_contribution_amount }}</p>
+        </div>
         {{ form }}
         <input class="btn delete" type="submit" value="Löchen">
         <a class="btn" href={% url "biddingrounds" %}>Cancel</a>
