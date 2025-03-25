@@ -1,14 +1,23 @@
 ## Entwicklungsumgebung:
 
-poetry installieren und folgende commands ausführen:
+poetry installieren (z.B mit pipx). Folgendn Befehl ausführen, um die Projektabhängigkeiten zu installieren:
 
 ```
 poetry install
-poetry run ./manage.py migrate
-poetry run ./manage.py collectstatic
-poetry run ./manage.py createsuperuser
-poetry run ./manage.py create_member_for_superusers
-poetry run ./manage.py runserver
+```
+Auf Linux kann `psycopg2` mit dem Befehl `python3-psycopg2` installiert werden. Falls eine Installation über PyPI gewünscht ist, kann dieses beispielsweise mit diesem Befehl passieren:
+
+```
+poetry run pip install psycopg2
+```
+
+Django-Management-Befehle:
+```
+poetry run python manage.py migrate
+poetry run python manage.py collectstatic
+poetry run python manage.py createsuperuser
+poetry run python manage.py create_member_for_superusers
+poetry run python manage.py runserver
 ```
 ## Biterrunden
 Wir gehen zurzeit davon aus, dass jedes Mitglied nur eine einzige Mitgliedschaft hat. Falls dieses Verhalten sich ändern soll, müssen `biddings.views._UserSubscriptionMixin._get_subscription()`, `biddings.templatetags.get_bid()` und `biddings.templates.biddings.biddinground_list.html` entsprechend aktualisiert werden.
