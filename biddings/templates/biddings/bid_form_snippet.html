@@ -4,9 +4,7 @@
         {{ form.subscription_size }}
     </div>
 </div>
-<div class="mb-4">
-    Bitte trag das monatliche Gesamgebot je ganzem (!) Anteil ein.
-</div>
+<div class="mb-4 font-weight-bold">Bitte trag das monatliche Gesamgebot je ganzem (!) Anteil ein.</div>
 <div>
     <ul class="errorlist nonfield">
         {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}

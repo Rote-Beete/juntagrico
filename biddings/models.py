@@ -47,7 +47,7 @@ class BiddingRound(models.Model):
             return 0
 
         total_amount = sum(getattr(bid, valid_colors[color]) for bid in bids)
-        return round(total_amount / bids.count(), 2)
+        return round(total_amount / self.get_sum_of_subscription_sizes(), 2)
 
     def __str__(self):
         return f"Bietrunde({self.pk}): {self.name} {self.start_time} -- {self.end_time} ({'not ' if not self.is_active else ''}aktiv)"
@@ -82,7 +82,7 @@ class Bid(models.Model):
         SubscriptionSize,
         on_delete=models.PROTECT,
         related_name='bid',
-        verbose_name=_('Gewünschte Anzal der Anteile'),
+        verbose_name=_('Gewünschte Anzahl der Anteile'),
         null=True,
         blank=True,
     )
