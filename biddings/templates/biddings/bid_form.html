@@ -22,6 +22,9 @@
             <form method="post" novalidate>
                 {% csrf_token %}
                 {% include "biddings/bid_form_snippet.html" %}
+                <p>
+                    Deine Gebote legen deinen Beitrag für die Saison 2024/2025 verbindlich fest und werden so in die Buchhaltung übernommen. Mit der Abgabe des Gebotes erklärst du dich außerdem mit den Vertragsbedingungen einverstanden
+                </p>
                 <input class="btn" type="submit" value="Save">
                 {% if object %}
                     <a class="btn delete" href={% url "delete_bid" object.pk %}>Delete</a>
