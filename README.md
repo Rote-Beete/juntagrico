@@ -10,6 +10,8 @@ poetry run ./manage.py createsuperuser
 poetry run ./manage.py create_member_for_superusers
 poetry run ./manage.py runserver
 ```
+## Biterrunden
+Wir gehen zurzeit davon aus, dass jedes Mitglied nur eine einzige Mitgliedschaft hat. Falls dieses Verhalten sich ändern soll, müssen `biddings.views._UserSubscriptionMixin._get_subscription()`, `biddings.templatetags.get_bid()` und `biddings.templates.biddings.biddinground_list.html` entsprechend aktualisiert werden.
 
 ## Dokumentation von Anpassungen
 *zur händischen Überprüfung der Funktionalität nach Upgrades*
