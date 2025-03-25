@@ -102,6 +102,8 @@ class Bid(models.Model):
         return self.subscription.primary_member
 
     def get_size(self):
+        if self.subscription_size:
+            return self.subscription_size.units
         return sum(
             [part.type.size.units for part in self.subscription.active_and_future_parts]
         )
