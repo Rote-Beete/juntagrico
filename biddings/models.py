@@ -46,7 +46,7 @@ class BiddingRound(models.Model):
         if not bids.exists():
             return 0
 
-        total_amount = sum(getattr(bid, valid_colors[color]) for bid in bids)
+        total_amount = float(sum(getattr(bid, valid_colors[color]) for bid in bids))
         return round(total_amount / self.get_sum_of_subscription_sizes(), 2)
 
     def __str__(self):
