@@ -2,7 +2,7 @@
 name = "rotebeete"
 version = "0.1.0"
 description = ""
-authors = ["alexgorji <aligorji@hotmail.com>"]
+authors = ["alexgorji <ag@roko.li>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
