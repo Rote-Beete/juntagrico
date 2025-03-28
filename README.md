@@ -5,10 +5,10 @@ poetry installieren (z.B mit pipx). Folgendn Befehl ausführen, um die Projektab
 ```
 poetry install
 ```
-Auf Linux kann `psycopg2` mit dem Befehl `python3-psycopg2` installiert werden. Falls eine Installation über PyPI gewünscht ist, kann dieses beispielsweise mit diesem Befehl passieren:
+Auf Debian/Ubuntu kann `psycopg2` mit dem Befehl `apt install python3-psycopg2` installiert werden. Falls eine Installation über PyPI gewünscht ist, kann dieses beispielsweise mit diesem Befehl passieren:
 
 ```
-poetry run pip install psycopg2
+poetry run pip install psycopg2-binary
 ```
 
 Django-Management-Befehle:
