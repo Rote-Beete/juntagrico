@@ -75,7 +75,7 @@ MIDDLEWARE = [
 
 EMAIL_HOST = 'mail.rotebeete.org'
 EMAIL_HOST_USER = 'invalid@rotebeete.invalid'
-EMAIL_HOST_PASSWORD = '***REMOVED***'
+EMAIL_HOST_PASSWORD = env.get("EMAIL_HOST_PASSWORD", default="") or None
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 
