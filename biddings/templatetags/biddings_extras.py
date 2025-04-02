@@ -2,14 +2,22 @@ from django import template
 
 from biddings.models import Bid
 from juntagrico.entity.subtypes import SubscriptionType
-from django.db.models import F, Sum
+from django.db.models import F, Sum, Q
+from django.utils.timezone import now
 
 register = template.Library()
 
 
 def get_user_subscription(user):
     try:
-        return user.member.subscriptionmembership_set.first().subscription
+        return (
+            user.member.subscriptionmembership_set.filter(
+                Q(subscription__end_date__isnull=True)
+                | Q(subscription__end_date__gt=now().date())
+            )
+            .first()
+            .subscription
+        )
     except AttributeError:
         return None
 
@@ -26,14 +34,14 @@ def get_bid(bidding_round, user):
 
 @register.filter
 def get_name(subscription):
-    delimiter = '|'
-    sformat = 'GLV-Nr.: {name} / Anzahl Anteile: {amount}'
+    delimiter = "|"
+    sformat = "GLV-Nr.: {name} / Anzahl Anteile: {amount}"
     types = SubscriptionType.objects.filter(
         subscription_parts__in=subscription.active_and_future_parts
     ).annotate(
-        size_sum=Sum('size__units'),
-        size_name=F('size__name'),
-        product_name=F('size__product__name'),
+        size_sum=Sum("size__units"),
+        size_name=F("size__name"),
+        product_name=F("size__product__name"),
     )
     return delimiter.join(
         [
