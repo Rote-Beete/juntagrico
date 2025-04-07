@@ -132,7 +132,8 @@ def export_bidding_round(request, bidding_round_pk):
             "comment": "Kommentar",
         }
     )
-    for bid in bidding_round.bids.all():
+    latest_bids = Bid.objects.latest_per_subscription_in_round(bidding_round)
+    for bid in latest_bids:
         row = dict(
             subscprition_type_names=bid.get_type_names(),
             primary_member=bid.get_primary_member(),

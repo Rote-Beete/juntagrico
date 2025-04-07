@@ -5,6 +5,44 @@ from django.utils import timezone
 from juntagrico.entity.subs import Subscription
 from juntagrico.entity.subtypes import SubscriptionSize
 
+from django.db.models import Max
+
+
+class BidQuerySet(models.QuerySet):
+    def latest_per_subscription_in_round(self, bidding_round):
+        return self.filter(bidding_round=bidding_round).filter(
+            pk__in=(
+                self.filter(bidding_round=bidding_round)
+                .values('subscription_id')
+                .annotate(max_pk=Max('pk'))
+                .values_list('max_pk', flat=True)
+            )
+        )
+
+    def delete_except_latest_per_subscription_in_round(self, bidding_round):
+        latest_pks = (
+            self.filter(bidding_round=bidding_round)
+            .values('subscription_id')
+            .annotate(max_pk=Max('pk'))
+            .values_list('max_pk', flat=True)
+        )
+        return (
+            self.filter(bidding_round=bidding_round).exclude(pk__in=latest_pks).delete()
+        )
+
+
+class BidManager(models.Manager):
+    def get_queryset(self):
+        return BidQuerySet(self.model, using=self._db)
+
+    def latest_per_subscription_in_round(self, bidding_round):
+        return self.get_queryset().latest_per_subscription_in_round(bidding_round)
+
+    def delete_except_latest_per_subscription_in_round(self, bidding_round):
+        return self.get_queryset().delete_except_latest_per_subscription_in_round(
+            bidding_round
+        )
+
 
 class BiddingRound(models.Model):
     name = models.CharField(
@@ -93,6 +131,7 @@ class Bid(models.Model):
     )
 
     comment = models.TextField(verbose_name=_("Kommentar"), null=True, blank=True)
+    objects = BidManager()
 
     class Meta:
         ordering = [
