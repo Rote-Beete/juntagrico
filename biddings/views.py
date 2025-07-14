@@ -65,10 +65,7 @@ class UpdateBidView(
     form_class = BidUpdateForm
 
     def test_func(self):
-        return (
-            self.request.user.member in self.get_object().subscription.recipients
-            or self.request.user.member == self.get_object().subscription.primary_member
-        )
+        return self.request.user.member in self.get_object().subscription.current_members
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,10 +79,7 @@ class DeleteBidView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy("biddingrounds")
 
     def test_func(self):
-        return (
-            self.request.user.member in self.get_object().subscription.recipients
-            or self.request.user.member == self.get_object().subscription.primary_member
-        )
+        return self.request.user.member in self.get_object().subscription.current_members
 
 
 @login_required
