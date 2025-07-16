@@ -94,7 +94,7 @@ werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei
 
 Manche Templates für die Seite werden vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade
 eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (veränderte Templates:
-`rotebeete/templates/my/subscription/single.html`, `rotebeete/templates/my/subscription/snippets/part_list.html` neu: `rotebeete/templates/my/subscription/snippets/download_delivery_contract.html`).
+`rotebeete/templates/juntagrico/my/subscription/single.html`, `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html` neu: `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`).
 
 #### Mitgliedschaft ➜ Genossenschaftsanteile verwalten
 
@@ -185,3 +185,19 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` wurden einige CSS-Eigenschafte
 ### Logo
 
 In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS-Eigenschaften von `juntagrico_logo` sowie der Name und die Endung der gewünschten Datei geändert werden. Der Pfad `rotebeete/static/rotebeete/img/<DATEI>` sollte dennoch beibehalten werden.
+
+
+### Alle überschriebene und neue templates:
+* `rotebeete/templates/juntagrico/menu/user.html`
+* `rotebeete/templates/juntagrico/my/subscription/single.html`
+* `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html`
+* neu: `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`
+* `rotebeete/templates/manage_shares.html`
+* `rotebeete/templates/exports/share_certificate.html`
+* `rotebeete/templates/snippets/snippet_subscription_change_size.html`
+* `rotebeete/templates/profile.html`
+* Filter: `rotebeete.templatetags.rotebeete.disable_iban`
+* `rotebeete/templates/management_lists/subscriptions.html`
+* `rotebeete/templates/juntagrico/menu/admin/lists.html`
+* `rotebeete/templates/export.html`
+* `rotebeete/templates/mails/member/share_created.txt`
