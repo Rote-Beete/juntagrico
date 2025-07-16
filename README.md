@@ -128,7 +128,7 @@ eingespielt werden, sonst werden sie nicht sichtbar.
 
 Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/management_lists/subscriptions.html`).
+`rotebeete/templates/juntagrico/manage/subscriptions.html`).
 
 #### Listen
 
@@ -197,7 +197,7 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS
 * `rotebeete/templates/snippets/snippet_subscription_change_size.html`
 * `rotebeete/templates/profile.html`
 * Filter: `rotebeete.templatetags.rotebeete.disable_iban`
-* `rotebeete/templates/management_lists/subscriptions.html`
+* `rotebeete/templates/juntagrico/manage/subscriptions.html`
 * `rotebeete/templates/juntagrico/menu/admin/lists.html`
 * `rotebeete/templates/export.html`
 * `rotebeete/templates/mails/member/share_created.txt`

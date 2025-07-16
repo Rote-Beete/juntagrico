@@ -32,6 +32,7 @@
         </tfoot>
         <tbody>
             {% for subscription in subscriptions %}
+                <p>subscription</p>
                 <tr>
                     <td>
                         {% if subscription.primary_member %}
@@ -41,7 +42,7 @@
                             </a>
                         {% endif %}
                     </td>
-                    <td>{{ subscription.other_recipients_names }}</td>
+                    <td>{{ subscription.comembers }}</td>
                     <td>{{ subscription.depot.name }}</td>
                     <td>{{ subscription }}</td>
                     <td>{{ subscription.activation_date|date:"Y-m-d" }}</td>
