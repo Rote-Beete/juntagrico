@@ -14,6 +14,7 @@ setuptools = "^75.8.0"
 python-dotenv = "^1.0.1"
 dj-database-url = "^2.3.0"
 bnb = {version = "^0.2.0", source = "rokoli-bnb"}
+django = "^4.2.22"
 
 [tool.poetry.group.test.dependencies]
 pytest-django = "^4.10.0"
