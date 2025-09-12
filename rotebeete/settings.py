@@ -257,6 +257,11 @@ VOCABULARY = {
 }
 CURRENCY = 'EUR'
 
+ORGANISATION_BANK_CONNECTION = {
+    'IBAN': '-',
+    'BIC': '-',
+    'NAME': '-',
+}
 
 # DEFENDER: Brute Force Protection
 ##################################
