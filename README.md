@@ -32,6 +32,34 @@ poetry run python manage.py create_member_for_superusers
 poetry run python manage.py runserver
 ```
 
+Um alle Mitglieder aufzufordern, ihre persönlichen Daten zu überprüfen:
+
+`rotebeete/transitions/management/commands/sendtransitionmails.py`
+
+Zum Testen:
+
+```python
+members = Member.objects.filter(email="test@example.org")
+# from juntagrico.dao.memberdao import MemberDao
+# members = Member.objects.filter(MemberDao.has_subscription())
+```
+
+```
+poetry run python manage.py sendtransitionmails
+```
+
+Email versenden:
+
+```python
+# members = Member.objects.filter(email="test@example.org")
+from juntagrico.dao.memberdao import MemberDao
+members = Member.objects.filter(MemberDao.has_subscription())
+```
+
+```
+poetry run python manage.py sendtransitionmails
+```
+
 Test-Dateien (s. https://juntagrico.readthedocs.io/en/latest/intro/installation.html)
 
 ```
