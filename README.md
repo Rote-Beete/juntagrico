@@ -5,7 +5,7 @@
 
 ## Entwicklungsumgebung:
 
-poetry installieren (z.B mit pipx). Folgendn Befehl ausführen, um die Projektabhängigkeiten zu installieren:
+poetry installieren (z.B mit pipx). Folgendes Befehl ausführen, um die Projektabhängigkeiten zu installieren:
 
 ```
 poetry install
@@ -72,7 +72,11 @@ poetry run python -m manage generate_testdata
 poetry run python -m manage generate_testdata_advanced
 ```
 
+<<<<<<< HEAD
 ## Biterrunden
+=======
+## Bieterrunden
+>>>>>>> 4503142 (chore: update README)
 
 Wir gehen zurzeit davon aus, dass jedes Mitglied nur eine einzige Mitgliedschaft hat. Falls dieses Verhalten sich ändern soll, müssen `biddings.views._UserSubscriptionMixin._get_subscription()`, `biddings.templatetags.get_bid()` und `biddings.templates.biddings.biddinground_list.html` entsprechend aktualisiert werden.
 
@@ -80,6 +84,7 @@ Wir gehen zurzeit davon aus, dass jedes Mitglied nur eine einzige Mitgliedschaft
 
 _zur händischen Überprüfung der Funktionalität nach Upgrades_
 
+<<<<<<< HEAD
 Grundsätzliches zur Umsetzung der Anpassungen: In den meisten Fällen überschreiben wir entweder Templates oder
 URL-Pfade. Sollte sich beispielsweise der Name des Original-Templates in Juntagrico beim Upgrade ändern, so werden
 unsere Anpassungen wirkungslos.
@@ -117,6 +122,43 @@ werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei
 
 Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade
 eingespielt werden, sonst werden sie nicht sichtbar.
+=======
+Grundsätzliches zur Umsetzung der Anpassungen: In den meisten Fällen überschreiben wir entweder Templates oder URL-Pfade. Sollte sich beispielsweise der Name des Original-Templates in Juntagrico beim Upgrade ändern, so werden unsere Anpassungen wirkungslos.
+
+### Menü "Dein Menu ..." (Benutzermenü)
+
+Das Menü-Template wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
+
+Veränderte Templates:`rotebeete/templates/juntagrico/menu/user.html`
+
+#### Mitgliedschaft
+
+Manche Templates für die Seite werden vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
+
+Veränderte Templates: `rotebeete/templates/juntagrico/my/subscription/single.html`, `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html` neu: `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`
+
+#### Mitgliedschaft ➜ Genossenschaftsanteile verwalten
+
+Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
+
+Veränderte Templates: `rotebeete/templates/manage_shares.html`
+
+#### Mitgliedschaft ➜ Genossenschaftsanteile verwalten ➜ Bescheinigung herunterladen
+
+Das Template für die PDF-Bescheinigung wird vollständig überschrieben. Änderungen am Juntagrico-Template werden nicht sichtbar.
+
+Veränderte Templates: `rotebeete/templates/exports/share_certificate.html`
+
+#### Mitgliedschaft ➜ Gemüseanteil ändern ➜ Bestandteile
+
+Das Template für diese Zeile (alle Spalten) wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen
+
+Veränderte Templates: `rotebeete/templates/snippets/snippet_subscription_change_size.html`
+
+#### Persönliche Daten
+
+Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar.
+>>>>>>> 4503142 (chore: update README)
 
 - IBAN-Feld wird deaktiviert
 - Template: `rotebeete/templates/profile.html`
@@ -126,6 +168,7 @@ eingespielt werden, sonst werden sie nicht sichtbar.
 
 #### Gemüseanteile ➜ Aktive
 
+<<<<<<< HEAD
 Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
 `rotebeete/templates/juntagrico/manage/subscriptions.html`).
@@ -135,6 +178,16 @@ werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei
 Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
 werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
 `rotebeete/templates/juntagrico/menu/admin/lists.html`).
+=======
+Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
+Veränderte Templates: `rotebeete/templates/juntagrico/manage/subscriptions.html`
+
+#### Listen
+
+Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
+
+Veränderte Templates: `rotebeete/templates/juntagrico/menu/admin/lists.html`
+>>>>>>> 4503142 (chore: update README)
 
 #### Listen ➜ Mengenübersicht
 
@@ -157,7 +210,9 @@ werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei
 #### Exporte
 
 Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template werden
-nicht sichtbar. Template: `rotebeete/templates/export.html`
+nicht sichtbar.
+
+Veränderte Templates: `rotebeete/templates/export.html`
 
 #### Exporte ➜ Mitglieder exportieren
 
@@ -186,18 +241,18 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` wurden einige CSS-Eigenschafte
 
 In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS-Eigenschaften von `juntagrico_logo` sowie der Name und die Endung der gewünschten Datei geändert werden. Der Pfad `rotebeete/static/rotebeete/img/<DATEI>` sollte dennoch beibehalten werden.
 
-
 ### Alle überschriebene und neue templates:
-* `rotebeete/templates/juntagrico/menu/user.html`
-* `rotebeete/templates/juntagrico/my/subscription/single.html`
-* `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html`
-* neu: `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`
-* `rotebeete/templates/manage_shares.html`
-* `rotebeete/templates/exports/share_certificate.html`
-* `rotebeete/templates/snippets/snippet_subscription_change_size.html`
-* `rotebeete/templates/profile.html`
-* Filter: `rotebeete.templatetags.rotebeete.disable_iban`
-* `rotebeete/templates/juntagrico/manage/subscriptions.html`
-* `rotebeete/templates/juntagrico/menu/admin/lists.html`
-* `rotebeete/templates/export.html`
-* `rotebeete/templates/mails/member/share_created.txt`
+
+- `rotebeete/templates/juntagrico/menu/user.html`
+- `rotebeete/templates/juntagrico/my/subscription/single.html`
+- `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html`
+- neu: `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`
+- `rotebeete/templates/manage_shares.html`
+- `rotebeete/templates/exports/share_certificate.html`
+- `rotebeete/templates/snippets/snippet_subscription_change_size.html`
+- `rotebeete/templates/profile.html`
+- Filter: `rotebeete.templatetags.rotebeete.disable_iban`
+- `rotebeete/templates/juntagrico/manage/subscriptions.html`
+- `rotebeete/templates/juntagrico/menu/admin/lists.html`
+- `rotebeete/templates/export.html`
+- `rotebeete/templates/mails/member/share_created.txt`
