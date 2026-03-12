@@ -1,7 +1,7 @@
 ## Juntagrico und Django Versionen
 
-`juntagrico = "1.6.5"`
-`django = "^4.2.22"`
+`juntagrico = "1.7.6"`
+`django = "^4.2.29"`
 
 ## Entwicklungsumgebung:
 
@@ -72,11 +72,7 @@ poetry run python -m manage generate_testdata
 poetry run python -m manage generate_testdata_advanced
 ```
 
-<<<<<<< HEAD
-## Biterrunden
-=======
 ## Bieterrunden
->>>>>>> 4503142 (chore: update README)
 
 Wir gehen zurzeit davon aus, dass jedes Mitglied nur eine einzige Mitgliedschaft hat. Falls dieses Verhalten sich ändern soll, müssen `biddings.views._UserSubscriptionMixin._get_subscription()`, `biddings.templatetags.get_bid()` und `biddings.templates.biddings.biddinground_list.html` entsprechend aktualisiert werden.
 
@@ -84,7 +80,6 @@ Wir gehen zurzeit davon aus, dass jedes Mitglied nur eine einzige Mitgliedschaft
 
 _zur händischen Überprüfung der Funktionalität nach Upgrades_
 
-<<<<<<< HEAD
 Grundsätzliches zur Umsetzung der Anpassungen: In den meisten Fällen überschreiben wir entweder Templates oder
 URL-Pfade. Sollte sich beispielsweise der Name des Original-Templates in Juntagrico beim Upgrade ändern, so werden
 unsere Anpassungen wirkungslos.
@@ -158,7 +153,6 @@ Veränderte Templates: `rotebeete/templates/snippets/snippet_subscription_change
 #### Persönliche Daten
 
 Das Template für die Seite wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar.
->>>>>>> 4503142 (chore: update README)
 
 - IBAN-Feld wird deaktiviert
 - Template: `rotebeete/templates/profile.html`
@@ -168,26 +162,14 @@ Das Template für die Seite wird vollständig überschrieben. Änderungen am Jun
 
 #### Gemüseanteile ➜ Aktive
 
-<<<<<<< HEAD
-Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
-werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/juntagrico/manage/subscriptions.html`).
-
-#### Listen
-
-Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt
-werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen (Template:
-`rotebeete/templates/juntagrico/menu/admin/lists.html`).
-=======
 Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
-Veränderte Templates: `rotebeete/templates/juntagrico/manage/subscriptions.html`
+Veränderte Templates: `rotebeete/templates/juntagrico/manage/subscriptions/show.html`
 
 #### Listen
 
 Das Menü-Templates wird vollständig überschrieben. Änderungen am Juntagrico-Template müssen beim Upgrade eingespielt werden, sonst werden sie nicht sichtbar. Die genauen Anpassungen können wir bei Bedarf raussuchen.
 
 Veränderte Templates: `rotebeete/templates/juntagrico/menu/admin/lists.html`
->>>>>>> 4503142 (chore: update README)
 
 #### Listen ➜ Mengenübersicht
 
@@ -252,7 +234,7 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS
 - `rotebeete/templates/snippets/snippet_subscription_change_size.html`
 - `rotebeete/templates/profile.html`
 - Filter: `rotebeete.templatetags.rotebeete.disable_iban`
-- `rotebeete/templates/juntagrico/manage/subscriptions.html`
+- `rotebeete/templates/juntagrico/manage/subscriptions/show.html`
 - `rotebeete/templates/juntagrico/menu/admin/lists.html`
 - `rotebeete/templates/export.html`
 - `rotebeete/templates/mails/member/share_created.txt`
