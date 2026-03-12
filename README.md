@@ -1,3 +1,8 @@
+## Juntagrico und Django Versionen
+
+`juntagrico = "1.6.5"`
+`django = "^4.2.22"`
+
 ## Entwicklungsumgebung:
 
 poetry installieren (z.B mit pipx). Folgendn Befehl ausführen, um die Projektabhängigkeiten zu installieren:
