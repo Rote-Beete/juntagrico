@@ -578,17 +578,17 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-admin-sortable2"
-version = "2.1.11"
+version = "2.3.1"
 description = "Generic drag-and-drop sorting for the List, the Stacked- and the Tabular-Inlines Views in the Django Admin"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django_admin_sortable2-2.1.11-py3-none-any.whl", hash = "sha256:43dce224afe4c9a078023e9a5f527fa03e998ec240d593972fad3832b1bf353a"},
-    {file = "django_admin_sortable2-2.1.11.tar.gz", hash = "sha256:c6f9386d196d4179f87666a4bc78a0c69d990dcd7d0f76615317161594f171be"},
+    {file = "django_admin_sortable2-2.3.1-py3-none-any.whl", hash = "sha256:5784f441f3532013438c3c3226fbccc39b9c733f867b26a5f477d6b05f734b93"},
+    {file = "django_admin_sortable2-2.3.1.tar.gz", hash = "sha256:e397d08606f9e0da73e52661b841021ecab21be6f74783408e625ccddfe975af"},
 ]
 
 [package.dependencies]
-Django = ">=4.0"
+Django = ">=4.2"
 
 [[package]]
 name = "django-crispy-forms"
@@ -807,22 +807,6 @@ files = [
 ]
 
 [[package]]
-name = "freetype-py"
-version = "2.5.1"
-description = "Freetype python bindings"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "freetype-py-2.5.1.zip", hash = "sha256:cfe2686a174d0dd3d71a9d8ee9bf6a2c23f5872385cf8ce9f24af83d076e2fbd"},
-    {file = "freetype_py-2.5.1-py3-none-macosx_10_9_universal2.whl", hash = "sha256:d01ded2557694f06aa0413f3400c0c0b2b5ebcaabeef7aaf3d756be44f51e90b"},
-    {file = "freetype_py-2.5.1-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:5d2f6b3d68496797da23204b3b9c4e77e67559c80390fc0dc8b3f454ae1cd819"},
-    {file = "freetype_py-2.5.1-py3-none-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:289b443547e03a4f85302e3ac91376838e0d11636050166662a4f75e3087ed0b"},
-    {file = "freetype_py-2.5.1-py3-none-musllinux_1_1_aarch64.whl", hash = "sha256:cd3bfdbb7e1a84818cfbc8025fca3096f4f2afcd5d4641184bf0a3a2e6f97bbf"},
-    {file = "freetype_py-2.5.1-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:3c1aefc4f0d5b7425f014daccc5fdc7c6f914fb7d6a695cc684f1c09cd8c1660"},
-    {file = "freetype_py-2.5.1-py3-none-win_amd64.whl", hash = "sha256:0b7f8e0342779f65ca13ef8bc103938366fecade23e6bb37cb671c2b8ad7f124"},
-]
-
-[[package]]
 name = "html5lib"
 version = "1.1"
 description = "HTML parser based on the WHATWG HTML specification"
@@ -978,18 +962,18 @@ files = [
 
 [[package]]
 name = "juntagrico"
-version = "1.7.6"
+version = "1.7.10"
 description = "juntagrico is a management platform for community gardens and vegetable cooperatives."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "juntagrico-1.7.6-py3-none-any.whl", hash = "sha256:a5d1daaac2cc47bb50caab5019f3e180f7b144d327d202a7f616c3702ef9a2ce"},
-    {file = "juntagrico-1.7.6.tar.gz", hash = "sha256:8e9b590a031d01c485d3e9db9dcf663efa7567d657eee3869ee754f268762bcb"},
+    {file = "juntagrico-1.7.10-py3-none-any.whl", hash = "sha256:cf65faa550d4abe5fa69d9b532c8d39407f1a4f831967353d24e1fe604b3825d"},
+    {file = "juntagrico-1.7.10.tar.gz", hash = "sha256:1df0ed402e809d290304c430c78a687296cc716733a5cda9a1b89d70c6cac5bb"},
 ]
 
 [package.dependencies]
 Django = ">=4.2.22,<4.3.0"
-django-admin-sortable2 = ">=2.1.10,<2.2.0"
+django-admin-sortable2 = ">=2.3.0,<2.4.0"
 django-crispy-forms = ">=1.14.0,<1.15.0"
 django-impersonate = ">=1.9.1,<1.10.0"
 django-import-export = ">=4.2.0,<4.3.0"
@@ -999,7 +983,8 @@ fontawesomefree = ">=6.4.2,<6.5.0"
 icalendar = ">=5.0.0,<5.1.0"
 python-dateutil = ">=2.8.2,<2.9.0"
 schwifty = "2023.6.0"
-xhtml2pdf = "0.2.16"
+svglib = "<1.6.0"
+xhtml2pdf = "0.2.17"
 XlsxWriter = "3.1.4"
 
 [[package]]
@@ -1677,33 +1662,6 @@ files = [
 defusedxml = ">=0.7.1,<0.8.0"
 
 [[package]]
-name = "pycairo"
-version = "1.29.0"
-description = "Python interface for cairo"
-optional = false
-python-versions = ">=3.10"
-files = [
-    {file = "pycairo-1.29.0-cp310-cp310-win32.whl", hash = "sha256:96c67e6caba72afd285c2372806a0175b1aa2f4537aa88fb4d9802d726effcd1"},
-    {file = "pycairo-1.29.0-cp310-cp310-win_amd64.whl", hash = "sha256:65bddd944aee9f7d7d72821b1c87e97593856617c2820a78d589d66aa8afbd08"},
-    {file = "pycairo-1.29.0-cp310-cp310-win_arm64.whl", hash = "sha256:15b36aea699e2ff215cb6a21501223246032e572a3a10858366acdd69c81a1c8"},
-    {file = "pycairo-1.29.0-cp311-cp311-win32.whl", hash = "sha256:12757ebfb304b645861283c20585c9204c3430671fad925419cba04844d6dfed"},
-    {file = "pycairo-1.29.0-cp311-cp311-win_amd64.whl", hash = "sha256:3391532db03f9601c1cee9ebfa15b7d1db183c6020f3e75c1348cee16825934f"},
-    {file = "pycairo-1.29.0-cp311-cp311-win_arm64.whl", hash = "sha256:b69be8bb65c46b680771dc6a1a422b1cdd0cffb17be548f223e8cbbb6205567c"},
-    {file = "pycairo-1.29.0-cp312-cp312-win32.whl", hash = "sha256:91bcd7b5835764c616a615d9948a9afea29237b34d2ed013526807c3d79bb1d0"},
-    {file = "pycairo-1.29.0-cp312-cp312-win_amd64.whl", hash = "sha256:3f01c3b5e49ef9411fff6bc7db1e765f542dc1c9cfed4542958a5afa3a8b8e76"},
-    {file = "pycairo-1.29.0-cp312-cp312-win_arm64.whl", hash = "sha256:eafe3d2076f3533535ad4a361fa0754e0ee66b90e548a3a0f558fed00b1248f2"},
-    {file = "pycairo-1.29.0-cp313-cp313-win32.whl", hash = "sha256:3eb382a4141591807073274522f7aecab9e8fa2f14feafd11ac03a13a58141d7"},
-    {file = "pycairo-1.29.0-cp313-cp313-win_amd64.whl", hash = "sha256:91114e4b3fbf4287c2b0788f83e1f566ce031bda49cf1c3c3c19c3e986e95c38"},
-    {file = "pycairo-1.29.0-cp313-cp313-win_arm64.whl", hash = "sha256:09b7f69a5ff6881e151354ea092137b97b0b1f0b2ab4eb81c92a02cc4a08e335"},
-    {file = "pycairo-1.29.0-cp314-cp314-win32.whl", hash = "sha256:69e2a7968a3fbb839736257bae153f547bca787113cc8d21e9e08ca4526e0b6b"},
-    {file = "pycairo-1.29.0-cp314-cp314-win_amd64.whl", hash = "sha256:e91243437a21cc4c67c401eff4433eadc45745275fa3ade1a0d877e50ffb90da"},
-    {file = "pycairo-1.29.0-cp314-cp314-win_arm64.whl", hash = "sha256:b72200ea0e5f73ae4c788cd2028a750062221385eb0e6d8f1ecc714d0b4fdf82"},
-    {file = "pycairo-1.29.0-cp314-cp314t-win_amd64.whl", hash = "sha256:5e45fce6185f553e79e4ef1722b8e98e6cde9900dbc48cb2637a9ccba86f627a"},
-    {file = "pycairo-1.29.0-cp314-cp314t-win_arm64.whl", hash = "sha256:caba0837a4b40d47c8dfb0f24cccc12c7831e3dd450837f2a356c75f21ce5a15"},
-    {file = "pycairo-1.29.0.tar.gz", hash = "sha256:f3f7fde97325cae80224c09f12564ef58d0d0f655da0e3b040f5807bd5bd3142"},
-]
-
-[[package]]
 name = "pycountry"
 version = "26.2.16"
 description = "ISO country, subdivision, language, currency and script definitions and their translations"
@@ -2301,21 +2259,6 @@ pygments = ">=2.13.0,<3.0.0"
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
-name = "rlpycairo"
-version = "0.4.0"
-description = "Plugin backend renderer for reportlab.graphics.renderPM"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "rlpycairo-0.4.0-py3-none-any.whl", hash = "sha256:3ce83825d5761c03bc3571c7db12a336ad51417e63189e3512d11b8922576aa9"},
-    {file = "rlpycairo-0.4.0.tar.gz", hash = "sha256:07c2c3c47828e83d9c09657a54ecbcd1a97aac9dc199780234456d3473faadc7"},
-]
-
-[package.dependencies]
-freetype-py = ">=2.3"
-pycairo = ">=1.20.0"
-
-[[package]]
 name = "ruff"
 version = "0.9.10"
 description = "An extremely fast Python linter and code formatter, written in Rust."
@@ -2435,24 +2378,19 @@ tests = ["cython", "littleutils", "pygments", "pytest", "typeguard"]
 
 [[package]]
 name = "svglib"
-version = "1.6.0"
+version = "1.5.1"
 description = "A pure-Python library for reading and converting SVG"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.7"
 files = [
-    {file = "svglib-1.6.0-py3-none-any.whl", hash = "sha256:9aea8e2e81cbbf9c844460e4c7dc90e0a06aea7983bc201975ccd279d7b2d194"},
-    {file = "svglib-1.6.0.tar.gz", hash = "sha256:4c38a274a744ef0d1677f55d5d62fc0fb798819f813e52872a796e615741733d"},
+    {file = "svglib-1.5.1.tar.gz", hash = "sha256:3ae765d3a9409ee60c0fb4d24c2deb6a80617aa927054f5bcd7fc98f0695e587"},
 ]
 
 [package.dependencies]
 cssselect2 = ">=0.2.0"
-lxml = ">=6.0.0"
-reportlab = ">=4.4.3"
-rlpycairo = ">=0.4.0"
+lxml = "*"
+reportlab = "*"
 tinycss2 = ">=0.6.0"
-
-[package.extras]
-dev = ["mypy (>=1.18.1)", "pre-commit (>=4.3.0)", "pytest (>=8.3.5)", "pytest-cov (>=7.0.0)", "pytest-runner (>=6.0.1)", "ruff (>=0.13.0)", "tox (>=4.30.2)"]
 
 [[package]]
 name = "tablib"
@@ -2686,13 +2624,13 @@ files = [
 
 [[package]]
 name = "xhtml2pdf"
-version = "0.2.16"
+version = "0.2.17"
 description = "PDF generator using HTML and CSS"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "xhtml2pdf-0.2.16-py3-none-any.whl", hash = "sha256:b37040127627aee42f76f25ebbd5798308ffc93edaf4850a4d3dd894160ebb53"},
-    {file = "xhtml2pdf-0.2.16.tar.gz", hash = "sha256:7391adac12afb086561667cdc8d6ef0ac4afe5097bd97383622d42b6343dee71"},
+    {file = "xhtml2pdf-0.2.17-py3-none-any.whl", hash = "sha256:61a7ecac829fed518f7dbcb916e9d56bea6e521e02e54644b3d0ca33f0658315"},
+    {file = "xhtml2pdf-0.2.17.tar.gz", hash = "sha256:09ddbc31aa0e38a16f2f3cb73be89af5f7c968c17a564afdd685d280e39c526d"},
 ]
 
 [package.dependencies]
@@ -2702,12 +2640,12 @@ Pillow = ">=8.1.1"
 pyHanko = ">=0.12.1"
 pyhanko-certvalidator = ">=0.19.5"
 pypdf = ">=3.1.0"
-python-bidi = ">=0.4.2"
+python-bidi = ">=0.5.0"
 reportlab = ">=4.0.4,<5"
 svglib = ">=1.2.1"
 
 [package.extras]
-docs = ["sphinx (>=6)", "sphinx-rtd-theme (>=0.5.0)"]
+docs = ["sphinx (>=6)", "sphinx-rtd-theme (>=0.5.0)", "sphinx_reredirects (>=0.1.3)"]
 pycairo = ["reportlab[pycairo] (>=4.0.4,<5)"]
 release = ["build", "twine"]
 renderpm = ["reportlab[renderpm] (>=4.0.4,<5)"]
@@ -2727,4 +2665,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "7c4505453346ae61bcbef9d377672d017e49ff2878bf7c96e9135353a92e6d06"
+content-hash = "d7a5d347fe8a11086f3cf1af89a83b4250aa377eda61af4159c76fb83dd9ae05"
