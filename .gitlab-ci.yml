@@ -41,6 +41,6 @@ test:
     - apk add postgresql-dev
     - *setup-poetry
     - poetry install --with=test
-    - poetry run python manage.py collectstatic
+    - poetry run python manage.py collectstatic --noinput
   script:
     - poetry run pytest

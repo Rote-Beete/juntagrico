@@ -66,5 +66,9 @@ class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
         self.subscription.subscriptionmembership_set.create(member=member_1)
         self.subscription.subscriptionmembership_set.create(member=member_2)
 
-        assert list(bid.subscription.current_members) == [self.primary_member, member_1, member_2]
+        assert list(bid.subscription.current_members) == [
+            self.primary_member,
+            member_1,
+            member_2,
+        ]
         assert self.primary_member in bid.subscription.current_members
