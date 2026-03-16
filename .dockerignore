@@ -1,0 +1,16 @@
+__pycache__/
+node_modules/
+data*/
+.coverage
+.history/
+.venv/
+.ruff_cache/
+.vscode/
+.git/
+*.pyc
+*.mo
+*.local
+*.sql
+*.sqlite3
+docker-compose*.yml
+dist/

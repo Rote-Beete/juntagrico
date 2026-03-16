@@ -1,0 +1,36 @@
+#!!!DON'T YOUS THIS COMPOSE FILE FOR PRODUCTION. ONLY FOR DEV PURPOSES!!!!
+
+services:
+  redis:
+    image: redis:7-alpine
+  backend:
+    build:
+      dockerfile: Dockerfile
+      args:
+        UV_FLAGS: --all-groups
+      context: .
+      target: dev
+    depends_on: [redis]
+    env_file: [container/env, .env.local]
+    environment:
+      ROTEBEETE_DEFENDER_REDIS_URL: 'redis://redis:6379/0'
+    volumes:
+      - rotebeete-data:/var/lib/rotebeete
+    develop:
+      watch:
+        - path: uv.lock
+          action: rebuild
+        - path: Dockerfile
+          action: rebuild
+
+  nginx:
+    image: nginx
+    depends_on: [backend]
+    volumes:
+      - ./container/nginx-server.conf:/etc/nginx/nginx.conf
+      - ./container/nginx-app.conf:/etc/nginx/snippets/rotebeete.conf
+      - rotebeete-data:/var/lib/rotebeete:ro
+    ports: ['1234:8537']
+
+volumes:
+  rotebeete-data:

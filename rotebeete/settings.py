@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-import dj_database_url
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,9 +12,11 @@ env.prefix = "ROTEBEETE_"
 environ.Env.read_env(BASE_DIR / ".env")
 environ.Env.read_env(BASE_DIR / ".env.local")
 
-DATA_DIR = Path(env("DATA_DIR", default=str(BASE_DIR / "data")))
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+DATA_DIR = env("DATA_DIR", cast=Path, default=BASE_DIR / "data")
+DATA_DIR.mkdir(exist_ok=True)
+
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=list, default=[])
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", cast=list, default=[])
 DEBUG = env("DEBUG", cast=bool, default=False)
 ORGANISATION_WEBSITE = {"name": "rotebeete.org", "url": "https://rotebeete.org"}
 
@@ -50,14 +51,8 @@ INSTALLED_APPS = [
 ]
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=env(
-            "DATABASE_URL", cast=str, default=f"sqlite:///{DATA_DIR / 'db.sqlite3'}"
-        ),
-        conn_max_age=600,
-    )
+    "default": env.db("DATABASE_URL", default=f"sqlite:///{DATA_DIR / 'db.sqlite3'}")
 }
-
 
 ROOT_URLCONF = "rotebeete.urls"
 
@@ -256,9 +251,8 @@ ORGANISATION_BANK_CONNECTION = {
 
 DEFENDER_BEHIND_REVERSE_PROXY = True
 DEFENDER_LOCKOUT_URL = "https://rotebeete.org/organisation/kontakt/"
-DEFENDER_REDIS_URL = "redis://127.0.0.1:6379/0"
 
-
+DEFENDER_REDIS_URL = env("DEFENDER_REDIS_URL", default="redis://127.0.0.1:6379/0")
 # OIDC/ OAuth2 fuer Wikijs
 ##########################
 # https://django-oauth-toolkit.readthedocs.io/en/latest/oidc.html
