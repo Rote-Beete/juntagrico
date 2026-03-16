@@ -1,24 +1,25 @@
 import os
 from pathlib import Path
 import dj_database_url
-from dotenv import load_dotenv
-from bnb.env import Environment
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
-load_dotenv(BASE_DIR / ".env.local")
-env = Environment("ROTEBEETE_")
 
-DEBUG = env.is_true("DEBUG", default=False)
 
-ALLOWED_HOSTS = env.get_list("ALLOWED_HOSTS", default=["localhost"])
+env = environ.Env()
 
-ORGANISATION_WEBSITE = {'name': "rotebeete.org", 'url': "https://rotebeete.org"}
+env.prefix = "ROTEBEETE_"
 
-SECRET_KEY = env.get("SECRET_KEY", default="") or None
+environ.Env.read_env(BASE_DIR / ".env")
+environ.Env.read_env(BASE_DIR / ".env.local")
 
-DATA_DIR = env.get("DATA_DIR", cast=Path, default=BASE_DIR / "data")
-DATA_DIR.mkdir(exist_ok=True)
+DATA_DIR = Path(env("DATA_DIR", default=str(BASE_DIR / "data")))
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=list, default=[])
+DEBUG = env("DEBUG", cast=bool, default=False)
+ORGANISATION_WEBSITE = {"name": "rotebeete.org", "url": "https://rotebeete.org"}
+
+SECRET_KEY = env("SECRET_KEY", cast=str)
 
 
 IMPERSONATE = {
@@ -37,7 +38,7 @@ INSTALLED_APPS = [
     "rotebeete.transitions",
     "juntagrico",
     "fontawesomefree",
-    'import_export',
+    "import_export",
     "impersonate",
     "crispy_forms",
     "adminsortable2",
@@ -49,10 +50,14 @@ INSTALLED_APPS = [
 ]
 
 DATABASES = {
-    "default": dj_database_url.parse(
-        env.get("DATABASE_URL", default=f"sqlite:///{DATA_DIR / 'db.sqlite'}"),
+    "default": dj_database_url.config(
+        default=env(
+            "DATABASE_URL", cast=str, default=f"sqlite:///{DATA_DIR / 'db.sqlite3'}"
+        ),
+        conn_max_age=600,
     )
 }
+
 
 ROOT_URLCONF = "rotebeete.urls"
 
@@ -73,13 +78,13 @@ MIDDLEWARE = [
     "defender.middleware.FailedLoginMiddleware",
 ]
 
-EMAIL_HOST = 'mail.rotebeete.org'
-EMAIL_HOST_USER = 'invalid@rotebeete.invalid'
-EMAIL_HOST_PASSWORD = env.get("EMAIL_HOST_PASSWORD", default="") or None
-EMAIL_PORT = '587'
+EMAIL_HOST = "mail.rotebeete.org"
+EMAIL_HOST_USER = "invalid@rotebeete.invalid"
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str)
+EMAIL_PORT = "587"
 EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL = 'invalid@rotebeete.invalid'
+DEFAULT_FROM_EMAIL = "invalid@rotebeete.invalid"
 
 WHITELIST_EMAILS = []
 
@@ -106,9 +111,11 @@ STORAGES = {
     },
 }
 
-IMPORT_EXPORT_EXPORT_PERMISSION_CODE = 'view'
+IMPORT_EXPORT_EXPORT_PERMISSION_CODE = "view"
 
-LANGUAGE_CODE = "de-DE"
+LANGUAGE_CODE = env("LANGUAGE_CODE", cast=str, default="de-DE")
+
+TIME_ZONE = env("TIME_ZONE", cast=str, default="Europe/Berlin")
 
 SITE_ID = 1
 
@@ -127,7 +134,6 @@ DATE_INPUT_FORMATS = [
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 
-TIME_ZONE = "Europe/Berlin"
 
 STYLES = {"static": ["rotebeete/css/rotebeete.css", "biddings/css/biddings.css"]}
 
@@ -141,28 +147,28 @@ class InvalidTemplateVariable(str):
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/data/juntagrico/rotebeete/templates/'],
-        'OPTIONS': {
-            'context_processors': [
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": ["/data/juntagrico/rotebeete/templates/"],
+        "OPTIONS": {
+            "context_processors": [
                 # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
                 # list if you haven't customized them:
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.request',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-                'juntagrico.context_processors.vocabulary',
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.request",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                "juntagrico.context_processors.vocabulary",
             ],
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
             # 'string_if_invalid': InvalidTemplateVariable("%s"),
-            'debug': False,
+            "debug": False,
         },
     },
 ]
@@ -175,7 +181,7 @@ SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 LOCALE_PATHS = (BASE_DIR / "juntagrico/locale",)
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-CRISPY_FAIL_SILENTLY = env.is_true("CRISPY_FAIL_SILENTLY", default=True)
+CRISPY_FAIL_SILENTLY = env("CRISPY_FAIL_SILENTLY", cast=bool, default=True)
 
 DJRICHTEXTFIELD_CONFIG = {
     "js": ["/static/juntagrico/external/tinymce/tinymce.min.js"],
@@ -188,25 +194,6 @@ DJRICHTEXTFIELD_CONFIG = {
 }
 
 WSGI_APPLICATION = "rotebeete.wsgi.application"
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': env.get("LOGGING_FILE_PATH", default="../debug.log"),
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
@@ -239,29 +226,29 @@ BUSINESS_YEAR_START = {"day": 1, "month": 7}
 BUSINESS_YEAR_CANCELATION_MONTH = 3
 CONTACTS = {"general": "invalid@rotebeete.invalid"}
 VOCABULARY = {
-    'member': 'Mitglied',
-    'member_pl': 'Mitglieder',
-    'assignment': 'Arbeitseinsatz',
-    'assignment_pl': 'Arbeitseinsätze',
-    'share': 'Genossenschaftsanteil',
-    'share_pl': 'Genossenschaftsanteile',
-    'subscription': 'Gemüseanteil',
-    'subscription_pl': 'Gemüseanteile',
-    'co_member': 'Mitessende',
-    'co_member_pl': 'Mitessende',
-    'price': 'Beitrag',
-    'member_type': 'Mitglied',
-    'member_type_pl': 'Mitglieder',
-    'depot': 'Verteilstation',
-    'depot_pl': 'Verteilstationen',
-    'package': 'Kiste',
+    "member": "Mitglied",
+    "member_pl": "Mitglieder",
+    "assignment": "Arbeitseinsatz",
+    "assignment_pl": "Arbeitseinsätze",
+    "share": "Genossenschaftsanteil",
+    "share_pl": "Genossenschaftsanteile",
+    "subscription": "Gemüseanteil",
+    "subscription_pl": "Gemüseanteile",
+    "co_member": "Mitessende",
+    "co_member_pl": "Mitessende",
+    "price": "Beitrag",
+    "member_type": "Mitglied",
+    "member_type_pl": "Mitglieder",
+    "depot": "Verteilstation",
+    "depot_pl": "Verteilstationen",
+    "package": "Kiste",
 }
-CURRENCY = 'EUR'
+CURRENCY = "EUR"
 
 ORGANISATION_BANK_CONNECTION = {
-    'IBAN': '-',
-    'BIC': '-',
-    'NAME': '-',
+    "IBAN": "-",
+    "BIC": "-",
+    "NAME": "-",
 }
 
 # DEFENDER: Brute Force Protection
@@ -292,10 +279,10 @@ try:
         "PKCE_REQUIRED": False,
         "OIDC_RSA_PRIVATE_KEY": oidc_key,
         "OAUTH2_VALIDATOR_CLASS": "rotebeete.oauth_validators.AccountOAuth2Validator",
-        'SCOPES': {
-            'openid': 'OpenID Connect scope',
-            'email': 'Email scope',
-            'profile': 'Profile scope',
+        "SCOPES": {
+            "openid": "OpenID Connect scope",
+            "email": "Email scope",
+            "profile": "Profile scope",
         },
     }
 except (NameError, TypeError):
