@@ -1,20 +1,20 @@
 .PHONY: lint-check
 lint-check:
-	poetry run ruff check .
-	poetry run ruff format --check .
-	poetry run djlint --exclude '--none--' --use-gitignore --check . 
+	uv run ruff check .
+	uv run ruff format --check .
+	uv run djlint --exclude '--none--' --use-gitignore --check . 
 
 .PHONY: ruff
 ruff:
-	poetry run ruff check . --fix
-	poetry run ruff format .
+	uv run ruff check . --fix
+	uv run ruff format .
 
 .PHONY: djlint
 djlint:
-	poetry run djlint --exclude '--none--' --use-gitignore --reformat .
+	uv run djlint --exclude '--none--' --use-gitignore --reformat .
 
 .PHONY: test
 test:
-	poetry install --with=test
-	poetry run python manage.py collectstatic --noinput
-	poetry run pytest
+	uv sync --group test
+	uv run python manage.py collectstatic --noinput
+	uv run pytest

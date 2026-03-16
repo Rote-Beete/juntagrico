@@ -2,29 +2,27 @@ stages:
   - test
 
 variables:
-  POETRY_VERSION: 1.8.5
+  UV_VERSION: '0.10.10'
 
 default:
-  image: python:3.12-alpine
+  image: python:3.13-alpine
 
-.setup-pipx: &setup-pipx
+.setup-uv: &setup-uv
+  - apk add make
   - which pipx >/dev/null || pip install pipx && export PATH="$(pipx environment --value PIPX_BIN_DIR):$PATH"
-
-.setup-poetry: &setup-poetry
-  - *setup-pipx
-  - which poetry >/dev/null || pipx install "poetry==$POETRY_VERSION"
+  - pipx install "uv==$UV_VERSION"
 
 .lint:
   stage: test
   before_script:
-    - *setup-poetry
-    - poetry install --only=dev
+    - *setup-uv
+    - uv sync --no-default-groups --group dev
 
 ruff:
   extends: .lint
   script:
-    - poetry run ruff check .
-    - poetry run ruff format --check .
+    - uv run ruff check .
+    - uv run ruff format --check .
 
 djlint:
   extends: .lint
@@ -33,14 +31,14 @@ djlint:
     # the entire path of the file and thus will include paths like `/builds/rokoli/rotebeete`
     # resulting in no files being found for linting m)
     # see: https://github.com/djlint/djLint/issues/1028
-    - poetry run djlint --exclude '--none--' --use-gitignore --check .
+    - uv run djlint --exclude '--none--' --use-gitignore --check .
 
 test:
   stage: test
   before_script:
     - apk add postgresql-dev
-    - *setup-poetry
-    - poetry install --with=test
-    - poetry run python manage.py collectstatic --noinput
+    - *setup-uv
+    - uv sync --group test
+    - uv run python manage.py collectstatic --noinput
   script:
-    - poetry run pytest
+    - uv run pytest
