@@ -11,12 +11,6 @@ uv installieren (z.B mit pipx). Folgendes Befehl ausführen, um die Projektabhä
 uv sync
 ```
 
-Auf Debian/Ubuntu kann `psycopg2` mit dem Befehl `apt install python3-psycopg2` installiert werden. Falls eine Installation über PyPI gewünscht ist, kann dieses beispielsweise mit diesem Befehl passieren:
-
-```
-uv pip install psycopg2-binary
-```
-
 Die Settings-Variablen können als environment variables, beispielsweise in `.env.local` (während der Entwicklung) oder in `.env` (während der Produktion), gesetzt werden. Als Beispiel für `.env.local`:
 
 ```
