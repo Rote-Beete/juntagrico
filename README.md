@@ -5,16 +5,16 @@
 
 ## Entwicklungsumgebung:
 
-poetry installieren (z.B mit pipx). Folgendes Befehl ausführen, um die Projektabhängigkeiten zu installieren:
+uv installieren (z.B mit pipx). Folgendes Befehl ausführen, um die Projektabhängigkeiten zu installieren:
 
 ```
-poetry install
+uv sync
 ```
 
 Auf Debian/Ubuntu kann `psycopg2` mit dem Befehl `apt install python3-psycopg2` installiert werden. Falls eine Installation über PyPI gewünscht ist, kann dieses beispielsweise mit diesem Befehl passieren:
 
 ```
-poetry run pip install psycopg2-binary
+uv pip install psycopg2-binary
 ```
 
 Die Settings-Variablen können als environment variables, beispielsweise in `.env.local` (während der Entwicklung) oder in `.env` (während der Produktion), gesetzt werden. Als Beispiel für `.env.local`:
@@ -30,11 +30,11 @@ ROTEBEETE_EMAIL_HOST_PASSWORD=VerySecretPassword
 Django-Management-Befehle:
 
 ```
-poetry run python manage.py migrate
-poetry run python manage.py collectstatic
-poetry run python manage.py createsuperuser
-poetry run python manage.py create_member_for_superusers
-poetry run python manage.py runserver
+uv run python manage.py migrate
+uv run python manage.py collectstatic
+uv run python manage.py createsuperuser
+uv run python manage.py create_member_for_superusers
+uv run python manage.py runserver
 ```
 
 Um alle Mitglieder aufzufordern, ihre persönlichen Daten zu überprüfen:
@@ -50,7 +50,7 @@ members = Member.objects.filter(email="test@example.org")
 ```
 
 ```
-poetry run python manage.py sendtransitionmails
+uv run python manage.py sendtransitionmails
 ```
 
 Email versenden:
@@ -62,14 +62,14 @@ members = Member.objects.filter(MemberDao.has_subscription())
 ```
 
 ```
-poetry run python manage.py sendtransitionmails
+uv run python manage.py sendtransitionmails
 ```
 
 Test-Dateien (s. https://juntagrico.readthedocs.io/en/latest/intro/installation.html)
 
 ```
-poetry run python -m manage generate_testdata
-poetry run python -m manage generate_testdata_advanced
+uv run python -m manage generate_testdata
+uv run python -m manage generate_testdata_advanced
 ```
 
 ## Bieterrunden
