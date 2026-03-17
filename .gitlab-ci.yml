@@ -65,4 +65,4 @@ deploy::to-staging:
     - job: deploy::container-image
   environment:
     name: staging
-    url: https://untagrico.staging.roko.li
+    url: https://juntagrico.staging.roko.li
