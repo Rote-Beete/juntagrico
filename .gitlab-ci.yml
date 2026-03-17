@@ -48,3 +48,21 @@ deploy::container-image:
     - if: $CI_COMMIT_BRANCH =~ /^release\/v.+/
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       when: manual
+
+.deploy-to-env:
+  stage: deploy
+  image: alpine
+  before_script:
+    - apk add curl
+  script:
+    - curl --fail-with-body --request POST --user "$DEPLOYMENT_HOOK_AUTH" "$DEPLOYMENT_HOOK_URL"
+
+deploy::to-staging:
+  extends: .deploy-to-env
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  needs:
+    - job: deploy::container-image
+  environment:
+    name: staging
+    url: https://untagrico.staging.roko.li
