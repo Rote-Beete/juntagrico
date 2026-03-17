@@ -12,26 +12,12 @@ default:
   - which pipx >/dev/null || pip install pipx && export PATH="$(pipx environment --value PIPX_BIN_DIR):$PATH"
   - pipx install "uv==$UV_VERSION"
 
-.lint:
+lint:
   stage: test
   before_script:
     - *setup-uv
-    - uv sync --no-default-groups --group dev
-
-ruff:
-  extends: .lint
   script:
-    - uv run ruff check .
-    - uv run ruff format --check .
-
-djlint:
-  extends: .lint
-  script:
-    # djlint includes a default exclude of "build" that is matched against
-    # the entire path of the file and thus will include paths like `/builds/rokoli/rotebeete`
-    # resulting in no files being found for linting m)
-    # see: https://github.com/djlint/djLint/issues/1028
-    - uv run djlint --exclude '--none--' --use-gitignore --check .
+    - make lint-check
 
 test:
   stage: test
@@ -43,7 +29,5 @@ test:
   before_script:
     - apk add postgresql-dev
     - *setup-uv
-    - uv sync --group test
-    - uv run python manage.py collectstatic --noinput
   script:
-    - uv run pytest
+    - make test
