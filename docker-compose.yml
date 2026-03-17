@@ -3,6 +3,22 @@
 services:
   redis:
     image: redis:7-alpine
+
+  postgres:
+    image: postgres:16-alpine
+    env_file: [container/env, .env.local]
+    environment:
+      POSTGRES_DB: rb
+      POSTGRES_USER: rb
+      POSTGRES_PASSWORD: rb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U rb']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   backend:
     build:
       dockerfile: Dockerfile
@@ -10,10 +26,15 @@ services:
         UV_FLAGS: --all-groups
       context: .
       target: dev
-    depends_on: [redis]
+    depends_on:
+      redis:
+        condition: service_started
+      postgres:
+        condition: service_healthy
     env_file: [container/env, .env.local]
     environment:
       ROTEBEETE_DEFENDER_REDIS_URL: 'redis://redis:6379/0'
+      ROTEBEETE_DATABASE_URL: 'postgres://rb:rb@postgres:5432/rb'
     volumes:
       - rotebeete-data:/var/lib/rotebeete
     develop:
@@ -34,3 +55,4 @@ services:
 
 volumes:
   rotebeete-data:
+  postgres-data:
