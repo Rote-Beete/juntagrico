@@ -35,6 +35,11 @@ djlint:
 
 test:
   stage: test
+  variables:
+    ROTEBEETE_SECRET_KEY: 'VerySecretKey'
+    ROTEBEETE_ALLOWED_HOSTS: '127.0.0.1'
+    ROTEBEETE_CSRF_TRUSTED_ORIGINS: 'http://localhost:1234,http://127.0.0.1:1234'
+    ROTEBEETE_EMAIL_HOST_PASSWORD: 'VerySecretPassword'
   before_script:
     - apk add postgresql-dev
     - *setup-uv
