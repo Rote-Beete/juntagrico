@@ -1,7 +1,22 @@
-from django.forms import ModelForm, ModelChoiceField, ValidationError
+from django.forms import ModelForm, ModelChoiceField, ValidationError, Select
 from django.utils.translation import gettext_lazy as _
 from juntagrico.admin import SubscriptionSize
 from biddings.models import Bid
+
+
+class SubscriptionSizeSelect(Select):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex=subindex, attrs=attrs
+        )
+        if value:
+            option["attrs"]["data-units"] = SubscriptionSize.objects.get(
+                id=str(value)
+            ).units
+
+        return option
 
 
 class BidUpdateForm(ModelForm):
@@ -27,6 +42,7 @@ class BidUpdateForm(ModelForm):
         exclude = ["bidding_round", "subscription"]
 
     subscription_size = ModelChoiceField(
-        queryset=SubscriptionSize.objects.order_by('units'),
+        queryset=SubscriptionSize.objects.order_by("units"),
         label=Bid._meta.get_field("subscription_size").verbose_name,
+        widget=SubscriptionSizeSelect,
     )
