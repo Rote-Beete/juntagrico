@@ -13,18 +13,18 @@ class BidQuerySet(models.QuerySet):
         return self.filter(bidding_round=bidding_round).filter(
             pk__in=(
                 self.filter(bidding_round=bidding_round)
-                .values('subscription_id')
-                .annotate(max_pk=Max('pk'))
-                .values_list('max_pk', flat=True)
+                .values("subscription_id")
+                .annotate(max_pk=Max("pk"))
+                .values_list("max_pk", flat=True)
             )
         )
 
     def delete_except_latest_per_subscription_in_round(self, bidding_round):
         latest_pks = (
             self.filter(bidding_round=bidding_round)
-            .values('subscription_id')
-            .annotate(max_pk=Max('pk'))
-            .values_list('max_pk', flat=True)
+            .values("subscription_id")
+            .annotate(max_pk=Max("pk"))
+            .values_list("max_pk", flat=True)
         )
         return (
             self.filter(bidding_round=bidding_round).exclude(pk__in=latest_pks).delete()
@@ -124,8 +124,8 @@ class Bid(models.Model):
     subscription_size = models.ForeignKey(
         SubscriptionSize,
         on_delete=models.PROTECT,
-        related_name='bid',
-        verbose_name=_('Gewünschte Anzahl der Anteile'),
+        related_name="bid",
+        verbose_name=_("Gewünschte Anzahl der Anteile"),
         null=True,
         blank=True,
     )

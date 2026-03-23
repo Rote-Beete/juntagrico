@@ -74,3 +74,8 @@
 .col-custom {
     min-width: 150px;
 }
+
+.bidding-row {
+    max-width: 600px;
+}
+
