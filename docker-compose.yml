@@ -37,6 +37,8 @@ services:
       ROTEBEETE_DATABASE_URL: 'postgres://rb:rb@postgres:5432/rb'
     volumes:
       - rotebeete-data:/var/lib/rotebeete
+      - ./rotebeete:/usr/local/share/rotebeete/rotebeete
+      - ./biddings:/usr/local/share/rotebeete/biddings
     develop:
       watch:
         - path: uv.lock

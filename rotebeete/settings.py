@@ -132,6 +132,8 @@ USE_TZ = True
 
 STYLES = {"static": ["rotebeete/css/rotebeete.css", "biddings/css/biddings.css"]}
 
+SCRIPTS = {"static": ["biddings/js/biddings.js"]}
+
 
 class InvalidTemplateVariable(str):
     def __mod__(self, other):
