@@ -37,7 +37,6 @@ RUN apt update -y \
       locales \
       netcat-openbsd \
       fonts-liberation2 \
-      pandoc \
     && apt autoremove -y --purge \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
