@@ -249,21 +249,32 @@ ORGANISATION_BANK_CONNECTION = {
     "NAME": "-",
 }
 
+LOG_FILE = DATA_DIR / "logs" / "rotebeete.log"
+LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{server_time}] {message}",
+            "style": "{",
+        }
+    },
     "handlers": {
+        "console": {"class": "logging.StreamHandler"},
         "file": {
-            "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": env("LOGGING_FILE_PATH", cast=str, default="../debug.log"),
+            "filename": env("LOGGING_FILE_PATH", default=LOG_FILE),
+            "formatter": "django.server",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["file"],
-            "level": "DEBUG",
-            "propagate": True,
+            "handlers": ["console", "file"],
+            "level": env("LOG_LEVEL", cast=str, default="INFO"),
+            "propagate": False,
         },
     },
 }
