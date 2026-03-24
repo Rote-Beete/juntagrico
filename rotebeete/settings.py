@@ -202,6 +202,7 @@ ENABLE_REGISTRATION = False
 
 SHARE_PRICE = 50
 
+USE_X_FORWARDED_HOST = True
 
 # this might be used to temporarily disable email sending
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
