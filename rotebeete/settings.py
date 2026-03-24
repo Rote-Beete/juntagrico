@@ -248,6 +248,25 @@ ORGANISATION_BANK_CONNECTION = {
     "NAME": "-",
 }
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": env("LOGGING_FILE_PATH", cast=str, default="../debug.log"),
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
+
 # DEFENDER: Brute Force Protection
 ##################################
 

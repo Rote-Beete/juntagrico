@@ -6,6 +6,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV APP_PATH=/usr/local/share/rotebeete
 ENV ROTEBEETE_DATA_DIR=/var/lib/rotebeete
+ENV ROTEBEETE_LOGGING_FILE_PATH=/var/lib/rotebeete/logging
+
 
 FROM base AS deps
 ARG UV_FLAGS=--no-default-groups
