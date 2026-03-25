@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import sys
 import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -313,4 +314,10 @@ try:
         },
     }
 except (NameError, TypeError):
+    pass
+
+try:
+    sys.path.insert(0, "/etc/rotebeete")
+    from rotebeete_settings import *  # noqa: F401,F403
+except ImportError:
     pass
