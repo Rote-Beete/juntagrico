@@ -6,6 +6,9 @@
     margin: 2px;
 }
 
+.biddinground {
+    max-width: 600px;
+}
 
 .biddings {
     width: 100%;
@@ -18,6 +21,7 @@
     border: 1px solid #ddd;
     padding: 5px;
 }
+
 
 .no-bids {
     font-style: italic;

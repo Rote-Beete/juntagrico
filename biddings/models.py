@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -141,6 +143,22 @@ class Bid(models.Model):
 
     def get_absolute_url(self):
         return reverse("biddingrounds")
+
+    def get_red_contribution_monthly_amount(self):
+        size = self.subscription_size.units if self.subscription_size else 1
+        return round(float(self.red_contribution_amount) * size, 2)
+
+    def get_yellow_contribution_monthly_amount(self):
+        size = self.subscription_size.units if self.subscription_size else 1
+        return round(float(self.yellow_contribution_amount) * size, 2)
+
+    def get_green_contribution_monthly_amount(self):
+        size = (
+            Decimal(self.subscription_size.units)
+            if self.subscription_size
+            else Decimal(1)
+        )
+        return self.green_contribution_amount * size
 
     def get_primary_member(self):
         return self.subscription.primary_member

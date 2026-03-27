@@ -1,5 +1,5 @@
 from django import template
-
+from django.utils.formats import localize
 from biddings.models import Bid
 from juntagrico.entity.subtypes import SubscriptionType
 from django.db.models import F, Sum, Q
@@ -47,7 +47,7 @@ def get_name(subscription):
         [
             sformat.format(
                 name=t.name,
-                amount=t.size_sum,
+                amount=localize(t.size_sum),
             )
             for t in types
         ]
