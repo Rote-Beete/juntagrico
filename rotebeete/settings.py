@@ -72,6 +72,8 @@ MIDDLEWARE = [
     "rotebeete.transitions.middleware.ReviewMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
     "defender.middleware.FailedLoginMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 EMAIL_HOST = "mail.rotebeete.org"
