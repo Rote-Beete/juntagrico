@@ -70,7 +70,7 @@
 }
 
 
-#id_red_contribution_amount, #id_yellow_contribution_amount, #id_green_contribution_amount, #id_subscription_size, #id_green_whole_amount,  #id_yellow_whole_amount, #id_red_whole_amount {
+#id_red_contribution_amount, #id_yellow_contribution_amount, #id_green_contribution_amount, #id_subscription_size, #id_green_whole_amount,  #id_yellow_whole_amount, #id_red_whole_amount,  #id_widerstandskasse {
     width: 140px;
     max-width: auto;
 }

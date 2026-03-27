@@ -35,6 +35,10 @@
                                     <div class="col yellow pl-0">{{ bid.get_yellow_contribution_monthly_amount|floatformat:2 }}</div>
                                     <div class="col red pl-0">{{ bid.get_red_contribution_monthly_amount|floatformat:2 }}</div>
                                 </div>
+                                <div class="row m-0">
+                                    <div class="col col-md-3  p-0">Widerstandskasse:</div>
+                                    <div class="col red">{{ bid.widerstandskasse|floatformat:2 }}</div>
+                                </div>
                                 <div class="row m-0 mt-3">
                                     {% if bidding_round.is_active %}
                                         <div class="d-flex gap-3">
