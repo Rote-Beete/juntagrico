@@ -123,6 +123,13 @@ class Bid(models.Model):
         max_digits=6, decimal_places=2, verbose_name=_("Rotes Gebot (Schmerzgrenze)")
     )
 
+    widerstandskasse = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        verbose_name=_("Widerstandskasse"),
+        default=Decimal(0),
+    )
+
     subscription_size = models.ForeignKey(
         SubscriptionSize,
         on_delete=models.PROTECT,
@@ -144,21 +151,21 @@ class Bid(models.Model):
     def get_absolute_url(self):
         return reverse("biddingrounds")
 
-    def get_red_contribution_monthly_amount(self):
-        size = self.subscription_size.units if self.subscription_size else 1
-        return round(float(self.red_contribution_amount) * size, 2)
-
-    def get_yellow_contribution_monthly_amount(self):
-        size = self.subscription_size.units if self.subscription_size else 1
-        return round(float(self.yellow_contribution_amount) * size, 2)
-
-    def get_green_contribution_monthly_amount(self):
-        size = (
+    def _get_size(self):
+        return (
             Decimal(self.subscription_size.units)
             if self.subscription_size
             else Decimal(1)
         )
-        return self.green_contribution_amount * size
+
+    def get_red_contribution_monthly_amount(self):
+        return self.red_contribution_amount * self._get_size()
+
+    def get_yellow_contribution_monthly_amount(self):
+        return self.yellow_contribution_amount * self._get_size()
+
+    def get_green_contribution_monthly_amount(self):
+        return self.green_contribution_amount * self._get_size()
 
     def get_primary_member(self):
         return self.subscription.primary_member
