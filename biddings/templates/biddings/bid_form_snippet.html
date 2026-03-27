@@ -16,8 +16,9 @@
             <label for="{{ form.green_contribution_amount.id_for_label }}" class="green">
                 {{ form.green_contribution_amount.label }}
             </label>
-            Pro Anteil: {{ form.green_contribution_amount }}
-            <div>Alle Anteile:</div>
+            <div>Pro Anteil:</div>
+            {{ form.green_contribution_amount }}
+            <div>Betrag monatlich:</div>
             <input type="number" step="0.01" id="id_green_whole_amount" disabled>
         </div>
     </div>
@@ -25,8 +26,9 @@
         <div class="form-group">
             <label for="{{ form.yellow_contribution_amount.id_for_label }}"
                    class="yellow">{{ form.yellow_contribution_amount.label }}</label>
-            Pro Anteil: {{ form.yellow_contribution_amount }}
-            <div>Alle Anteile:</div>
+            <div>Pro Anteil:</div>
+            {{ form.yellow_contribution_amount }}
+            <div>Betrag monatlich:</div>
             <input type="number" step="0.01" id="id_yellow_whole_amount" disabled>
         </div>
     </div>
@@ -35,8 +37,8 @@
             <label for="{{ form.red_contribution_amount.id_for_label }}" class="red">
                 {{ form.red_contribution_amount.label }}
             </label>
-            Pro Anteil: {{ form.red_contribution_amount }}
-            <div>Alle Anteile:</div>
+            <div>Pro Anteil:</div>{{ form.red_contribution_amount }}
+            <div>Betrag monatlich:</div>
             <input type="number" step="0.01" id="id_red_whole_amount" disabled>
         </div>
     </div>

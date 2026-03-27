@@ -24,13 +24,13 @@
                                 <div class="row">{{ bid.subscription|get_name }}</div>
                                 <div class="row">Gewünscht: {{ bid.get_size  }} Anteil(e)</div>
                                 <div class="row flex-nowrap">
-                                    <div class="col col-3 p-0">pro Anteil:</div>
+                                    <div class="col col-3 p-0">Pro Anteil:</div>
                                     <div class="col green">{{ bid.green_contribution_amount }}</div>
                                     <div class="col yello">{{ bid.yellow_contribution_amount }}</div>
                                     <div class="col red">{{ bid.red_contribution_amount }}</div>
                                 </div>
                                 <div class="row flex-nowrap">
-                                    <div class="col col-3 p-0">monatlich:</div>
+                                    <div class="col col-3 p-0">Monatlich:</div>
                                     <div class="col green">{{ bid.get_green_contribution_monthly_amount|floatformat:2  }}</div>
                                     <div class="col yello">{{ bid.get_yellow_contribution_monthly_amount|floatformat:2  }}</div>
                                     <div class="col red">{{ bid.get_red_contribution_monthly_amount|floatformat:2  }}</div>
