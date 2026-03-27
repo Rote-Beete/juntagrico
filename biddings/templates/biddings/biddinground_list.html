@@ -20,22 +20,22 @@
                 {% if bidding_round.is_active or not bidding_round.is_in_future %}
                     {% with bid=bidding_round|get_bid:request.user %}
                         {% if bid %}
-                            <div class="container border biddinground m-0 p-3">
-                                <div class="row">{{ bid.subscription|get_name }}</div>
-                                <div class="row">Gewünscht: {{ bid.get_size }} Anteil(e)</div>
-                                <div class="row flex-nowrap">
-                                    <div class="col col-3 p-0">Pro Anteil:</div>
-                                    <div class="col green">{{ bid.green_contribution_amount }}</div>
-                                    <div class="col yello">{{ bid.yellow_contribution_amount }}</div>
-                                    <div class="col red">{{ bid.red_contribution_amount }}</div>
+                            <div class="container border biddinground m-0 p-0 p-md-3">
+                                <div class="row m-0">{{ bid.subscription|get_name }}</div>
+                                <div class="row m-0">Gewünscht: {{ bid.get_size }} Anteil(e)</div>
+                                <div class="row m-0 flex-nowrap">
+                                    <div class="col col-3 p-0 text-nowrap">Pro Anteil:</div>
+                                    <div class="col green pl-3">{{ bid.green_contribution_amount }}</div>
+                                    <div class="col yellow pl-0">{{ bid.yellow_contribution_amount }}</div>
+                                    <div class="col red pl-0">{{ bid.red_contribution_amount }}</div>
                                 </div>
-                                <div class="row flex-nowrap">
+                                <div class="row  m-0 flex-nowrap">
                                     <div class="col col-3 p-0">Monatlich:</div>
-                                    <div class="col green">{{ bid.get_green_contribution_monthly_amount|floatformat:2 }}</div>
-                                    <div class="col yello">{{ bid.get_yellow_contribution_monthly_amount|floatformat:2 }}</div>
-                                    <div class="col red">{{ bid.get_red_contribution_monthly_amount|floatformat:2 }}</div>
+                                    <div class="col green pl-3">{{ bid.get_green_contribution_monthly_amount|floatformat:2 }}</div>
+                                    <div class="col yellow pl-0">{{ bid.get_yellow_contribution_monthly_amount|floatformat:2 }}</div>
+                                    <div class="col red pl-0">{{ bid.get_red_contribution_monthly_amount|floatformat:2 }}</div>
                                 </div>
-                                <div class="row mt-3">
+                                <div class="row m-0 mt-3">
                                     {% if bidding_round.is_active %}
                                         <div class="d-flex gap-3">
                                             <div class="mr-2">
