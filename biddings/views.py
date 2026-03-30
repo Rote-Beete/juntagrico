@@ -46,7 +46,7 @@ class CreateBidView(LoginRequiredMixin, CreateView, _UserSubscriptionMixin):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({'initial': {'subscription_size': self._get_subscription_size()}})
+        kwargs.update({"initial": {"subscription_size": self._get_subscription_size()}})
         return kwargs
 
     def form_valid(self, form):
@@ -115,6 +115,7 @@ def export_bidding_round(request, bidding_round_pk):
             "green_bid",
             "yellow_bid",
             "red_bid",
+            "widerstandskasse",
             "comment",
         ],
         dialect="unix",
@@ -127,6 +128,7 @@ def export_bidding_round(request, bidding_round_pk):
             "green_bid": "Grünes Gebot",
             "yellow_bid": "Gelbes Gebot",
             "red_bid": "Rotes Gebot",
+            "widerstandskasse": "Widerstandskasse",
             "comment": "Kommentar",
         }
     )
@@ -139,6 +141,7 @@ def export_bidding_round(request, bidding_round_pk):
             green_bid=bid.green_contribution_amount,
             yellow_bid=bid.yellow_contribution_amount,
             red_bid=bid.red_contribution_amount,
+            widerstandskasse=bid.widerstandskasse,
             comment=bid.comment,
         )
         writer.writerow(row)
@@ -151,6 +154,7 @@ def export_bidding_round(request, bidding_round_pk):
             "green_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount('green')}",
             "yellow_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount('yellow')}",
             "red_bid": f"Durchschnitt: {bidding_round.get_average_bid_amount('red')}",
+            "widerstandskasse": f"Summe: {bidding_round.get_sum_of_widerstandskasse()}",
             "comment": "",
         }
     )

@@ -77,6 +77,9 @@ class BiddingRound(models.Model):
     def get_sum_of_subscription_sizes(self):
         return sum(bid.get_size() for bid in self.bids.all())
 
+    def get_sum_of_widerstandskasse(self):
+        return sum(bid.widerstandskasse for bid in self.bids.all())
+
     def get_average_bid_amount(self, color):
         valid_colors = {
             "green": "green_contribution_amount",
