@@ -80,9 +80,11 @@ EMAIL_HOST = "mail.netzguerilla.net"
 EMAIL_HOST_USER = "invalid@rotebeete.invalid"
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str)
 EMAIL_PORT = "465"
-EMAIL_USE_TLS = True
+EMAIL_USE_SSL = True
 
 DEFAULT_FROM_EMAIL = "invalid@rotebeete.invalid"
+
+EMAIL_TIMEOUT = 10
 
 WHITELIST_EMAILS = []
 
