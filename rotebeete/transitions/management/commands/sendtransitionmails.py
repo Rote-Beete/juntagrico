@@ -12,9 +12,9 @@ from rotebeete.transitions.models import MemberTransition
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        members = Member.objects.filter(email="test@example.org")
-        # from juntagrico.dao.memberdao import MemberDao
-        # members = Member.objects.filter(MemberDao.has_subscription())
+        from juntagrico.dao.memberdao import MemberDao
+
+        members = Member.objects.filter(MemberDao.has_subscription())
         members = members.exclude(q_deactivated())
         print(f"Sending mails to {members.count()} members ...")
         for member in members:
