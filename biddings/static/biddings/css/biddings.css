@@ -83,6 +83,14 @@
     width: 100%;
 }
 
+@media (min-width: 768px) {
+    .bidding-row .form-group > label:not(.info-label) {
+        display: block;
+        line-height: 1.25;
+        min-height: 2.5em;
+    }
+}
+
 .info-label {
     display: inline-flex;
     align-items: center;
