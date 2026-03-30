@@ -75,11 +75,32 @@
     max-width: auto;
 }
 
-.col-custom {
-    min-width: 150px;
-}
-
 .bidding-row {
     max-width: 1000px;
 }
 
+.bidding-row .form-group {
+    width: 100%;
+}
+
+.info-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: nowrap;
+}
+
+
+.info-icon {
+    width: 1.5em; 
+    height: 1.5em;
+}
+
+.info-link,
+.info-link:link,
+.info-link:visited,
+.info-link:hover,
+.info-link:focus,
+.info-link:active {
+    color: red !important;
+}
