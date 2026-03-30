@@ -76,10 +76,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-EMAIL_HOST = "mail.rotebeete.org"
+EMAIL_HOST = "mail.netzguerilla.net"
 EMAIL_HOST_USER = "invalid@rotebeete.invalid"
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str)
-EMAIL_PORT = "587"
+EMAIL_PORT = "465"
 EMAIL_USE_TLS = True
 
 DEFAULT_FROM_EMAIL = "invalid@rotebeete.invalid"
