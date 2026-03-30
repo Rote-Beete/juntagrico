@@ -25,19 +25,19 @@
                                 <div class="row m-0">Gewünscht: {{ bid.get_size }} Anteil(e)</div>
                                 <div class="row m-0 flex-nowrap">
                                     <div class="col col-3 p-0 text-nowrap">Pro Anteil:</div>
-                                    <div class="col green pl-3">{{ bid.green_contribution_amount }}</div>
+                                    <div class="col green pl-5">{{ bid.green_contribution_amount }}</div>
                                     <div class="col yellow pl-0">{{ bid.yellow_contribution_amount }}</div>
                                     <div class="col red pl-0">{{ bid.red_contribution_amount }}</div>
                                 </div>
                                 <div class="row  m-0 flex-nowrap">
                                     <div class="col col-3 p-0">Monatlich:</div>
-                                    <div class="col green pl-3">{{ bid.get_green_contribution_monthly_amount|floatformat:2 }}</div>
+                                    <div class="col green pl-5">{{ bid.get_green_contribution_monthly_amount|floatformat:2 }}</div>
                                     <div class="col yellow pl-0">{{ bid.get_yellow_contribution_monthly_amount|floatformat:2 }}</div>
                                     <div class="col red pl-0">{{ bid.get_red_contribution_monthly_amount|floatformat:2 }}</div>
                                 </div>
                                 <div class="row m-0">
-                                    <div class="col col-md-3  p-0">Widerstandskasse:</div>
-                                    <div class="col red">{{ bid.widerstandskasse|floatformat:2 }}</div>
+                                    <div class="col col-3  p-0">Widerstandskasse:</div>
+                                    <div class="col red pl-5">{{ bid.widerstandskasse|floatformat:2 }}</div>
                                 </div>
                                 <div class="row m-0 mt-3">
                                     {% if bidding_round.is_active %}
