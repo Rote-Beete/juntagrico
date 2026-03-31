@@ -76,15 +76,14 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-EMAIL_HOST = "mail.netzguerilla.net"
-EMAIL_HOST_USER = "invalid@rotebeete.invalid"
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", cast=str)
-EMAIL_PORT = "465"
-EMAIL_USE_SSL = True
-
-DEFAULT_FROM_EMAIL = "invalid@rotebeete.invalid"
-
-WHITELIST_EMAILS = []
+EMAIL_HOST = env("EMAIL_HOST", default=None)
+EMAIL_HOST_USER = env("EMAIL_HOST_USER", default=None)
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default=None)
+EMAIL_PORT = env("EMAIL_PORT", default=None)
+EMAIL_USE_SSL = env("EMAIL_USE_SSL", default=None)
+EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=None)
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=None)
+WHITELIST_EMAILS = env("WHITELIST_EMAILS", default=[])
 
 
 def whitelist_email_from_env(var_env_name):
