@@ -219,16 +219,37 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS
 
 ### Alle überschriebene und neue templates:
 
-- `rotebeete/templates/juntagrico/menu/user.html`
-- `rotebeete/templates/juntagrico/my/subscription/single.html`
-- `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html`
-- neu: `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`
-- `rotebeete/templates/manage_shares.html`
-- `rotebeete/templates/exports/share_certificate.html`
-- `rotebeete/templates/snippets/snippet_subscription_change_size.html`
-- `rotebeete/templates/profile.html`
-- Filter: `rotebeete.templatetags.rotebeete.disable_iban`
-- `rotebeete/templates/juntagrico/manage/subscriptions/show.html`
-- `rotebeete/templates/juntagrico/menu/admin/lists.html`
-- `rotebeete/templates/export.html`
-- `rotebeete/templates/mails/member/share_created.txt`
+- ADMIN:
+  - MENU:
+    - `rotebeete/templates/juntagrico/menu/admin/lists.html`
+  - Erweiterung exports:
+    - `rotebeete/templates/export.html`
+  - `manage/subscription`
+    - `rotebeete/templates/juntagrico/manage/subscriptions/show.html`
+
+- DEIN MENU:
+  - `rotebeete/templates/juntagrico/menu/user.html`
+
+- PERSÖNLICHE DATEN: `/my/profile`:
+  - `rotebeete/templates/profile.html`
+
+- MITGLIEDSCHAFT: `/my/subscription/<subscription_id>/`:
+  - `rotebeete/templates/juntagrico/my/subscription/single.html`
+  - Bestandteile:
+    - `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html`
+- Gemüseanteil ändern: `my/subscription/change/overview/<int:subscription_id>/`:
+  - `rotebeete/templates/snippets/snippet_subscription_change_size.html`
+
+- Genossenschaftsanteile Verwalten: `my/share/manage/`:
+  - `rotebeete/templates/manage_shares.html`
+  - Bescheinigung: `my/share/certificate`:
+    - `rotebeete/templates/exports/share_certificate.html`
+
+- EMAIL:
+  - `rotebeete/templates/mails/member/share_created.txt`
+
+- Neu:
+  - `rotebeete/templates/juntagrico/my/subscription/snippets/download_delivery_contract.html`
+
+- Filter:
+  - `rotebeete.templatetags.rotebeete.disable_iban`
