@@ -237,8 +237,6 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS
   - `rotebeete/templates/juntagrico/my/subscription/single.html`
   - Bestandteile:
     - `rotebeete/templates/juntagrico/my/subscription/snippets/part_list.html`
-- Gemüseanteil ändern: `my/subscription/change/overview/<int:subscription_id>/`:
-  - `rotebeete/templates/snippets/snippet_subscription_change_size.html`
 
 - Genossenschaftsanteile Verwalten: `my/share/manage/`:
   - `rotebeete/templates/manage_shares.html`
@@ -253,3 +251,9 @@ In `rotebeete/static/rotebeete/css/rotebeete.css` können die entsprechenden CSS
 
 - Filter:
   - `rotebeete.templatetags.rotebeete.disable_iban`
+
+- LEGACY: Gemüseanteil ändern: `my/subscription/change/overview/<int:subscription_id>/`:
+  - `rotebeete/templates/snippets/snippet_subscription_change_size.html`
+
+- LEGACY:
+  - `rotebeete/templates/subscription.html`
