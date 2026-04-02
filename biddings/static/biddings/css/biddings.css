@@ -84,31 +84,38 @@
 }
 
 @media (min-width: 768px) {
-    .bidding-row .form-group > label:not(.info-label) {
+    .bidding-row .form-group > label:not(.widerstandskasse-label) {
         display: block;
         line-height: 1.25;
         min-height: 2.5em;
     }
 }
 
-.info-label {
+
+.violet {
+    font-weight: bold;
+    color: violet;
+}
+
+.widerstandskasse-label {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     flex-wrap: nowrap;
+    color: violet;
 }
 
 
-.info-icon {
+.widerstandskasse-icon {
     width: 1.5em; 
     height: 1.5em;
 }
 
-.info-link,
-.info-link:link,
-.info-link:visited,
-.info-link:hover,
-.info-link:focus,
-.info-link:active {
-    color: red !important;
+.widerstandskasse-link,
+.widerstandskasse-link:link,
+.widerstandskasse-link:visited,
+.widerstandskasse-link:hover,
+.widerstandskasse-link:focus,
+.widerstandskasse-link:active {
+    color: violet !important;
 }
