@@ -1,6 +1,7 @@
 import os
 
 from django.contrib.sites.models import Site
+from django.conf import settings
 from django.core.management import BaseCommand
 from django.template.loader import get_template
 from juntagrico.entity.member import Member
@@ -41,20 +42,14 @@ class Command(BaseCommand):
             return
 
         self.stdout.write(f"{recipient_count} email(s) will be sent.")
-        self.stdout.write(f"EMAIL_HOST: {os.getenv('ROTEBEETE_EMAIL_HOST')}")
-        self.stdout.write(f"EMAIL_HOST_USER: {os.getenv('ROTEBEETE_EMAIL_HOST_USER')}")
-        self.stdout.write(
-            f"EMAIL_HOST_PASSWORD: {os.getenv('ROTEBEETE_EMAIL_HOST_PASSWORD')}"
-        )
-        self.stdout.write(f"EMAIL_PORT: {os.getenv('ROTEBEETE_EMAIL_PORT')}")
-        self.stdout.write(f"EMAIL_USE_SSL: {os.getenv('ROTEBEETE_EMAIL_USE_SSL')}")
-        self.stdout.write(f"EMAIL_USE_TLS: {os.getenv('ROTEBEETE_EMAIL_USE_TLS')}")
-        self.stdout.write(
-            f"DEFAULT_FROM_EMAIL: {os.getenv('ROTEBEETE_DEFAULT_FROM_EMAIL')}"
-        )
-        self.stdout.write(
-            f"EMAIL_WHITELIST_EMAILS: {os.getenv('ROTEBEETE_WHITELIST_EMAILS')}"
-        )
+        self.stdout.write(f"EMAIL_HOST: {settings.EMAIL_HOST}")
+        self.stdout.write(f"EMAIL_HOST_USER: {settings.EMAIL_HOST_USER}")
+        self.stdout.write(f"EMAIL_HOST_PASSWORD: {settings.EMAIL_HOST_PASSWORD}")
+        self.stdout.write(f"EMAIL_PORT: {settings.EMAIL_PORT}")
+        self.stdout.write(f"EMAIL_USE_SSL: {settings.EMAIL_USE_SSL}")
+        self.stdout.write(f"EMAIL_USE_TLS: {settings.EMAIL_USE_TLS}")
+        self.stdout.write(f"DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}")
+        self.stdout.write(f"WHITELIST_EMAILS: {settings.WHITELIST_EMAILS}")
 
         if not options["yes"]:
             confirmation = input("Agreed? (yes/no): ").strip().lower()
