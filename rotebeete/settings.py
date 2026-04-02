@@ -16,9 +16,9 @@ environ.Env.read_env(BASE_DIR / ".env.local")
 DATA_DIR = env("DATA_DIR", cast=Path, default=BASE_DIR / "data")
 DATA_DIR.mkdir(exist_ok=True)
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS", cast=list, default=[])
-CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", cast=list, default=[])
-DEBUG = env("DEBUG", cast=bool, default=False)
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
+DEBUG = env("DEBUG", default=False)
 ORGANISATION_WEBSITE = {"name": "rotebeete.org", "url": "https://rotebeete.org"}
 
 SECRET_KEY = env("SECRET_KEY", cast=str)
@@ -83,7 +83,7 @@ EMAIL_PORT = env("EMAIL_PORT", default=None)
 EMAIL_USE_SSL = env("EMAIL_USE_SSL", default=None)
 EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=None)
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=None)
-WHITELIST_EMAILS = env("WHITELIST_EMAILS", default=[])
+WHITELIST_EMAILS = env.list("WHITELIST_EMAILS", default=[])
 
 
 def whitelist_email_from_env(var_env_name):
