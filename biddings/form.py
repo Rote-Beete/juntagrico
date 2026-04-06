@@ -1,3 +1,4 @@
+from django import forms
 from django.forms import ModelForm, ModelChoiceField, ValidationError, Select
 from django.utils.translation import gettext_lazy as _
 from juntagrico.admin import SubscriptionSize
@@ -40,6 +41,11 @@ class BidUpdateForm(ModelForm):
     class Meta:
         model = Bid
         exclude = ["bidding_round", "subscription"]
+        widgets = {
+            "green_contribution_amount": forms.NumberInput(attrs={"min": 0}),
+            "yellow_contribution_amount": forms.NumberInput(attrs={"min": 0}),
+            "red_contribution_amount": forms.NumberInput(attrs={"min": 0}),
+        }
 
     subscription_size = ModelChoiceField(
         queryset=SubscriptionSize.objects.order_by("units"),
