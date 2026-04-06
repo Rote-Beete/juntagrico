@@ -57,6 +57,22 @@
     cursor: pointer;
 }
 
+
+@media (max-width: 576px) {
+    .btn {
+        padding: 5px 12px; 
+        font-size: 14px; 
+    }
+}
+
+
+@media (max-width: 400px) {
+    .btn {
+        padding: 4px 10px;
+        font-size: 12px; 
+    }
+}
+
 .btn:hover {
     transition: 0.3s ease;
     color:  green;
@@ -118,4 +134,22 @@
 .widerstandskasse-link:focus,
 .widerstandskasse-link:active {
     color: violet !important;
+}
+
+.responsive-text {
+  font-size: 18px;
+}
+
+/* Small devices (≤576px) */
+@media (max-width: 576px) {
+  .responsive-text {
+    font-size: 16px;
+  }
+}
+
+/* Extra small devices (≤400px, optional finer control) */
+@media (max-width: 400px) {
+  .responsive-text {
+    font-size: 14px;
+  }
 }

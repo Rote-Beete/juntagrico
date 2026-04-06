@@ -20,7 +20,7 @@
                 {% if bidding_round.is_active or not bidding_round.is_in_future %}
                     {% with bid=bidding_round|get_bid:request.user %}
                         {% if bid %}
-                            <div class="container border biddinground m-0 p-0 p-md-3">
+                            <div class="responsive-text container border biddinground m-0 p-1 p-sm-2 p-md-3">
                                 <div class="row m-0">{{ bid.subscription|get_name }}</div>
                                 <div class="row m-0">Gewünscht: {{ bid.get_size }} Anteil(e)</div>
                                 <div class="row m-0 flex-nowrap">
