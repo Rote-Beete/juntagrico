@@ -63,3 +63,13 @@ yellowContributionInput.addEventListener('input', (event) => {
 redContributionInput.addEventListener('input', (event) => {
   redWholeContribution.value = `${event.target.value * getSubscriptionSize()}`
 })
+
+greenContributionInput.addEventListener('keydown', (event) => {
+  if (event.key === '-') event.preventDefault()
+})
+yellowContributionInput.addEventListener('keydown', (event) => {
+  if (event.key === '-') event.preventDefault()
+})
+redContributionInput.addEventListener('keydown', (event) => {
+  if (event.key === '-') event.preventDefault()
+})
