@@ -16,8 +16,12 @@ class AdminBidForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         subs = list(Subscription.objects.all())
-        subs_sorted = sorted(subs, key=get_name)
-        self.fields["subscription"].choices = [(sub.id, sub) for sub in subs_sorted]
+        subs_sorted = sorted(subs, key=lambda s: (get_name(s) == "", get_name(s)))
+        field_choices = [
+            (sub.id, f"Abo({sub.id}): {get_name(sub)}") for sub in subs_sorted
+        ]
+        self.fields["subscription"].choices = field_choices
+
         self.fields["subscription"].label = _("Gemüseanteil")
 
 
