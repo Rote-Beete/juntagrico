@@ -1,6 +1,7 @@
 from time import sleep
 from django.test import TestCase
 from django.utils import timezone
+from django.db import IntegrityError
 from biddings.tests.mixins import BiddingRoundMixin, SubscriptionMixin
 from biddings.models import Bid
 
@@ -72,3 +73,9 @@ class BidTestCase(SubscriptionMixin, BiddingRoundMixin, TestCase):
             member_2,
         ]
         assert self.primary_member in bid.subscription.current_members
+
+    def test_duplicate_bid_for_same_round_and_subscription_is_rejected(self):
+        Bid.objects.create(**self.data)
+
+        with self.assertRaises(IntegrityError):
+            Bid.objects.create(**self.data)

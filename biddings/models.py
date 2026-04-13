@@ -150,6 +150,12 @@ class Bid(models.Model):
             "-bidding_round__start_time",
             "subscription_id",
         ]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["bidding_round", "subscription"],
+                name="unique_bid_per_subscription_round",
+            )
+        ]
 
     def get_absolute_url(self):
         return reverse("biddingrounds")
