@@ -12,8 +12,7 @@ def get_user_subscription(user):
     try:
         return (
             user.member.subscriptionmembership_set.filter(
-                Q(subscription__end_date__isnull=True)
-                | Q(subscription__end_date__gt=now().date())
+                Q(leave_date__isnull=True) | Q(leave_date__gt=now().date())
             )
             .first()
             .subscription
