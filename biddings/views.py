@@ -1,4 +1,5 @@
 import csv
+import logging
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
@@ -11,6 +12,9 @@ from biddings.models import Bid, BiddingRound
 from juntagrico.entity.subtypes import SubscriptionType
 
 from biddings.templatetags.biddings_extras import get_user_subscription
+from rotebeete.exports.views import get_status
+
+logger = logging.getLogger(__name__)
 
 
 class ListBiddingroundView(LoginRequiredMixin, ListView):
@@ -158,5 +162,50 @@ def export_bidding_round(request, bidding_round_pk):
             "comment": "",
         }
     )
+
+    return response
+
+
+@login_required
+def export_bidding_round_no_bids(request, bidding_round_pk):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+    bidding_round = get_object_or_404(BiddingRound, pk=bidding_round_pk)
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = (
+        f"attachment; filename=Bietrunde {bidding_round.name} {bidding_round.start_time.date()} {bidding_round.end_time.date()} keine Gebote.csv"
+    )
+    writer = csv.DictWriter(
+        response,
+        fieldnames=[
+            "subscription",
+            "primary_member",
+            "primary_member_email",
+        ],
+        dialect="unix",
+    )
+    writer.writerow(
+        {
+            "subscription": "GVL-Nr.",
+            "primary_member": "Hauptbezieher*in",
+            "primary_member_email": "Email",
+        }
+    )
+
+    primaries = [bid.get_primary_member() for bid in bidding_round.bids.all()]
+    for subtype in SubscriptionType.objects.order_by("name"):
+        for part in subtype.subscription_parts.all():
+            sub = part.subscription
+            member = sub.primary_member
+            if get_status(sub) == "aktiv":
+                if not member:
+                    logger.warning(f"Subscription: {sub} has not primary member.")
+                if member and member not in primaries:
+                    row = dict(
+                        subscription=part.type.name,
+                        primary_member=member,
+                        primary_member_email=member.email,
+                    )
+                    writer.writerow(row)
 
     return response
