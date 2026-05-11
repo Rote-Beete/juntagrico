@@ -19,3 +19,8 @@ test:
 	uv sync --group test
 	uv run python manage.py collectstatic --noinput
 	uv run pytest
+
+.PHONY: dev
+dev:
+	docker compose -f docker-compose.dev.yml up --pull always  --build --watch
+	docker compose -f docker-compose.dev.yml down
