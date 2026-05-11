@@ -1,30 +1,37 @@
 from django.contrib import admin
 from biddings.models import Bid, BiddingRound
 from juntagrico.entity.subs import Subscription
-from django import forms
-from django.utils.translation import gettext_lazy as _
-from biddings.templatetags.biddings_extras import get_name
+from juntagrico.admins.subscription_admin import SubscriptionAdmin
 
 admin.site.register(BiddingRound)
 
 
-class AdminBidForm(forms.ModelForm):
-    class Meta:
-        model = Bid
-        fields = "__all__"
+class BiddingSubscriptionAdmin(SubscriptionAdmin):
+    search_fields = [
+        *SubscriptionAdmin.search_fields,
+        "types__name",
+        "types__long_name",
+    ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        subs = list(Subscription.objects.all())
-        subs_sorted = sorted(subs, key=lambda s: (get_name(s) == "", get_name(s)))
-        field_choices = [
-            (sub.id, f"Abo({sub.id}): {get_name(sub)}") for sub in subs_sorted
-        ]
-        self.fields["subscription"].choices = field_choices
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        return queryset.order_by("types__name", "pk").distinct()
 
-        self.fields["subscription"].label = _("Gemüseanteil")
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(
+            request, queryset, search_term
+        )
+        return queryset.order_by("types__name", "pk").distinct(), True
+
+
+try:
+    admin.site.unregister(Subscription)
+except admin.sites.NotRegistered:
+    pass
+
+admin.site.register(Subscription, BiddingSubscriptionAdmin)
 
 
 @admin.register(Bid)
 class BidAdmin(admin.ModelAdmin):
-    form = AdminBidForm
+    autocomplete_fields = ["subscription"]
