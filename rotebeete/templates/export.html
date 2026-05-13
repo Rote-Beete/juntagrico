@@ -1,4 +1,9 @@
-{% extends "export.html" %}
+{% extends "base.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+{% block page_title %}
+    <h3>{% trans "Exporte" %}</h3>
+{% endblock %}
 {% block content %}
     <div class="row mb-4">
         <div class="col-md-3">Mitglieder</div>
