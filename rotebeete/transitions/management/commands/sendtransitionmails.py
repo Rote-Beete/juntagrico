@@ -12,18 +12,16 @@ from rotebeete.transitions.models import MemberTransition
 
 
 class Command(BaseCommand):
-    def add_arguments(self, parser):
-        parser.add_argument(
-            "--yes",
-            action="store_true",
-            help="Send emails without interactive confirmation.",
-        )
-
-    def handle(self, *args, **options):
+    def get_members(self, options):
         from juntagrico.dao.memberdao import MemberDao
 
-        members = Member.objects.filter(MemberDao.has_subscription())
-        members = members.exclude(q_deactivated())
+        members = Member.objects.filter(MemberDao.has_subscription()).exclude(
+            q_deactivated()
+        )
+        return members
+
+    def handle(self, *args, **options):
+        members = self.get_members(options)
         recipient_count = members.count()
 
         if recipient_count == 0:
@@ -40,11 +38,10 @@ class Command(BaseCommand):
         self.stdout.write(f"DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}")
         self.stdout.write(f"WHITELIST_EMAILS: {settings.WHITELIST_EMAILS}")
 
-        if not options["yes"]:
-            confirmation = input("Agreed? (yes/no): ").strip().lower()
-            if confirmation not in {"y", "yes"}:
-                self.stdout.write("Aborted. No emails were sent.")
-                return
+        confirmation = input("Agreed? (yes/no): ").strip().lower()
+        if confirmation not in {"y", "yes"}:
+            self.stdout.write("Aborted. No emails were sent.")
+            return
 
         self.stdout.write(f"Sending mails to {recipient_count} members ...")
         for member in members:
