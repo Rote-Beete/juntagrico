@@ -4,7 +4,11 @@
 {% load juntagrico.config %}
 {% load juntagrico.common %}
 {% load juntagrico.snippets %}
-{% block page_title %}<h3>{{ title }}</h3>{% endblock %}
+{% block page_title %}
+    <h3>
+        {{ title }}
+    </h3>
+{% endblock %}
 {% block management_cmd %}
     {% include 'management_lists/snippets/email_sender.html' %}
 {% endblock %}

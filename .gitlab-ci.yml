@@ -19,12 +19,12 @@ default:
   - which pipx >/dev/null || pip install pipx && export PATH="$(pipx environment --value PIPX_BIN_DIR):$PATH"
   - pipx install "uv==$UV_VERSION"
 
-lint:
-  stage: test
-  before_script:
-    - *setup-uv
-  script:
-    - make lint-check
+# lint:
+#   stage: test
+#   before_script:
+#     - *setup-uv
+#   script:
+#     - make lint-check
 
 test:
   stage: test

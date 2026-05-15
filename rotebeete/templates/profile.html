@@ -2,15 +2,24 @@
 {% load i18n %}
 {% load juntagrico.config %}
 {% load crispy_forms_tags %}
+
 {% block page_title %}
-    <h3>{% trans "Persönliche Daten" %}</h3>
+    <h3>
+        {% trans "Persönliche Daten" %}
+    </h3>
 {% endblock %}
+
 {% block content %}
     {% vocabulary "member_type" as v_member_type %}
+
     {% if success %}
-        <div class="alert alert-success">{% trans "Personalien erfolgreich geändert" %}</div>
+        <div class="alert alert-success">
+            {% trans "Personalien erfolgreich geändert" %}
+        </div>
     {% endif %}
+
     {% include "transitions/_review_data_confirm.html" %}
+
     {% if member.canceled %}
         <div class="alert alert-warning">
             {% blocktrans trimmed with cd=member.cancellation_date|date:"d.m.Y" %}
@@ -18,24 +27,34 @@
             {% endblocktrans %}
         </div>
     {% endif %}
+
     {% if not member.canceled and not member.inactive %}
-        <div class="alert alert-success">{% blocktrans %}Deine {{ v_member_type }}schaft ist aktiv.{% endblocktrans %}</div>
+        <div class="alert alert-success">
+            {% blocktrans %}Deine {{ v_member_type }}schaft ist aktiv.{% endblocktrans %}
+        </div>
     {% endif %}
+
     <form method="post" class="mb-4">
         {% load rotebeete %}
         {% with form=memberform|disable_iban %}
             {% crispy form %}
         {% endwith %}
     </form>
+
     <div class="row mb-2">
         <div class="offset-md-3 col-md-9">
-            <a href="{% url 'password' %}" class="btn btn-success">{% trans "Passwort ändern" %}</a>
+            <a href="{% url 'password' %}" class="btn btn-success">
+                {% trans "Passwort ändern" %}
+            </a>
         </div>
     </div>
+
     {% if not member.canceled %}
         <div class="row mb-2">
             <div class="offset-md-3 col-md-9">
-                <a href="{% url 'cancel-membership' %}" class="btn btn-danger">{% trans "Mitgliedschaft künden" %}</a>
+                <a href="{% url 'cancel-membership' %}" class="btn btn-danger">
+                    {% trans "Mitgliedschaft künden" %}
+                </a>
             </div>
         </div>
     {% endif %}

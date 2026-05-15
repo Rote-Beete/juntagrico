@@ -1,28 +1,28 @@
-<!-- Legacy snippet kept for the old subscription change overview page.
-It is no longer part of the active Mitgliedschaft page flow, but remains here to preserve older Rote Beete customizations on the legacy sub-change route. -->
 {% load i18n %}
 {% load juntagrico.config %}
 {% load juntagrico.subscription %}
 {% vocabulary "subscription" as v_subscription %}
 <div class="row mt-3">
-    <div class="col-md-2">{% trans "Bestandteile" %}</div>
+    <div class="col-md-2">
+        {% trans "Bestandteile" %}
+    </div>
     <div class="col-md-4">
         {% blocktrans trimmed with ncd=next_cancel_date|date:"F" nby=next_business_year|date:"F" %}
-            Die {{ v_subscription }}-Bestandteile (auch die Kündigung) kann in der Regel nur jährlich geändert
-            werden
-            und muss bis spätestens Ende {{ ncd }} gemacht werden,
-            damit die Änderung auf Anfang {{ nby }} in Kraft tritt.
+        Die {{ v_subscription }}-Bestandteile (auch die Kündigung) kann in der Regel nur jährlich geändert
+        werden
+        und muss bis spätestens Ende {{ ncd }} gemacht werden,
+        damit die Änderung auf Anfang {{ nby }} in Kraft tritt.
         {% endblocktrans %}
     </div>
     <div class="col-md-4">
         {% trans "Nächstmögliches Datum" %}:
-        <br />
+        <br/>
         {{ next_business_year |date:"d.m.Y" }}
-        <br />
+        <br/>
         {% trans "Zukünftige Bestandteile" %}:
-        <br />
+        <br/>
         {{ subscription.future_part_overview|overview|safe }}
-        <br />
+        <br/>
     </div>
     <div class="col-md-2">
         {% if not change_size %}

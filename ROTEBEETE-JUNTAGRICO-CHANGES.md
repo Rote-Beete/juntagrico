@@ -4,81 +4,43 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 
 ---
 
-## ADMIN
+## MENU -> Administration -> Listen
 
 ### `juntagrico/menu/admin/lists.html`
 
 #### Code diff
 
 ```diff
-@@ -7,35 +7,25 @@
-             <i class="fas fa-angle-right">
-             </i>
-         </a>
--        <div class="collapse {% if 'manage-list' in request.resolver_match.url_name %} show{% endif %}" id="lists">
-+        <div class="collapse" id="lists">
-             <ul class="nav flex-column admin-menu subadmin-menu">
--                {% block sub %}
--                    {% if perms.juntagrico.can_generate_lists %}
--                        <li class="nav-item">
--                            <a class="nav-link" href="{% url 'manage-list' %}">
--                                {% trans "Erzeugen" %}
--                            </a>
--                        </li>
--                    {% endif %}
--                    {% if perms.juntagrico.can_view_lists %}
--                        <li class="nav-item">
--                            <a class="nav-link" href="{% url 'lists-depot-amountoverview' %}">
--                                {% trans "Mengen Übersicht" %}
--                            </a>
--                        </li>
--                        <li class="nav-item">
--                            <a class="nav-link" href="{% url 'lists-depotlist' %}">
--                                {% vocabulary "depot" %}-{% trans "Listen" %}
--                            </a>
--                        </li>
--                        <li class="nav-item">
--                            <a class="nav-link" href="{% url 'lists-depot-overview' %}">
+@@ -30,7 +30,7 @@
+                         </li>
+                         <li class="nav-item">
+                             <a class="nav-link" href="{% url 'lists-depot-overview' %}">
 -                                {% vocabulary "depot" %} {% trans "Übersicht" %}
--                            </a>
--                        </li>
--                    {% endif %}
--                {% endblock %}
-+                {% if perms.juntagrico.can_generate_lists %}
-+                    <li class="nav-item">
-+                        <a class="nav-link" href="{% url 'manage-list' %}">{% trans "Erzeugen" %}</a>
-+                    </li>
-+                {% endif %}
-+                {% if perms.juntagrico.can_view_lists %}
-+                    <li class="nav-item">
-+                        <a class="nav-link" href="{% url 'lists-depot-amountoverview' %}">{% trans "Mengen Übersicht" %}</a>
-+                    </li>
-+                    <li class="nav-item">
-+                        <a class="nav-link" href="{% url 'lists-depotlist' %}">{% vocabulary "depot" %}-{% trans "Listen" %}</a>
-+                    </li>
-+                    <li class="nav-item">
-+                        <a class="nav-link" href="{% url 'lists-depot-overview' %}">{% vocabulary "depot" %} {% trans "eMail-Listen" %}</a>
-+                    </li>
-+                {% endif %}
-             </ul>
-         </div>
-     </li>
--{% endif %}+{% endif %}
-
++                                {% vocabulary "depot" %} {% trans "eMail-Listen" %}
+                             </a>
+                         </li>
+                     {% endif %}
 ```
 
 #### User-facing changes
 
-- The _Listen_ submenu no longer auto-expands when navigating to the list-generation page.
 - The last submenu entry is now labelled **eMail-Listen** instead of **Übersicht**.
 
 ---
+
+## MENU -> Administration -> Exporte
+
+### `/my/export`
 
 ### `export.html`
 
 #### Code diff
 
 ```diff
+@@ -7,84 +7,22 @@
+     </h3>
+ {% endblock %}
+ {% block content %}
 -    {% vocabulary "member_pl" as v_member_pl %}
 -    {% vocabulary "share_pl" as v_share_pl %}
 -    {% vocabulary "assignment_pl" as v_assignment_pl %}
@@ -178,11 +140,16 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 - Rows for _Mitglieder mit Tätigkeitsbereichen_ and conditional _Genossenschaftsanteile_ are removed.
 - **Bietrunden** row added with a link to `export-bidding-rounds`.
 
+## MENU -> Administration -> Gemüseanteile -> Aktive
+
+### `/manage/subscription`
+
 ### `juntagrico/manage/subscription/show.html`
 
 #### Code diff
 
 ```diff
+@@ -1,96 +1,57 @@
 -{% extends "../base.html" %}
 +{% extends "management_lists/man_list_base.html" %}
  {% load i18n %}
@@ -190,18 +157,20 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
  {% load juntagrico.config %}
  {% load juntagrico.common %}
  {% load juntagrico.snippets %}
--{% block page_title %}
--    <h3>
--        {{ title }}
--    </h3>
-+{% block page_title %}<h3>{{ title }}</h3>{% endblock %}
-+{% block management_cmd %}
-+    {% include 'management_lists/snippets/email_sender.html' %}
+-
+ {% block page_title %}
+     <h3>
+         {{ title }}
+     </h3>
  {% endblock %}
+-
 -{% block content %}
 -    {% include '../member/snippets/toggle_buttons.html' with co_members=True %}
 -    {{ block.super }}
--{% endblock %}
++{% block management_cmd %}
++    {% include 'management_lists/snippets/email_sender.html' %}
+ {% endblock %}
+-
  {% block list %}
      <table id="filter-table" class="list table">
          <thead>
@@ -233,6 +202,35 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 +                <th class="filter">{% trans "E-Mails" %}</th>
              </tr>
          </thead>
+         <tfoot>
+             <tr>
+-                {% block list_foot %}
+-                    <th>
+-                        {% vocabulary "subscription" %}
+-                    </th>
+-                    <th>
+-                        {% trans "Inhalt" %}
+-                    </th>
+-                    {% if not hide_depots %}
+-                        <th>
+-                            {% vocabulary "depot" %}
+-                        </th>
+-                    {% endif %}
+-                    <th>
+-                        {% trans "Aktivierungsdatum" %}
+-                    </th>
+-                    <th>
+-                        {% trans "Kontakt" %}
+-                    </th>
+-                {% endblock %}
++                <th>{% trans "HauptbezieherIn" %}</th>
++                <th>{% trans "Weitere BezieherInnen" %}</th>
++                <th>{% vocabulary "depot" %}</th>
++                <th>{% trans "Inhalt" %}</th>
++                <th>{% trans "Aktivierungsdatum" %}</th>
++                <th>{% trans "E-Mails" %}</th>
+             </tr>
+         </tfoot>
          <tbody>
 -            {% for subscription in object_list %}
 -                {% block list_entry %}
@@ -251,7 +249,16 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                            <td>
 -                                {{ subscription.depot.name }}
 -                            </td>
--                        {% endif %}
++            {% for subscription in subscriptions %}
++                <p>subscription</p>
++                <tr>
++                    <td>
++                        {% if subscription.primary_member %}
++                            {% impersonate_start request subscription.primary_member %}
++                            <a href="{% url 'admin:juntagrico_member_change' subscription.primary_member.id %}">
++                                {{ subscription.primary_member.get_name }}
++                            </a>
+                         {% endif %}
 -                        <td>
 -                            {{ subscription.activation_date|date:"Y-m-d" }}
 -                        </td>
@@ -260,14 +267,6 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                        </td>
 -                    </tr>
 -                {% endblock %}
-+            {% for subscription in subscriptions %}
-+                <tr>
-+                    <td>
-+                        {% if subscription.primary_member %}
-+                            <a href="{% url 'admin:juntagrico_member_change' subscription.primary_member.id %}">
-+                                {{ subscription.primary_member.get_name }}
-+                            </a>
-+                        {% endif %}
 +                    </td>
 +                    <td>{{ subscription.comembers }}</td>
 +                    <td>{{ subscription.depot.name }}</td>
@@ -295,29 +294,22 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 #### Code diff
 
 ```diff
- {% vocabulary "subscription" as v_subscription %}
- <ul class="main-menu nav flex-column">
-     <li>
+@@ -13,12 +13,12 @@
      </li>
      <li class="nav-item">
--        <a class="nav-link {{ request|activemenu:"subscription" }}" href="{% url 'subscription-landing' %}">
+         <a class="nav-link {{ request|activemenu:"subscription" }}" href="{% url 'subscription-landing' %}">
 -            {{ v_subscription }}
--        </a>
-+        <a class="nav-link {{ request|activemenu:"subscription" }}"
-+           href="{% url 'subscription-landing' %}">Mitgliedschaft</a>
++            Mitgliedschaft
+         </a>
      </li>
      <li class="nav-item">
--        <a class="nav-link {{ request|activemenu:"jobs" }}" href="{% url 'jobs' %}">
+         <a class="nav-link {{ request|activemenu:"jobs" }}" href="{% url 'jobs' %}">
 -            {% trans "Einsätze" %}
--        </a>
-+        <a class="nav-link {{ request|activemenu:"jobs" }}"
-+           href="{% url 'jobs' %}">{% trans "Mitarbeitskalender" %}</a>
++            {% trans "Mitarbeitskalender" %}
+         </a>
          {% if request|activemenu:"jobs" == 'active' %}
              <ul class="nav flex-column sub-menu">
-                 <li class="nav-item">
-                 </li>
-                 <li class="nav-item">
-                 </li>
+@@ -35,21 +35,24 @@
              </ul>
          {% endif %}
      </li>
@@ -328,60 +320,46 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -            </a>
 -        </li>
 -    {% endif %}
-+    {# {% if b_show_deliveries %} #}
-     <li class="nav-item">
--        <a class="nav-link {{ request|activemenu:"area" }}" href="{% url 'areas' %}">
--            {% trans "Tätigkeitsbereiche" %}
--        </a>
-+        <a class="nav-link {{ request|activemenu:"deliveries" }}"
-+           href="{% url 'deliveries' %}">{% trans "Lieferungen" %}</a>
-+    </li>
-+    {# {% endif %} #}
 +    <li class="nav-item">
-+        <a class="nav-link {{ request|activemenu:"area" }}"
-+           href="{% url 'areas' %}">{% trans "Tätigkeitsbereiche" %}</a>
++        <a class="nav-link {{ request|activemenu:"deliveries" }}" href="{% url 'deliveries' %}">
++            {% trans "Lieferungen" %}
++        </a>
++    </li>
+     <li class="nav-item">
+         <a class="nav-link {{ request|activemenu:"area" }}" href="{% url 'areas' %}">
+             {% trans "Tätigkeitsbereiche" %}
+         </a>
      </li>
      <li class="nav-item">
--        <a class="nav-link {{ request|activemenu:"membership" }}" href="{% url 'profile' %}">
++        <a class="nav-link {{ request|activemenu:"area" }}" href="{% url 'biddingrounds' %}">
++            {% trans "Bietrunden" %}
++        </a>
++    </li>
++    <li class="nav-item">
+         <a class="nav-link {{ request|activemenu:"membership" }}" href="{% url 'profile' %}">
 -            {% trans "Mitgliedschaft" %}
--        </a>
-+        <a class="nav-link {{ request|activemenu:"area" }}"
-+           href="{% url 'biddingrounds' %}">{% trans "Bietrunden" %}</a>
++            {% trans "Persönliche Daten" %}
+         </a>
      </li>
      <li class="nav-item">
--        <a class="nav-link {{ request|activemenu:"contact" }}" href="{% url 'contact' %}">
--            {% trans "Kontakt" %}
--        </a>
-+        <a class="nav-link {{ request|activemenu:"membership" }}"
-+           href="{% url 'profile' %}">{% trans "Persönliche Daten" %}</a>
-+    </li>
-+    <li class="nav-item">
-+        <a class="nav-link {{ request|activemenu:"contact" }}"
-+           href="{% url 'contact' %}">{% trans "Kontakt" %}</a>
+@@ -64,10 +67,8 @@
+     {% endblock %}
+     <li class="separator">
      </li>
-     {% for user_menu in l_user_menus %}
-         {% include user_menu %}
-     {% endfor %}
--    {% block extend %}
--    {% endblock %}
--    <li class="separator">
--    </li>
 -    <li class="nav-item main-menu-small">
 -        <a class="nav-link yellow" href="{% organisation_website "url" %}">
 -            {% organisation_website "name" %}
 -        </a>
-+    <li class="separator"></li>
 +    <li class="nav-item">
 +        <a class="nav-link" href="https://wiki.rotebeete.org/">Wiki</a>
      </li>
      <li class=" nav-item main-menu-small">
-     </li>
- </ul>
+         <a class="nav-link yellow" href="{% url 'logout' %}">
 ```
 
 #### User-facing changes
 
-- Menu header simplified to single line
+- "Gemüseanteil" renamed to "Mitgliedschaft"
 - "Einsätze" renamed to "Mitarbeitskalender"
 - "Lieferungen" now always displayed (was conditional)
 - **Bietrunden** menu item added
@@ -392,20 +370,22 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 
 ## PERSÖNLICHE DATEN
 
+### `/my/profile`
+
 ### `profile.html`
 
 #### Code diff
 
 ```diff
- {% load i18n %}
- {% load juntagrico.config %}
- {% load crispy_forms_tags %}
+@@ -5,84 +5,57 @@
+
  {% block page_title %}
--    <h3>
+     <h3>
 -        {% trans "Mitgliedschaft" %}
--    </h3>
-+    <h3>{% trans "Persönliche Daten" %}</h3>
++        {% trans "Persönliche Daten" %}
+     </h3>
  {% endblock %}
+
  {% block content %}
 -    {% block membership %}
 -        <div class="row mb-5 membership-status">
@@ -428,6 +408,8 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                        {% endblock %}
 -                    </div>
 -                {% endif %}
++    {% vocabulary "member_type" as v_member_type %}
+
 -                {% if member.number %}
 -                    <p>
 -                        {% blocktrans trimmed with number=member.number %}
@@ -435,6 +417,12 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                        {% endblocktrans %}
 -                    </p>
 -                {% endif %}
++    {% if success %}
++        <div class="alert alert-success">
++            {% trans "Personalien erfolgreich geändert" %}
++        </div>
++    {% endif %}
+
 -                {% if not member.canceled %}
 -                    {% block button_cancel_membership %}
 -                        <a href="{% url 'cancel-membership' %}" class="btn btn-outline-danger">
@@ -442,11 +430,8 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                        </a>
 -                    {% endblock %}
 -                {% endif %}
-+    {% vocabulary "member_type" as v_member_type %}
-+    {% if success %}
-+        <div class="alert alert-success">{% trans "Personalien erfolgreich geändert" %}</div>
-+    {% endif %}
 +    {% include "transitions/_review_data_confirm.html" %}
++
 +    {% if member.canceled %}
 +        <div class="alert alert-warning">
 +            {% blocktrans trimmed with cd=member.cancellation_date|date:"d.m.Y" %}
@@ -454,30 +439,42 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 +            {% endblocktrans %}
 +        </div>
 +    {% endif %}
++
 +    {% if not member.canceled and not member.inactive %}
-+        <div class="alert alert-success">{% blocktrans %}Deine {{ v_member_type }}schaft ist aktiv.{% endblocktrans %}</div>
++        <div class="alert alert-success">
++            {% blocktrans %}Deine {{ v_member_type }}schaft ist aktiv.{% endblocktrans %}
++        </div>
 +    {% endif %}
++
 +    <form method="post" class="mb-4">
 +        {% load rotebeete %}
 +        {% with form=memberform|disable_iban %}
 +            {% crispy form %}
 +        {% endwith %}
 +    </form>
++
 +    <div class="row mb-2">
 +        <div class="offset-md-3 col-md-9">
-+            <a href="{% url 'password' %}" class="btn btn-success">{% trans "Passwort ändern" %}</a>
++            <a href="{% url 'password' %}" class="btn btn-success">
++                {% trans "Passwort ändern" %}
++            </a>
 +        </div>
 +    </div>
++
 +    {% if not member.canceled %}
 +        <div class="row mb-2">
 +            <div class="offset-md-3 col-md-9">
-+                <a href="{% url 'cancel-membership' %}" class="btn btn-danger">{% trans "Mitgliedschaft künden" %}</a>
++                <a href="{% url 'cancel-membership' %}" class="btn btn-danger">
++                    {% trans "Mitgliedschaft künden" %}
++                </a>
              </div>
          </div>
 -    {% endblock %}
+-
 -    {% block documents %}
 -        {% include "juntagrico/snippets/documents.html" %}
 -    {% endblock %}
+-
 -    {% block password %}
 -        <div class="row mb-5 password">
 -            <div class="col-md-3">
@@ -492,6 +489,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -            </div>
 -        </div>
 -    {% endblock %}
+-
 -    {% block profile %}
 -        <div class="mb-5">
 -            <h4>
@@ -523,31 +521,14 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 
 ## MITGLIEDSCHAFT
 
+### `my/subscription/<subscription-id>/`
+
 ### `juntagrico/my/subscription/single.html`
 
 #### Code diff
 
 ```diff
- {% load juntagrico.subscription %}
- {% block page_title %}
-     {% vocabulary "subscription" as v_subscription %}
- {% endblock %}
- {% block content %}
-     {% vocabulary "subscription" as v_subscription %}
-@@ -32,9 +30,7 @@
-         {# Subscription #}
-         {% block part-list %}
-             <div class="row mb-5 part-list">
-                 <div class="col-md-9">
-                     {% include 'juntagrico/my/subscription/snippets/part_list.html' with parts=subscription.parts.waiting_or_active %}
-                 </div>
-@@ -43,24 +39,17 @@
-         {# Co-members #}
-         {% block co-members %}
-             <div class="row mb-5 co-members">
-             </div>
-         {% endblock %}
-         {# Assignments #}
+@@ -55,12 +55,9 @@
          {% include 'juntagrico/my/assignment/snippets/subscription_overview.html' %}
          {# Share #}
          {% include 'juntagrico/my/share/snippets/subscription_overview.html' %}
@@ -567,15 +548,16 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 
 #### User-facing changes
 
-- Page title simplified to single line formatting
-- Internal HTML formatting cleaned up (multi-line tags compressed)
 - **Documents section replaced** with GLV (delivery contract) download link
-- **Membership review confirmation widget** added
-- Custom block nesting simplified
+- **Membership review confirmation (transitions) widget** added
 
 ---
 
+## MITGLIEDSCHAFT
+
 ### `juntagrico/my/subscription/snippets/part_list.html`
+
+### `my/subscription/<subscription-id>/`
 
 #### Code diff
 
@@ -697,108 +679,70 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 - Table columns changed from **Name** to **GVL-Nr.**, **Anzahl Anteile**, **Monatl. Beitrag**, plus **Status**
 - Part display now shows `part.type.name`, `part.type.size.units`, and `part.type.price` instead of just `{{ part }}`
 - The "ändern" (edit) button is commented out and hidden
-- Indentation and formatting cleaned up throughout
 
 ---
 
-## GENOSSENSCHAFTSANTEILE VERWALTEN
+## MITGLIEDSCHAFT: Genossenschaftsanteile Verwalten
+
+### `/my/share/manage/`
 
 ### `manage_shares.html`
 
 #### Code diff
 
 ```diff
- {% block page_title %}
-     {% vocabulary "share_pl" as v_share_pl %}
- {% endblock %}
- {% block content %}
-     {% vocabulary "share_pl" as v_share_pl %}
-     {% vocabulary "share" as v_share %}
-     {% vocabulary "subscription" as v_subscription %}
--    {% block certificates %}
--        <h4>{% trans "Bescheinigung" %}</h4>
--        <p>
--            {% blocktrans %}Hier kannst du eine Bescheinigung über deine {{ v_share_pl }} der letzten Jahre herunterladen{% endblocktrans %}:
-+    <h4>{% trans "Bescheinigung" %}</h4>
-+    <p>
-+        {% blocktrans %}Hier kannst du eine Bescheinigung über deine {{ v_share_pl }} der letzten Jahre herunterladen{% endblocktrans %}:
-+    </p>
-+    {% if certificate_years %}
-+        <form action="{% url 'share-certificate' %}"
-+              method="get"
-+              class="form-inline">
-+            <div class="form-group">
-+                <select class="form-control" id="year_select" name="year">
-+                    {% for year in certificate_years %}
-+                        <option value="{{ year }}"
-+                                {% if forloop.last %}selected="selected"{% endif %}>{{ year }}</option>
-+                    {% endfor %}
-+                </select>
-+            </div>
-+            <input type="submit"
-+                   value="{% trans "Bescheinigung" %} {% trans "herunterladen" %}"
-+                   class="btn btn-primary">
-+        </form>
-+    {% else %}
-+        <p class="font-italic">
-+            Keine {{ v_share_pl }} der vergangenen Jahre gefunden. Wenn du seit diesem Jahr {{ v_share_pl }} hälst, steht dir hier nächstes Jahr eine Bescheinigung zur Verfügung.
-         </p>
--        {% if certificate_years %}
--            <form action="{% url 'share-certificate' %}" method="get" class="form-inline">
--                ...form elements...
--            </form>
--        {% else %}
--            <p class="font-italic">Keine {{ v_share_pl }}... gefunden</p>
-         {% endif %}
--    {% endblock %}
--    {% block overview %}
-         <h4>{% trans "Übersicht" %}</h4>
-         {% if shares|length == 0 %}
-             {% blocktrans %}Du hast noch keine {{ v_share_pl }}{% endblocktrans %}
-         {% else %}
-             <div>
-                 <table id="filter-table" class="table">
-                     <thead>
-                         <tr>
-                             <th></th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         {% for share in shares %}
-                             <tr>
--                                            <a href="{% url 'cancel-membership' %}">...Mitgliedschaft kündigen...</a>
+@@ -70,20 +70,15 @@
+                                 <td>
+                                     {% if forloop.first %}
+                                         {% blocktrans %}Du brauchst mindestens 1 {{ v_share }}{% endblocktrans %}
+-                                        {% if not required %}
+-                                            <div>
+-                                                <a href="{% url 'cancel-membership' %}" class="btn btn-outline-danger">
+-                                                    {% trans "Mitgliedschaft kündigen" %}
+-                                                </a>
+-                                            </div>
 -                                        {% endif %}
--                                    {% elif share.cancelled_date is None %}
--                                        <a href="{% url 'share-cancel' share.id %}">{% trans "kündigen" %}</a>
-+                                            <a href="{% url 'cancel-membership' %}">Mitgliedschaft kündigen</a>
-+                                        {% endif %}
+                                     {% elif forloop.counter <= required %}
+                                         {% blocktrans %}Diese/s/r {{ v_share }} wird in einem/r {{ v_subscription }} benötigt{% endblocktrans %}
 +                                    {% elif share.cancelled_date is None and share.paid_date is None %}
 +                                        {% blocktrans %}Diese/s/r {{ v_share }} wurde noch nicht als bezahlt verbucht{% endblocktrans %}
-+                                    {% elif ibanempty %}
-+                                        <a href="{% url 'profile' %}">{% blocktrans %}Kann gekündigt werden, sobald eine IBAN hinterlegt ist{% endblocktrans %}</a>
+                                     {% elif ibanempty %}
+                                         <a href="{% url 'profile' %}">{% blocktrans %}Kann gekündigt werden, sobald eine IBAN hinterlegt ist{% endblocktrans %}</a>
+-                                    {% elif share.cancelled_date is None %}
+-                                        <a href="{% url 'share-cancel' share.id %}" class="btn btn-outline-danger"
+-                                           onclick="return confirm('{% blocktrans %} Möchtest du diese/s/n {{ v_share }} verbindlich zum {{ next_membership_end_date }} kündigen? {% endblocktrans%}')">
 +                                    {% elif share.cancelled_date is None and share.paid_date is not None %}
-+                                        <a href="{% url 'share-cancel' share.id %}" class="btn btn-outline-danger"
-+                                           onclick="return confirm('{% blocktrans %} Möchtest du diese/s/n {{ v_share }} verbindlich zum {{ next_membership_end_date }} kündigen? {% endblocktrans%}')">
-+                                            {% trans "kündigen" %}
-+                                        </a>
++                                        <a href="{% url 'share-cancel' share.id %}" class="btn btn-success"
++                                           onclick="return confirm('{% blocktrans %} Möchtest du sicher diese/s/n {{ v_share }} verbindlich kündigen? {% endblocktrans%}')">
+                                             {% trans "kündigen" %}
+                                         </a>
                                      {% endif %}
-                                 </td>
-                             </tr>
-                         {% endfor %}
-                     </tbody>
-                 </table>
+@@ -95,25 +90,6 @@
              </div>
          {% endif %}
--    {% endblock %}
+     {% endblock %}
+-
 -    {% block order %}
 -        <h5>{% blocktrans %}{{ v_share_pl }} bestellen{% endblocktrans %}</h5>
--        <form method="post">
--            <input type="number" name="shares" ... />
--            <button type="submit">{% blocktrans %}Bestellen{% endblocktrans %}</button>
+-        {% if shareerror %}
+-            <div class="alert alert-danger">
+-                {% trans "Deine Eingabe ist ungültig" %}
+-            </div>
+-        {% endif %}
+-        <form method="post" class="form-inline">
+-            {% csrf_token %}
+-            <div class="form-group">
+-                <label for="shares_input" class="mr-2">{{ v_share_pl }}</label>
+-                <input type="number" name="shares" id="shares_input" class="form-control" value="0" min="0"/>
+-                <button type="submit" class="ml-2 btn btn-success">
+-                    {% blocktrans %}Bestellen{% endblocktrans %}
+-                </button>
+-            </div>
 -        </form>
 -    {% endblock %}
-+    <script></script>
  {% endblock %}
+
+ {% block scripts %}
 ```
 
 #### User-facing changes
@@ -808,42 +752,30 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
   - If share is unpaid (`paid_date is None`): shows "noch nicht als bezahlt verbucht"
   - If no IBAN on file (`ibanempty`): shows message to add IBAN first
   - If share is paid and not cancelled: shows cancellation button with confirmation dialog
-- HTML formatting simplified (block nesting removed, multiline tags condensed)
 
 ---
 
-## GENOSSENSCHAFTSANTEILE — BESCHEINIGUNG
+## MITGLIEDSCHAFT: Genossenschaftsanteile Verwalten: Bescheinigung herunterladen
 
 ### `exports/share_certificate.html`
 
 #### Code diff
 
 ```diff
- <!DOCTYPE html>
- <html lang="de">
+@@ -97,7 +97,7 @@
 
-
-
-         </style>
-     <body>
-         {% block content %}
--            <p class="member">
--                Name: {{ member.first_name }} {{ member.last_name }}<br>
--                {{ v_member }}-Nr.: {{ member.id }}
-+            <p>
-+                Name: {{ member.first_name }} {{ member.last_name }}
-+                <br>
-+                {{ v_member }}-Nr.: {{ member.share_set.first.number }}
-             </p>
-             <p class="main_text">
-                 {% blocktrans with start_date=shares.0.creation_date|date:"d.m.Y" %}
+ <p class="member">
+     Name: {{ member.first_name }} {{ member.last_name }}<br>
+-    {{ v_member }}-Nr.: {{ member.id }}
++    {{ v_member }}-Nr.: {{ member.share_set.first.number }}
+ </p>
+ <p class="main_text">
+     {% blocktrans trimmed %}
 ```
 
 #### User-facing changes
 
 - **Member number on certificate now displays the share number** (`member.share_set.first.number`) instead of internal member ID
-- **HTML formatting improved** with consistent indentation and whitespace
-- **CSS formatting cleaned up** with proper spacing and alignment
 
 ---
 
@@ -854,6 +786,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 #### Code diff
 
 ```diff
+@@ -1,35 +1,4 @@
  {% extends "mails/email.txt" %}
 -{% load i18n %}
 -{% load juntagrico.config %}
@@ -867,6 +800,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -{% vocabulary "share" as v_share %}
 -{% vocabulary "share_pl" as v_share_pl %}
 -{% trans "Hallo" %}
+-
 -{% blocktrans with sc=shares|length%}Du hast bei {{ v_d_enriched_organisation }} {{sc}} {{ v_share_pl }} bestellt{% endblocktrans %}:
 -{% for share in shares %}{% blocktrans with sid=share.id %}{{ v_share }} mit Systemnummer {{ sid }}{% endblocktrans %}
 -{% endfor %}
@@ -879,9 +813,11 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -    {% trans "Postkonto-Nummer" %}: {{ c_bank.PC }}
 -    {% trans "IBAN" %}: {{ c_bank.IBAN }}
 -    {% trans "BIC" %}: {{ c_bank.BIC }}
+-
 -{% blocktrans %}Um die Arbeit der Buchhaltung zu erleichtern zahle bitte nur 1 {{ v_share }} auf einmal.
 -Gib im Betreff die Systemnummer an und die Emailadresse der Halterin oder des Halters des/r {{ v_share }} an
 -(dies ist vor allem wichtig wenn du diese/n/s {{ v_share }} für jemand anderen bezahlst){% endblocktrans %}
+-
 -{% blocktrans trimmed %}
 -Bis bald und liebe Grüsse die {{ c_organisation_name }}-Betriebsgruppe
 -{% endblocktrans %}
