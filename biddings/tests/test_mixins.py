@@ -23,6 +23,12 @@ class SubscriptionMixinTestCase(SubscriptionMixin, TestCase):
         )
         assert subscription.primary_member.email == "test@roko.li"
         assert (
-            sum([part.type.size.units for part in subscription.active_and_future_parts])
+            sum(
+                [
+                    product_size.units
+                    for part in subscription.active_and_future_parts
+                    for product_size in part.type.bundle.product_sizes.all()
+                ]
+            )
             == 5.5
         )

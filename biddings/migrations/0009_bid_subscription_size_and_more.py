@@ -7,34 +7,57 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('juntagrico', '0040_post_1_6'),        
-        ('biddings', '0008_biddinground_guiding_value'),
+        ("juntagrico", "0047_pre_743"),
+        ("biddings", "0008_biddinground_guiding_value"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='bid',
-            name='subscription_size',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='bid', to='juntagrico.subscriptionsize', verbose_name='Anzal Anteile'),
+            model_name="bid",
+            name="subscription_size",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="bid",
+                to="juntagrico.subscriptionbundle",
+                verbose_name="Anzal Anteile",
+            ),
         ),
         migrations.AlterField(
-            model_name='bid',
-            name='green_contribution_amount',
-            field=models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Grünes Gebot (Komfortzone)'),
+            model_name="bid",
+            name="green_contribution_amount",
+            field=models.DecimalField(
+                decimal_places=2,
+                max_digits=6,
+                verbose_name="Grünes Gebot (Komfortzone)",
+            ),
         ),
         migrations.AlterField(
-            model_name='bid',
-            name='red_contribution_amount',
-            field=models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Rotes Gebot (Schmerzgrenze)'),
+            model_name="bid",
+            name="red_contribution_amount",
+            field=models.DecimalField(
+                decimal_places=2,
+                max_digits=6,
+                verbose_name="Rotes Gebot (Schmerzgrenze)",
+            ),
         ),
         migrations.AlterField(
-            model_name='bid',
-            name='yellow_contribution_amount',
-            field=models.DecimalField(decimal_places=2, max_digits=6, verbose_name='Gelbes Gebot (Machbar)'),
+            model_name="bid",
+            name="yellow_contribution_amount",
+            field=models.DecimalField(
+                decimal_places=2, max_digits=6, verbose_name="Gelbes Gebot (Machbar)"
+            ),
         ),
         migrations.AlterField(
-            model_name='biddinground',
-            name='guiding_value',
-            field=models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True, verbose_name='Richtwert'),
+            model_name="biddinground",
+            name="guiding_value",
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=2,
+                max_digits=6,
+                null=True,
+                verbose_name="Richtwert",
+            ),
         ),
     ]
