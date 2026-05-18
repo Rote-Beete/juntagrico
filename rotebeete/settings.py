@@ -38,13 +38,14 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.admin",
+    "juntagrico.apps.JuntagricoAdminConfig",
     "rotebeete",
     "rotebeete.transitions",
     "juntagrico",
-    "fontawesomefree",
     "import_export",
     "impersonate",
+    "crispy_bootstrap4",
+    "django_select2",
     "crispy_forms",
     "adminsortable2",
     "djrichtextfield",
@@ -178,7 +179,6 @@ TEMPLATES = [
 
 LOGIN_REDIRECT_URL = "/my/home"
 
-SESSION_SERIALIZER = "django.contrib.sessions.serializers.PickleSerializer"
 
 LOCALE_PATHS = (BASE_DIR / "juntagrico/locale",)
 
