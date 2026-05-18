@@ -5,7 +5,10 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from juntagrico.entity.subs import Subscription
-from juntagrico.entity.subtypes import SubscriptionSize
+
+# from juntagrico.entity.subtypes import SubscriptionSize
+from juntagrico.entity.subtypes import ProductSize
+
 
 from django.db.models import Max
 
@@ -134,7 +137,7 @@ class Bid(models.Model):
     )
 
     subscription_size = models.ForeignKey(
-        SubscriptionSize,
+        ProductSize,
         on_delete=models.PROTECT,
         related_name="bid",
         verbose_name=_("Gewünschte Anzahl der Anteile"),
