@@ -10,8 +10,11 @@ env = environ.Env()
 
 env.prefix = "ROTEBEETE_"
 
-environ.Env.read_env(BASE_DIR / ".env")
-environ.Env.read_env(BASE_DIR / ".env.local")
+# environ.Env.read_env(BASE_DIR / ".env")
+# environ.Env.read_env(BASE_DIR / ".env.local")
+
+ENV_FILE = os.getenv("ROTEBEETE_ENV_FILE", BASE_DIR / ".env")
+env.read_env(ENV_FILE)
 
 DATA_DIR = env("DATA_DIR", cast=Path, default=BASE_DIR / "data")
 DATA_DIR.mkdir(exist_ok=True)

@@ -14,11 +14,17 @@ ruff:
 djlint:
 	uv run djlint --exclude '--none--' --use-gitignore --reformat .
 
+
+PYTEST_MARKERS ?= not wip
 .PHONY: test
 test:
 	uv sync --group test
-	uv run python manage.py collectstatic --noinput
-	uv run pytest
+	ROTEBEETE_ENV_FILE=.env.test uv run python manage.py collectstatic --noinput
+	ROTEBEETE_ENV_FILE=.env.test uv run pytest -m "$(PYTEST_MARKERS)"
+
+.PHONY: test-only
+test-only:
+	$(MAKE) test PYTEST_MARKERS="only"
 
 .PHONY: dev
 dev:
