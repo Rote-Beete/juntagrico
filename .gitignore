@@ -9,5 +9,4 @@ rotebeete/debug.log
 .env.local
 .env.docker
 .env
-.python-version
 .history
