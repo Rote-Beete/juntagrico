@@ -28,7 +28,7 @@ test-only:
 
 .PHONY: dev
 dev:
-	docker compose -f docker-compose.dev.yml up --pull always  --build --watch
+	docker compose -f docker-compose.dev.yml up --build --watch
 	docker compose -f docker-compose.dev.yml down
 
 .PHONY: pre-push
