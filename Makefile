@@ -3,7 +3,7 @@ lint-check:
 	uv sync --no-default-groups --group dev
 	uv run ruff check .
 	uv run ruff format --check .
-	uv run djlint --exclude '--none--' --use-gitignore --check . 
+	uv run djlint --exclude '--none--' --use-gitignore --check ./biddings 
 
 .PHONY: ruff
 ruff:
@@ -12,7 +12,7 @@ ruff:
 
 .PHONY: djlint
 djlint:
-	uv run djlint --exclude '--none--' --use-gitignore --reformat .
+	uv run djlint --exclude '--none--' --use-gitignore --reformat ./biddings 
 
 
 PYTEST_MARKERS ?= not wip
@@ -33,7 +33,7 @@ dev:
 
 .PHONY: pre-push
 pre-push:
-# 	$(MAKE) lint-check
-# 	$(MAKE) test
-	@:
+	$(MAKE) lint-check
+	$(MAKE) test
+
 
