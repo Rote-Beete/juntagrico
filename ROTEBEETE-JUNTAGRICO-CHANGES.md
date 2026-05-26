@@ -6,25 +6,21 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 
 ## MENU -> Administration -> Listen
 
-### `juntagrico/menu/admin/lists.html`
+### settings
 
-#### Code diff
-
-```diff
-@@ -30,7 +30,7 @@
-                         </li>
-                         <li class="nav-item">
-                             <a class="nav-link" href="{% url 'lists-depot-overview' %}">
--                                {% vocabulary "depot" %} {% trans "Übersicht" %}
-+                                {% vocabulary "depot" %} {% trans "eMail-Listen" %}
-                             </a>
-                         </li>
-                     {% endif %}
 ```
-
+DEPOT_LISTS = {
+    "depotlist": "exports/depotlist.html",
+    "depot_overview": {
+        "template": "exports/depot_overview.html",
+        "name": f"{VOCABULARY['depot']} eMail-Listen",
+    },
+    "amount_overview": "exports/amount_overview.html",
+}
+```
 #### User-facing changes
 
-- The last submenu entry is now labelled **eMail-Listen** instead of **Übersicht**.
+- The submenu entry is now labelled **eMail-Listen** instead of **Übersicht**.
 
 ---
 
