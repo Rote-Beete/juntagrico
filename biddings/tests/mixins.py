@@ -1,9 +1,15 @@
 from django.utils import timezone
 from django.urls import reverse
-from juntagrico.admin import SubscriptionProduct, SubscriptionSize, SubscriptionType
+from juntagrico.entity.subtypes import (
+    ProductSize,
+    SubscriptionBundle,
+    SubscriptionProduct,
+    SubscriptionType,
+)
 from biddings.models import BiddingRound
 from juntagrico.models import Member, Subscription
 from juntagrico.entity.depot import Depot
+from juntagrico.entity.contact import MemberContact
 from juntagrico.entity.location import Location
 
 
@@ -30,75 +36,99 @@ class MemberMixin:
     def get_or_create_member(
         self, email="test@roko.li", first_name="John", last_name="Tester", **kwargs
     ):
-        data = {
-            'first_name': first_name,
-            'last_name': last_name,
-            'email': email,
-            'addr_street': 'addr_street',
-            'addr_zipcode': '1234',
-            'addr_location': 'addr_location',
-            'phone': 'phone',
-            'mobile_phone': 'phone',
-            'confirmed': True,
+        defaults = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "addr_street": "addr_street",
+            "addr_zipcode": "1234",
+            "addr_location": "addr_location",
+            "phone": "phone",
+            "mobile_phone": "phone",
+            "confirmed": True,
         }
-        data.update(kwargs)
-        member, _ = Member.objects.get_or_create(**data)
+        defaults.update(kwargs)
+        member, _ = Member.objects.get_or_create(email=email, defaults=defaults)
         return member
 
 
 class SubscriptionMixin(MemberMixin):
+    def create_subscription_type(
+        self, product_name, units, required_assignments, price
+    ):
+        product, _ = SubscriptionProduct.objects.get_or_create(name=product_name)
+        size, _ = ProductSize.objects.get_or_create(
+            name=f"{units}x",
+            units=units,
+            product=product,
+        )
+        bundle, _ = SubscriptionBundle.objects.get_or_create(
+            long_name=f"{product_name} bundle",
+        )
+        bundle.product_sizes.add(size)
+
+        return SubscriptionType.objects.create(
+            name=f"{product_name} type",
+            long_name=f"{product_name} type",
+            required_assignments=required_assignments,
+            price=price,
+            bundle=bundle,
+        )
+
     def get_or_create_location(self, **kwargs):
         data = {
-            'name': "location",
-            'latitude': '12.513',
-            'longitude': '1.314',
-            'addr_street': 'Fakestreet 123',
-            'addr_zipcode': '1000',
-            'addr_location': 'Faketown',
-            'description': 'Place to be',
+            "name": "location",
+            "latitude": "12.513",
+            "longitude": "1.314",
+            "addr_street": "Fakestreet 123",
+            "addr_zipcode": "1000",
+            "addr_location": "Faketown",
+            "description": "Place to be",
         }
         data.update(kwargs)
         location, _ = Location.objects.get_or_create(**data)
         return location
 
     def get_or_create_depot(self, **kwargs):
+        contact_member = self.get_or_create_member(email="test@roko.li")
         data = {
-            'name': 'depot',
-            'contact': self.get_or_create_member(email="test@roko.li"),
-            'weekday': 1,
-            'location': self.get_or_create_location(),
+            "name": "depot",
+            "weekday": 1,
+            "location": self.get_or_create_location(),
         }
         data.update(kwargs)
         depot, _ = Depot.objects.get_or_create(**data)
+
+        if not depot.contact_set.filter(membercontact__member=contact_member).exists():
+            MemberContact.objects.create(
+                content_object=depot,
+                member=contact_member,
+            )
+
         return depot
 
     def get_or_create_subscription(self, primary_member=None, **kwargs):
         data = {
-            'depot': self.get_or_create_depot(),
-            'start_date': '2017-01-01',
+            "depot": self.get_or_create_depot(),
+            "start_date": "2017-01-01",
         }
         data.update(kwargs)
         subcription, _ = Subscription.objects.get_or_create(**data)
 
         subcription.parts.create(
-            type=SubscriptionType.objects.create(
+            type=self.create_subscription_type(
+                product_name="Product 1",
+                units=3.5,
                 required_assignments=3,
                 price=10,
-                size=SubscriptionSize.objects.create(
-                    units=3.5,
-                    product=SubscriptionProduct.objects.create(name="Product 1"),
-                ),
             )
         )
 
         subcription.parts.create(
-            type=SubscriptionType.objects.create(
+            type=self.create_subscription_type(
+                product_name="Product 2",
+                units=2,
                 required_assignments=2,
                 price=12,
-                size=SubscriptionSize.objects.create(
-                    units=2,
-                    product=SubscriptionProduct.objects.create(name="Product 2"),
-                ),
             )
         )
 

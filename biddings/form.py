@@ -2,22 +2,26 @@ from django import forms
 from django.forms import ModelForm, ModelChoiceField, ValidationError, Select
 from django.utils.translation import gettext_lazy as _
 
-# from juntagrico.admin import SubscriptionSize
+from juntagrico.entity.subtypes import SubscriptionBundle
 from biddings.models import Bid
 
-# class SubscriptionSizeSelect(Select):
-#     def create_option(
-#         self, name, value, label, selected, index, subindex=None, attrs=None
-#     ):
-#         option = super().create_option(
-#             name, value, label, selected, index, subindex=subindex, attrs=attrs
-#         )
-#         if value:
-#             option["attrs"]["data-units"] = SubscriptionSize.objects.get(
-#                 id=str(value)
-#             ).units
 
-#         return option
+class SubscriptionSizeSelect(Select):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex=subindex, attrs=attrs
+        )
+        if value:
+            bundle = SubscriptionBundle.objects.prefetch_related("product_sizes").get(
+                id=str(value)
+            )
+            option["attrs"]["data-units"] = sum(
+                bundle.product_sizes.values_list("units", flat=True)
+            )
+
+        return option
 
 
 class BidUpdateForm(ModelForm):
@@ -47,8 +51,8 @@ class BidUpdateForm(ModelForm):
             "red_contribution_amount": forms.NumberInput(attrs={"min": 0}),
         }
 
-    # subscription_size = ModelChoiceField(
-    # queryset=SubscriptionSize.objects.order_by("units"),
-    #     label=Bid._meta.get_field("subscription_size").verbose_name,
-    #     widget=SubscriptionSizeSelect,
-    # )
+    subscription_bundle = ModelChoiceField(
+        queryset=SubscriptionBundle.objects.order_by("sort_order"),
+        label=Bid._meta.get_field("subscription_bundle").verbose_name,
+        widget=SubscriptionSizeSelect,
+    )

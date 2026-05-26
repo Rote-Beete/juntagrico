@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("juntagrico", "0040_post_1_6"),
+        ("juntagrico", "0047_pre_743"),
         ("biddings", "0008_biddinground_guiding_value"),
     ]
 
@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 null=True,
                 on_delete=django.db.models.deletion.PROTECT,
                 related_name="bid",
-                to="juntagrico.productsize",
+                to="juntagrico.subscriptionbundle",
                 verbose_name="Anzal Anteile",
             ),
         ),

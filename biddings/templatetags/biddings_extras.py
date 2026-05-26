@@ -2,7 +2,7 @@ from django import template
 from django.utils.formats import localize
 from biddings.models import Bid
 from juntagrico.entity.subtypes import SubscriptionType
-from django.db.models import F, Sum, Q
+from django.db.models import Sum, Q
 from django.utils.timezone import now
 
 register = template.Library()
@@ -38,9 +38,7 @@ def get_name(subscription):
     types = SubscriptionType.objects.filter(
         subscription_parts__in=subscription.active_and_future_parts
     ).annotate(
-        size_sum=Sum("size__units"),
-        size_name=F("size__name"),
-        product_name=F("size__product__name"),
+        size_sum=Sum("bundle__product_sizes__units"),
     )
     return delimiter.join(
         [

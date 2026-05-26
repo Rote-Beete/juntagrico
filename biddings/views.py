@@ -31,7 +31,7 @@ class _UserSubscriptionMixin:
         try:
             return SubscriptionType.objects.filter(
                 subscription_parts__in=self._get_subscription().active_and_future_parts
-            )[0].size
+            )[0].bundle
         except (IndexError, AttributeError):
             return None
 
@@ -115,7 +115,7 @@ def export_bidding_round(request, bidding_round_pk):
         fieldnames=[
             "subscprition_type_names",
             "primary_member",
-            "subscription_size",
+            "subscription_bundle",
             "green_bid",
             "yellow_bid",
             "red_bid",
