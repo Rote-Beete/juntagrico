@@ -246,6 +246,16 @@ VOCABULARY = {
     "depot_pl": "Verteilstationen",
     "package": "Kiste",
 }
+
+DEPOT_LISTS = {
+    "depotlist": "exports/depotlist.html",
+    "depot_overview": {
+        "template": "exports/depot_overview.html",
+        "name": f"{VOCABULARY['depot']} eMail-Listen",
+    },
+    "amount_overview": "exports/amount_overview.html",
+}
+
 CURRENCY = "EUR"
 
 ORGANISATION_BANK_CONNECTION = {
