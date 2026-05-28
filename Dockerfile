@@ -47,7 +47,7 @@ RUN printf 'de_DE.UTF-8 UTF-8\nen_US.UTF-8 UTF-8\n' >/etc/locale.gen \
 ENV LANG=de_DE.UTF-8 LC_ALL=de_DE.UTF-8 LC_TIME=de_DE.UTF-8 LC_MESSAGES=en_US.UTF-8
 # configure runtime user
 RUN adduser --system --group --firstuid 220 --firstgid 220 --home "$ROTEBEETE_DATA_DIR" "$APP_USER" \
-    && chown -R _rotebeete: "$ROTEBEETE_DATA_DIR"
+    && chown -R "$APP_USER": "$ROTEBEETE_DATA_DIR"
 # remove vulnerable and no longer useful base system packages
 RUN apt purge -y --allow-remove-essential \
       perl-base \
