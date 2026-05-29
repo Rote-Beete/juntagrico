@@ -1,3 +1,6 @@
+DOCKER_COMPOSE=docker compose -f docker-compose.dev.yml
+
+
 .PHONY: lint-check
 lint-check:
 	uv sync --no-default-groups --group dev
@@ -28,12 +31,18 @@ test-only:
 
 .PHONY: dev
 dev:
-	docker compose -f docker-compose.dev.yml up --build --watch
-	docker compose -f docker-compose.dev.yml down
+	${DOCKER_COMPOSE} -f docker-compose.dev.yml up --build --watch
+	${DOCKER_COMPOSE} -f docker-compose.dev.yml down
 
 .PHONY: pre-push
 pre-push:
 	$(MAKE) lint-check
 	$(MAKE) test
 
+.PHONY: replace-db
+replace-db:
+	@test -n "$(DUMP_FILE)" || (echo "Error: DUMP_FILE is required"; exit 1)
 
+	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "DROP DATABASE rb;"
+	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "CREATE DATABASE rb;"
+	cat ${DUMP_FILE} | ${DOCKER_COMPOSE} exec -T postgres pg_restore -U rb -d rb --no-owner --no-privileges --disable-triggers
