@@ -5,14 +5,14 @@ services:
     image: redis:7-alpine
 
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     env_file: [container/env, .env.docker]
     environment:
       POSTGRES_DB: rb
       POSTGRES_USER: rb
       POSTGRES_PASSWORD: rb
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U rb']
       interval: 5s
