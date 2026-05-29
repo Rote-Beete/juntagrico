@@ -6,19 +6,21 @@ variables:
   UV_VERSION: '0.10.10'
 
 default:
-  image: python:3.13-alpine
+  image: python:3.13-slim-trixie
 
 .setup-uv: &setup-uv
-  - apk add make
+  - apt-get update -y
+  - apt-get install -y --no-install-recommends make build-essential libpq-dev
+  - rm -rf /var/lib/apt/lists/*
   - which pipx >/dev/null || pip install pipx && export PATH="$(pipx environment --value PIPX_BIN_DIR):$PATH"
   - pipx install "uv==$UV_VERSION"
 
-# lint:
-#   stage: test
-#   before_script:
-#     - *setup-uv
-#   script:
-#     - make lint-check
+lint:
+  stage: test
+  before_script:
+    - *setup-uv
+  script:
+    - make lint-check
 
 test:
   stage: test
