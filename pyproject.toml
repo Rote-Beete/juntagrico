@@ -49,8 +49,10 @@ ignore = "H006,H031,H030"
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "rotebeete.settings"
 python_files = ["tests.py", "test_*.py"]
-pythonpath = "."
+pythonpath = ["."]
 markers = [
     "wip: work in progress tests",
     "only: run only selected tests",
 ]
+addopts = "-s"
+filterwarnings = ["ignore::DeprecationWarning"]
