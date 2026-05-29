@@ -38,7 +38,7 @@ services:
       - ./container/nginx-server.conf:/etc/nginx/nginx.conf
       - ./container/nginx-app.conf:/etc/nginx/snippets/rotebeete.conf
       - rotebeete-data:/var/lib/rotebeete:ro
-    ports: ['1234:8537']
+    ports: ['5678:8537']
 
 volumes:
   rotebeete-data:

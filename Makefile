@@ -1,5 +1,5 @@
 DOCKER_COMPOSE=docker compose -f docker-compose.dev.yml
-
+DOCKER_COMPOSE_STAGING=docker compose -f docker-compose.staging.yml
 
 .PHONY: lint-check
 lint-check:
@@ -46,3 +46,8 @@ replace-db:
 	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "DROP DATABASE rb;"
 	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "CREATE DATABASE rb;"
 	cat ${DUMP_FILE} | ${DOCKER_COMPOSE} exec -T postgres pg_restore -U rb -d rb --no-owner --no-privileges --disable-triggers
+
+.PHONY: dev-staging
+dev-staging:
+	${DOCKER_COMPOSE_STAGING} up --pull always --force-recreate --remove-orphans
+	${DOCKER_COMPOSE_STAGING} down
