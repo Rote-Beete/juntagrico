@@ -1510,7 +1510,7 @@ test = [
 [package.metadata]
 requires-dist = [
     { name = "bnb", specifier = ">=0.2.0", index = "https://git.hack-hro.de/api/v4/projects/495/packages/pypi/simple" },
-    { name = "django", specifier = ">=4.2.29" },
+    { name = "django", specifier = ">=5,<6" },
     { name = "django-defender", specifier = ">=0.9.8" },
     { name = "django-environ", specifier = ">=0.13.0" },
     { name = "django-oauth-toolkit", specifier = ">=3.0.1" },
