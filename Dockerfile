@@ -12,6 +12,11 @@ ENV ROTEBEETE_LOGGING_FILE_PATH=/var/lib/rotebeete/logging
 FROM base AS deps
 ARG UV_FLAGS=--no-default-groups
 WORKDIR $APP_PATH
+RUN apt-get update -y \
+        && apt-get install -y --no-install-recommends \
+            build-essential \
+            libpq-dev \
+        && rm -rf /var/lib/apt/lists/*
 COPY --from=uv-bin /uv /bin/
 COPY pyproject.toml uv.lock ./
 RUN uv sync $UV_FLAGS \
@@ -35,6 +40,7 @@ RUN apt update -y \
     && apt install -y --no-install-recommends \
       adduser  \
       locales \
+      libpq5 \
       netcat-openbsd \
       fonts-liberation2 \
     && apt autoremove -y --purge \
