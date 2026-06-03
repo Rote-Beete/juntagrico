@@ -145,32 +145,23 @@ DEPOT_LISTS = {
 #### Code diff
 
 ```diff
-@@ -1,96 +1,57 @@
--{% extends "../base.html" %}
-+{% extends "management_lists/man_list_base.html" %}
+@@ -1,96 +1,67 @@
+ {% extends "../base.html" %}
  {% load i18n %}
  {% load static %}
  {% load juntagrico.config %}
  {% load juntagrico.common %}
  {% load juntagrico.snippets %}
--
+
  {% block page_title %}
-     <h3>
-         {{ title }}
-     </h3>
+@@
+ {% block content %}
+     {% include '../member/snippets/toggle_buttons.html' with co_members=True %}
+     {{ block.super }}
  {% endblock %}
--
--{% block content %}
--    {% include '../member/snippets/toggle_buttons.html' with co_members=True %}
--    {{ block.super }}
-+{% block management_cmd %}
-+    {% include 'management_lists/snippets/email_sender.html' %}
- {% endblock %}
--
+
  {% block list %}
-     <table id="filter-table" class="list table">
-         <thead>
-             <tr>
+@@
 -                {% block list_head %}
 -                    <th class="filter">
 -                        {% vocabulary "subscription" %}
@@ -196,10 +187,7 @@ DEPOT_LISTS = {
 +                <th class="filter">{% trans "Inhalt" %}</th>
 +                <th class="filter">{% trans "Aktivierungsdatum" %}</th>
 +                <th class="filter">{% trans "E-Mails" %}</th>
-             </tr>
-         </thead>
-         <tfoot>
-             <tr>
+@@
 -                {% block list_foot %}
 -                    <th>
 -                        {% vocabulary "subscription" %}
@@ -225,9 +213,7 @@ DEPOT_LISTS = {
 +                <th>{% trans "Inhalt" %}</th>
 +                <th>{% trans "Aktivierungsdatum" %}</th>
 +                <th>{% trans "E-Mails" %}</th>
-             </tr>
-         </tfoot>
-         <tbody>
+@@
 -            {% for subscription in object_list %}
 -                {% block list_entry %}
 -                    <tr>
@@ -245,16 +231,7 @@ DEPOT_LISTS = {
 -                            <td>
 -                                {{ subscription.depot.name }}
 -                            </td>
-+            {% for subscription in subscriptions %}
-+                <p>subscription</p>
-+                <tr>
-+                    <td>
-+                        {% if subscription.primary_member %}
-+                            {% impersonate_start request subscription.primary_member %}
-+                            <a href="{% url 'admin:juntagrico_member_change' subscription.primary_member.id %}">
-+                                {{ subscription.primary_member.get_name }}
-+                            </a>
-                         {% endif %}
+-                        {% endif %}
 -                        <td>
 -                            {{ subscription.activation_date|date:"Y-m-d" }}
 -                        </td>
@@ -263,23 +240,46 @@ DEPOT_LISTS = {
 -                        </td>
 -                    </tr>
 -                {% endblock %}
++            {% for subscription in object_list %}
++                <tr>
++                    <td>
++                        {% if subscription.primary_member %}
++                            {% impersonate_start request subscription.primary_member %}
++                            <a href="{% url 'admin:juntagrico_member_change' subscription.primary_member.id %}">
++                                {{ subscription.primary_member.get_name }}
++                            </a>
++                        {% endif %}
 +                    </td>
-+                    <td>{{ subscription.comembers }}</td>
++                    <td>
++                        {% for recipient in subscription.co_members %}
++                            <div class="co-member">
++                                {% include 'juntagrico/manage/member/snippets/display_linked.html' with member=recipient %}
++                            </div>
++                        {% endfor %}
++                    </td>
 +                    <td>{{ subscription.depot.name }}</td>
-+                    <td>{{ subscription }}</td>
++                    <td>
++                        {% for item in subscription.content_strings %}
++                            <div>{{ item }}</div>
++                        {% endfor %}
++                    </td>
 +                    <td>{{ subscription.activation_date|date:"Y-m-d" }}</td>
-+                    <td class="email">{{ subscription.recipients_qs|values_list:'member__email'|join:', ' }}</td>
++                    <td class="email">
++                        {% for member in subscription.current_members %}
++                            {{ member.email }}{% if not forloop.last %}, {% endif %}
++                        {% endfor %}
++                    </td>
 +                </tr>
              {% endfor %}
          </tbody>
      </table>
-```
+ ```
 
 #### User-facing changes
 
-- The table now shows **HauptbezieherIn** (linked to admin), **Weitere BezieherInnen**, **Depot**, **Inhalt**, **Aktivierungsdatum**, **E-Mails** — replacing the previous generic columns.
-- An **email sender** snippet is added above the table.
-- The toggle buttons for co-members view are removed.
+- The table now shows **HauptbezieherIn** (linked to admin), **Weitere BezieherInnen**, **Depot**, **Inhalt**, **Aktivierungsdatum**, **E-Mails**.
+- Co-members are rendered as linked member entries (admin link via `juntagrico/manage/member/snippets/display_linked.html`).
+- Toggle buttons for co-members remain visible above the list.
 
 ---
 
