@@ -36,9 +36,8 @@ dev:
 
 .PHONY: pre-push
 pre-push:
-# 	$(MAKE) lint-check
-# 	$(MAKE) test
-	@:
+	$(MAKE) lint-check
+	$(MAKE) test
 
 .PHONY: replace-db
 replace-db:
