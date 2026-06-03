@@ -1,5 +1,7 @@
 # Template Overrides — Changelog
 
+Juntagrico 2.0.7
+
 Changes relative to the upstream [juntagrico](https://github.com/juntagrico/juntagrico) library templates.
 
 ---
@@ -24,6 +26,7 @@ DEPOT_LISTS = {
 
 ---
 !!! NEEDS UPDATE !!!
+!!! CHECK: Geno-Nr. in MitgliederListe and Gemüseanteie_Übersicht !!!
 ## MENU -> Administration -> Exporte
 
 ### `/my/export`
@@ -751,6 +754,7 @@ DEPOT_LISTS = {
 
 ---
 
+!!! CHECK: Mitglied-Nr.: ... in exported pdf !!!
 ## MITGLIEDSCHAFT: Genossenschaftsanteile Verwalten: Bescheinigung herunterladen
 
 ### `exports/share_certificate.html`
