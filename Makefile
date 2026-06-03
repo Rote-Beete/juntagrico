@@ -47,6 +47,11 @@ replace-db:
 	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "CREATE DATABASE rb;"
 	cat ${DUMP_FILE} | ${DOCKER_COMPOSE} exec -T postgres pg_restore -U rb -d rb --no-owner --no-privileges --disable-triggers
 
+.PHONY: dump-db
+dump-db:
+	${DOCKER_COMPOSE} exec postgres pg_dump -Fc -U rb -d rb > db.dump
+
+
 .PHONY: remove-biddings-tables
 remove-biddings-tables:
 	${DOCKER_COMPOSE} exec backend rotebeete migrate biddings zero
