@@ -55,3 +55,8 @@ dump-db:
 .PHONY: remove-biddings-tables
 remove-biddings-tables:
 	${DOCKER_COMPOSE} exec backend rotebeete migrate biddings zero
+
+.PHONY: export-biddings
+export-biddings:
+	uv run ./manage.py dumpdata biddings.BiddingRound --indent 2 > test-data/bidding-rounds.json
+	uv run ./manage.py dumpdata biddings.Bid --indent 2  > test-data/bids.json
