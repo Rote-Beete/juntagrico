@@ -31,8 +31,8 @@ test-only:
 
 .PHONY: dev
 dev:
-	${DOCKER_COMPOSE} -f docker-compose.dev.yml up --build --watch
-	${DOCKER_COMPOSE} -f docker-compose.dev.yml down
+	${DOCKER_COMPOSE} up --build --watch
+	${DOCKER_COMPOSE} down
 
 .PHONY: pre-push
 pre-push:
@@ -46,3 +46,7 @@ replace-db:
 	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "DROP DATABASE rb;"
 	${DOCKER_COMPOSE} exec postgres psql -U rb -d postgres -c "CREATE DATABASE rb;"
 	cat ${DUMP_FILE} | ${DOCKER_COMPOSE} exec -T postgres pg_restore -U rb -d rb --no-owner --no-privileges --disable-triggers
+
+.PHONY: remove-biddings-tables
+remove-biddings-tables:
+	${DOCKER_COMPOSE} exec backend rotebeete migrate biddings zero
