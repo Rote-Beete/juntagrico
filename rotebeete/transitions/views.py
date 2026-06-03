@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from django.utils.translation import gettext as _
 from juntagrico.util import temporal
 
+from rotebeete.exports.views import _subtype_units
 from rotebeete.util.pdf import render_to_pdf_http
 
 
@@ -27,7 +28,7 @@ class DownloadDeliveryContract(View):
         subscription = member.subscription_current
         share = member.active_shares.first()
         subtype = subscription.active_parts.first().type
-        share_amount = subtype.size.units
+        share_amount = _subtype_units(subtype)
         depot = subscription.depot.name
         season_years = f"{temporal.start_of_business_year().year}/{temporal.end_of_business_year().year}"
         context = {
