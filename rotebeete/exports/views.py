@@ -232,12 +232,24 @@ def export_members(request):
     )
     row_fields = FIELDS[:]
     row_fields.remove("share__count")
-    for row in (
-        Member.objects.order_by("share__number", "share__creation_date")
-        .distinct("share__number")
-        .values(*row_fields)
+    seen_rows = set()
+    for row in Member.objects.order_by("share__number", "share__creation_date").values(
+        "id", *row_fields
     ):
-        row["share__count"] = Share.objects.filter(number=row["share__number"]).count()
+        share_number = row.get("share__number")
+        dedupe_key = (
+            ("share", share_number)
+            if share_number is not None
+            else ("member", row["id"])
+        )
+        if dedupe_key in seen_rows:
+            continue
+        seen_rows.add(dedupe_key)
+
+        if share_number is not None:
+            row["share__count"] = Share.objects.filter(number=share_number).count()
+        else:
+            row["share__count"] = Share.objects.filter(member_id=row["id"]).count()
         if row.get("share__count", 0) > 0:
             row["share__reason_for_acquisition"] = ACQUISITION_REASONS.get(
                 row["share__reason_for_acquisition"], ""
@@ -245,6 +257,7 @@ def export_members(request):
             row["share__reason_for_cancellation"] = CANCELLATION_REASONS.get(
                 row["share__reason_for_cancellation"], ""
             )
-            row["share__count"] = row.get("share__count") - 1
+            row["share__count"] = int(row.get("share__count") or 0) - 1
+            row.pop("id", None)
             writer.writerow(row)
     return response
