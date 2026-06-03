@@ -23,7 +23,7 @@ DEPOT_LISTS = {
 - The submenu entry is now labelled **eMail-Listen** instead of **Übersicht**.
 
 ---
-
+!!! NEEDS UPDATE !!!
 ## MENU -> Administration -> Exporte
 
 ### `/my/export`
