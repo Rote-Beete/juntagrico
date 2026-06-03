@@ -1,5 +1,5 @@
 DOCKER_COMPOSE=docker compose -f docker-compose.dev.yml
-
+DOCKER_COMPOSE_STAGING=docker compose -f docker-compose.staging.yml
 
 .PHONY: lint-check
 lint-check:
@@ -31,8 +31,15 @@ test-only:
 
 .PHONY: dev
 dev:
-	${DOCKER_COMPOSE} up --build --watch
+	${DOCKER_COMPOSE} up --force-recreate --build --watch
 	${DOCKER_COMPOSE} down
+
+
+.PHONY: staging
+staging:
+	${DOCKER_COMPOSE_STAGING} up --pull always --remove-orphans
+	${DOCKER_COMPOSE_STAGING} down
+
 
 .PHONY: pre-push
 pre-push:
