@@ -6,7 +6,7 @@ from rotebeete.exports.views import (
     export_depot_list,
     export_subscriptions,
     export_depot_emails,
-    export
+    export,
 )
 
 urlpatterns = [

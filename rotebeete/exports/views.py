@@ -53,6 +53,7 @@ def get_status(sub: Subscription) -> str:
         status = "aktiv"
     return status
 
+
 @permission_required('juntagrico.can_view_exports')
 def export(request):
     return render(request, 'export.html', {})

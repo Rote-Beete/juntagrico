@@ -30,7 +30,11 @@ class _UserSubscriptionMixin:
     def _get_subscription_size(self):
         try:
             subscription_part = self._get_subscription().active_and_future_parts.first()
-            return subscription_part.type.bundle.product_sizes.first() if subscription_part else None
+            return (
+                subscription_part.type.bundle.product_sizes.first()
+                if subscription_part
+                else None
+            )
         except AttributeError:
             return None
 

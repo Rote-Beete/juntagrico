@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from juntagrico.entity.subs import Subscription
-from juntagrico.entity.subtypes import ProductSize, SubscriptionType
+from juntagrico.entity.subtypes import ProductSize
 
 from django.db.models import Max
 
@@ -163,7 +163,11 @@ class Bid(models.Model):
         return reverse("biddingrounds")
 
     def _get_size(self):
-        return Decimal(str(self.subscription_size.units)) if self.subscription_size else Decimal(1)
+        return (
+            Decimal(str(self.subscription_size.units))
+            if self.subscription_size
+            else Decimal(1)
+        )
 
     def get_red_contribution_monthly_amount(self):
         return self.red_contribution_amount * self._get_size()
@@ -181,7 +185,10 @@ class Bid(models.Model):
         if self.subscription_size:
             return subscription_type_units(self.subscription_size)
         return sum(
-            (subscription_type_units(part.type) for part in self.subscription.active_and_future_parts),
+            (
+                subscription_type_units(part.type)
+                for part in self.subscription.active_and_future_parts
+            ),
             Decimal(0),
         )
 

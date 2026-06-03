@@ -20,7 +20,9 @@ def disable_iban(form: MemberProfileForm):
         disabled=True,
         label="IBAN",
         required=False,
-        help_text=form.contact_admin_link(_("Kontaktiere {email} um die IBAN zu ändern.")),
+        help_text=form.contact_admin_link(
+            _("Kontaktiere {email} um die IBAN zu ändern.")
+        ),
     )
     form.helper.layout.fields.insert(
         form.helper.layout.fields.index("iban") + 1, "shadow_iban"
