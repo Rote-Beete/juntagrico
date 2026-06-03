@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "defender",
     "oauth2_provider",
     "polymorphic",
-    # "biddings",
+    "biddings",
 ]
 
 DATABASES = {

@@ -1,23 +1,21 @@
 from django import forms
 from django.forms import ModelForm, ModelChoiceField, ValidationError, Select
 from django.utils.translation import gettext_lazy as _
-
-# from juntagrico.admin import SubscriptionSize
+from juntagrico.entity.subtypes import ProductSize
 from biddings.models import Bid
 
-# class SubscriptionSizeSelect(Select):
-#     def create_option(
-#         self, name, value, label, selected, index, subindex=None, attrs=None
-#     ):
-#         option = super().create_option(
-#             name, value, label, selected, index, subindex=subindex, attrs=attrs
-#         )
-#         if value:
-#             option["attrs"]["data-units"] = SubscriptionSize.objects.get(
-#                 id=str(value)
-#             ).units
 
-#         return option
+class SubscriptionSizeSelect(Select):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex=subindex, attrs=attrs
+        )
+        if value:
+            option["attrs"]["data-units"] = ProductSize.objects.get(id=str(value)).units
+
+        return option
 
 
 class BidUpdateForm(ModelForm):
@@ -31,7 +29,7 @@ class BidUpdateForm(ModelForm):
                 "red_contribution_amount",
             ]
         ]
-        if None not in [green, yellow, red]:
+        if green is not None and yellow is not None and red is not None:
             if green < 0 or yellow < 0 or red < 0:
                 raise ValidationError(_("Negative Beitrgashöhen sind nicht zulässig."))
             if not (green < yellow < red):
@@ -47,8 +45,8 @@ class BidUpdateForm(ModelForm):
             "red_contribution_amount": forms.NumberInput(attrs={"min": 0}),
         }
 
-    # subscription_size = ModelChoiceField(
-    # queryset=SubscriptionSize.objects.order_by("units"),
-    #     label=Bid._meta.get_field("subscription_size").verbose_name,
-    #     widget=SubscriptionSizeSelect,
-    # )
+    subscription_size = ModelChoiceField(
+        queryset=ProductSize.objects.order_by("units"),
+        label=Bid._meta.get_field("subscription_size").verbose_name,
+        widget=SubscriptionSizeSelect,
+    )

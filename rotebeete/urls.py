@@ -29,5 +29,5 @@ urlpatterns = [
     re_path("djrichtextfield/", include("djrichtextfield.urls")),
     re_path("admin/defender/", include("defender.urls")),
     re_path("oauth/", include("oauth2_provider.urls", namespace="oauth2_provider")),
-    # path("rb/biddinground/", include("biddings.urls")),
+    path("rb/biddinground/", include("biddings.urls")),
 ]
