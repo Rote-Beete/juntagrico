@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 {% load juntagrico.subscription %}
+{% load rotebeete %}
 
 {% if parts.exists %}
     <table class="table subscription-table">
@@ -18,7 +19,7 @@
         {% for part in parts.sorted %}
             <tr>
                 <td>{{ part.type.name }}</td>
-                <td>{{ part.type.size.units }}</td>
+                <td>{{ part.type|subtype_units }}</td>
                 <td>{{ part.type.price }}</td>
                 <td>{{ part.state_text }}</td>
                 <td>
