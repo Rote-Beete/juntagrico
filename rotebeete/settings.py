@@ -48,14 +48,21 @@ INSTALLED_APPS = [
     "crispy_forms",
     "adminsortable2",
     "djrichtextfield",
-    "defender",
+    # "defender",
     "oauth2_provider",
     "polymorphic",
     "biddings",
 ]
 
 DATABASES = {
-    "default": env.db("DATABASE_URL", default=f"sqlite:///{DATA_DIR / 'db.sqlite3'}")
+    'default': {
+        'ENGINE': os.environ.get('JUNTAGRICO_DATABASE_ENGINE','django.db.backends.sqlite3'),
+        'NAME': os.environ.get('JUNTAGRICO_DATABASE_NAME',DATA_DIR / 'db.sqlite3'),
+        'USER': os.environ.get('JUNTAGRICO_DATABASE_USER'),
+        'PASSWORD': os.environ.get('JUNTAGRICO_DATABASE_PASSWORD'),
+        'HOST': os.environ.get('JUNTAGRICO_DATABASE_HOST'),
+        'PORT': os.environ.get('JUNTAGRICO_DATABASE_PORT', False),
+    }
 }
 
 ROOT_URLCONF = "rotebeete.urls"
@@ -74,17 +81,18 @@ MIDDLEWARE = [
     "impersonate.middleware.ImpersonateMiddleware",
     "rotebeete.transitions.middleware.ReviewMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
-    "defender.middleware.FailedLoginMiddleware",
+    #"defender.middleware.FailedLoginMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-EMAIL_HOST = env("EMAIL_HOST", default=None)
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default=None)
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default=None)
-EMAIL_PORT = env("EMAIL_PORT", default=None)
-EMAIL_USE_SSL = env("EMAIL_USE_SSL", default=None)
-EMAIL_USE_TLS = env("EMAIL_USE_TLS", default=None)
+EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('JUNTAGRICO_EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('JUNTAGRICO_EMAIL_PASSWORD')
+EMAIL_PORT = int(os.environ.get('JUNTAGRICO_EMAIL_PORT', '25'))
+EMAIL_USE_TLS = os.environ.get('JUNTAGRICO_EMAIL_TLS', 'False')=='True'
+EMAIL_USE_SSL = os.environ.get('JUNTAGRICO_EMAIL_SSL', 'False')=='True'
+
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=None)
 WHITELIST_EMAILS = env.list("WHITELIST_EMAILS", default=[])
 
@@ -249,9 +257,9 @@ VOCABULARY = {
 CURRENCY = "EUR"
 
 ORGANISATION_BANK_CONNECTION = {
-    "IBAN": "-",
-    "BIC": "-",
-    "NAME": "-",
+    "IBAN": env("IBAN", cast=str, default='-'),
+    "BIC": env("BIC", cast=str, default='-'),
+    "NAME": env("BANK_NAME", cast=str, default='-'),
 }
 
 LOG_FILE = DATA_DIR / "logs" / "rotebeete.log"

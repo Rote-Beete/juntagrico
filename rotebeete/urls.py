@@ -27,7 +27,7 @@ urlpatterns = [
     re_path(r"^$", juntagrico.views.home),
     re_path(r"^impersonate/", include("impersonate.urls")),
     re_path("djrichtextfield/", include("djrichtextfield.urls")),
-    re_path("admin/defender/", include("defender.urls")),
+    #re_path("admin/defender/", include("defender.urls")),
     re_path("oauth/", include("oauth2_provider.urls", namespace="oauth2_provider")),
     path("rb/biddinground/", include("biddings.urls")),
 ]
