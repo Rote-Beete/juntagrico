@@ -107,7 +107,7 @@ for key in os.environ.keys():
     if key.startswith("JUNTAGRICO_EMAIL_WHITELISTED"):
         whitelist_email_from_env(key)
 
-STATIC_ROOT = DATA_DIR / "static"
+STATIC_ROOT = BASE_DIR / "static"
 STATIC_URL = "static/"
 
 STORAGES = {
