@@ -24,7 +24,7 @@ CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 DEBUG = env("DEBUG", default=False)
 ORGANISATION_WEBSITE = {"name": "rotebeete.org", "url": "https://rotebeete.org"}
 
-SECRET_KEY = env("SECRET_KEY", cast=str)
+SECRET_KEY = os.environ.get('JUNTAGRICO_SECRET_KEY')
 
 
 IMPERSONATE = {
