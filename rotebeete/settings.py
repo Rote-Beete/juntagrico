@@ -297,6 +297,7 @@ LOGGING = {
 # Axes: Brute Force Protection
 ##################################
 
+AXES_IPWARE_PROXY_COUNT = 1
 AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = timedelta(minutes=30)
 
