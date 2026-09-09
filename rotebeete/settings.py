@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 import sys
 import environ
@@ -48,10 +49,10 @@ INSTALLED_APPS = [
     "crispy_forms",
     "adminsortable2",
     "djrichtextfield",
-    # "defender",
     "oauth2_provider",
     "polymorphic",
     "biddings",
+    "axes",
 ]
 
 DATABASES = {
@@ -68,6 +69,7 @@ DATABASES = {
 ROOT_URLCONF = "rotebeete.urls"
 
 AUTHENTICATION_BACKENDS = (
+    "axes.backends.AxesStandaloneBackend",
     "juntagrico.util.auth.AuthenticateWithEmail",
     "django.contrib.auth.backends.ModelBackend",
 )
@@ -81,9 +83,9 @@ MIDDLEWARE = [
     "impersonate.middleware.ImpersonateMiddleware",
     "rotebeete.transitions.middleware.ReviewMiddleware",
     "django.contrib.sites.middleware.CurrentSiteMiddleware",
-    #"defender.middleware.FailedLoginMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 EMAIL_HOST = os.environ.get('JUNTAGRICO_EMAIL_HOST')
@@ -292,13 +294,12 @@ LOGGING = {
     },
 }
 
-# DEFENDER: Brute Force Protection
+# Axes: Brute Force Protection
 ##################################
 
-DEFENDER_BEHIND_REVERSE_PROXY = True
-DEFENDER_LOCKOUT_URL = "https://rotebeete.org/organisation/kontakt/"
+AXES_FAILURE_LIMIT = 3
+AXES_COOLOFF_TIME = timedelta(minutes=30)
 
-DEFENDER_REDIS_URL = env("DEFENDER_REDIS_URL", default="redis://127.0.0.1:6379/0")
 # OIDC/ OAuth2 fuer Wikijs
 ##########################
 # https://django-oauth-toolkit.readthedocs.io/en/latest/oidc.html
