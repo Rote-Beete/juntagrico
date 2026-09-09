@@ -297,9 +297,14 @@ LOGGING = {
 # Axes: Brute Force Protection
 ##################################
 
-AXES_IPWARE_PROXY_COUNT = 1
 AXES_FAILURE_LIMIT = 3
 AXES_COOLOFF_TIME = timedelta(minutes=30)
+
+AXES_IPWARE_PROXY_COUNT = 1
+AXES_IPWARE_META_PRECEDENCE_ORDER = [
+    'HTTP_X_FORWARDED_FOR',
+    'REMOTE_ADDR',
+]
 
 # OIDC/ OAuth2 fuer Wikijs
 ##########################
