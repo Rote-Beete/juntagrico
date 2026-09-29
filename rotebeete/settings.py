@@ -237,7 +237,7 @@ ORGANISATION_ADDRESS = {
 ORGANISATION_PHONE = "034298-495168"
 BUSINESS_YEAR_START = {"day": 1, "month": 7}
 BUSINESS_YEAR_CANCELATION_MONTH = 3
-CONTACTS = {"general": "invalid@rotebeete.invalid"}
+CONTACTS = {"general": env("CONTACT", default='invalid@rotebeete.invalid')}
 VOCABULARY = {
     "member": "Mitglied",
     "member_pl": "Mitglieder",
