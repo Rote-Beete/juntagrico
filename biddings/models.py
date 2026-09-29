@@ -5,9 +5,11 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from juntagrico.entity.subs import Subscription
-from juntagrico.entity.subtypes import SubscriptionSize
+from juntagrico.entity.subtypes import ProductSize
 
 from django.db.models import Max
+
+from biddings.utils import subscription_type_units
 
 
 class BidQuerySet(models.QuerySet):
@@ -134,7 +136,7 @@ class Bid(models.Model):
     )
 
     subscription_size = models.ForeignKey(
-        SubscriptionSize,
+        ProductSize,
         on_delete=models.PROTECT,
         related_name="bid",
         verbose_name=_("Gewünschte Anzahl der Anteile"),
@@ -162,7 +164,7 @@ class Bid(models.Model):
 
     def _get_size(self):
         return (
-            Decimal(self.subscription_size.units)
+            Decimal(str(self.subscription_size.units))
             if self.subscription_size
             else Decimal(1)
         )
@@ -181,9 +183,13 @@ class Bid(models.Model):
 
     def get_size(self):
         if self.subscription_size:
-            return self.subscription_size.units
+            return subscription_type_units(self.subscription_size)
         return sum(
-            [part.type.size.units for part in self.subscription.active_and_future_parts]
+            (
+                subscription_type_units(part.type)
+                for part in self.subscription.active_and_future_parts
+            ),
+            Decimal(0),
         )
 
     def get_type_names(self):

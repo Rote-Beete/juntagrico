@@ -29,10 +29,13 @@ class _UserSubscriptionMixin:
 
     def _get_subscription_size(self):
         try:
-            return SubscriptionType.objects.filter(
-                subscription_parts__in=self._get_subscription().active_and_future_parts
-            )[0].size
-        except (IndexError, AttributeError):
+            subscription_part = self._get_subscription().active_and_future_parts.first()
+            return (
+                subscription_part.type.bundle.product_sizes.first()
+                if subscription_part
+                else None
+            )
+        except AttributeError:
             return None
 
 

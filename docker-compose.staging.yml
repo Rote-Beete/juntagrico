@@ -24,7 +24,7 @@ services:
         condition: service_started
       postgres:
         condition: service_healthy
-    env_file: [container/env, .env.local]
+    env_file: [container/env, .env.docker]
     environment:
       ROTEBEETE_DEFENDER_REDIS_URL: 'redis://redis:6379/0'
       ROTEBEETE_DATABASE_URL: 'postgres://rb:rb@postgres:5432/rb'

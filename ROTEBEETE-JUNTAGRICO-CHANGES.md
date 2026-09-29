@@ -1,33 +1,32 @@
 # Template Overrides — Changelog
 
+Juntagrico 2.0.7
+
 Changes relative to the upstream [juntagrico](https://github.com/juntagrico/juntagrico) library templates.
 
 ---
 
 ## MENU -> Administration -> Listen
 
-### `juntagrico/menu/admin/lists.html`
+### settings
 
-#### Code diff
-
-```diff
-@@ -30,7 +30,7 @@
-                         </li>
-                         <li class="nav-item">
-                             <a class="nav-link" href="{% url 'lists-depot-overview' %}">
--                                {% vocabulary "depot" %} {% trans "Übersicht" %}
-+                                {% vocabulary "depot" %} {% trans "eMail-Listen" %}
-                             </a>
-                         </li>
-                     {% endif %}
 ```
-
+DEPOT_LISTS = {
+    "depotlist": "exports/depotlist.html",
+    "depot_overview": {
+        "template": "exports/depot_overview.html",
+        "name": f"{VOCABULARY['depot']} eMail-Listen",
+    },
+    "amount_overview": "exports/amount_overview.html",
+}
+```
 #### User-facing changes
 
-- The last submenu entry is now labelled **eMail-Listen** instead of **Übersicht**.
+- The submenu entry is now labelled **eMail-Listen** instead of **Übersicht**.
 
 ---
-
+!!! NEEDS UPDATE !!!
+!!! CHECK: Geno-Nr. in MitgliederListe and Gemüseanteie_Übersicht !!!
 ## MENU -> Administration -> Exporte
 
 ### `/my/export`
@@ -149,32 +148,23 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 #### Code diff
 
 ```diff
-@@ -1,96 +1,57 @@
--{% extends "../base.html" %}
-+{% extends "management_lists/man_list_base.html" %}
+@@ -1,96 +1,67 @@
+ {% extends "../base.html" %}
  {% load i18n %}
  {% load static %}
  {% load juntagrico.config %}
  {% load juntagrico.common %}
  {% load juntagrico.snippets %}
--
+
  {% block page_title %}
-     <h3>
-         {{ title }}
-     </h3>
+@@
+ {% block content %}
+     {% include '../member/snippets/toggle_buttons.html' with co_members=True %}
+     {{ block.super }}
  {% endblock %}
--
--{% block content %}
--    {% include '../member/snippets/toggle_buttons.html' with co_members=True %}
--    {{ block.super }}
-+{% block management_cmd %}
-+    {% include 'management_lists/snippets/email_sender.html' %}
- {% endblock %}
--
+
  {% block list %}
-     <table id="filter-table" class="list table">
-         <thead>
-             <tr>
+@@
 -                {% block list_head %}
 -                    <th class="filter">
 -                        {% vocabulary "subscription" %}
@@ -200,10 +190,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 +                <th class="filter">{% trans "Inhalt" %}</th>
 +                <th class="filter">{% trans "Aktivierungsdatum" %}</th>
 +                <th class="filter">{% trans "E-Mails" %}</th>
-             </tr>
-         </thead>
-         <tfoot>
-             <tr>
+@@
 -                {% block list_foot %}
 -                    <th>
 -                        {% vocabulary "subscription" %}
@@ -229,9 +216,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 +                <th>{% trans "Inhalt" %}</th>
 +                <th>{% trans "Aktivierungsdatum" %}</th>
 +                <th>{% trans "E-Mails" %}</th>
-             </tr>
-         </tfoot>
-         <tbody>
+@@
 -            {% for subscription in object_list %}
 -                {% block list_entry %}
 -                    <tr>
@@ -249,16 +234,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                            <td>
 -                                {{ subscription.depot.name }}
 -                            </td>
-+            {% for subscription in subscriptions %}
-+                <p>subscription</p>
-+                <tr>
-+                    <td>
-+                        {% if subscription.primary_member %}
-+                            {% impersonate_start request subscription.primary_member %}
-+                            <a href="{% url 'admin:juntagrico_member_change' subscription.primary_member.id %}">
-+                                {{ subscription.primary_member.get_name }}
-+                            </a>
-                         {% endif %}
+-                        {% endif %}
 -                        <td>
 -                            {{ subscription.activation_date|date:"Y-m-d" }}
 -                        </td>
@@ -267,23 +243,46 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 -                        </td>
 -                    </tr>
 -                {% endblock %}
++            {% for subscription in object_list %}
++                <tr>
++                    <td>
++                        {% if subscription.primary_member %}
++                            {% impersonate_start request subscription.primary_member %}
++                            <a href="{% url 'admin:juntagrico_member_change' subscription.primary_member.id %}">
++                                {{ subscription.primary_member.get_name }}
++                            </a>
++                        {% endif %}
 +                    </td>
-+                    <td>{{ subscription.comembers }}</td>
++                    <td>
++                        {% for recipient in subscription.co_members %}
++                            <div class="co-member">
++                                {% include 'juntagrico/manage/member/snippets/display_linked.html' with member=recipient %}
++                            </div>
++                        {% endfor %}
++                    </td>
 +                    <td>{{ subscription.depot.name }}</td>
-+                    <td>{{ subscription }}</td>
++                    <td>
++                        {% for item in subscription.content_strings %}
++                            <div>{{ item }}</div>
++                        {% endfor %}
++                    </td>
 +                    <td>{{ subscription.activation_date|date:"Y-m-d" }}</td>
-+                    <td class="email">{{ subscription.recipients_qs|values_list:'member__email'|join:', ' }}</td>
++                    <td class="email">
++                        {% for member in subscription.current_members %}
++                            {{ member.email }}{% if not forloop.last %}, {% endif %}
++                        {% endfor %}
++                    </td>
 +                </tr>
              {% endfor %}
          </tbody>
      </table>
-```
+ ```
 
 #### User-facing changes
 
-- The table now shows **HauptbezieherIn** (linked to admin), **Weitere BezieherInnen**, **Depot**, **Inhalt**, **Aktivierungsdatum**, **E-Mails** — replacing the previous generic columns.
-- An **email sender** snippet is added above the table.
-- The toggle buttons for co-members view are removed.
+- The table now shows **HauptbezieherIn** (linked to admin), **Weitere BezieherInnen**, **Depot**, **Inhalt**, **Aktivierungsdatum**, **E-Mails**.
+- Co-members are rendered as linked member entries (admin link via `juntagrico/manage/member/snippets/display_linked.html`).
+- Toggle buttons for co-members remain visible above the list.
 
 ---
 
@@ -755,6 +754,7 @@ Changes relative to the upstream [juntagrico](https://github.com/juntagrico/junt
 
 ---
 
+!!! CHECK: Mitglied-Nr.: ... in exported pdf !!!
 ## MITGLIEDSCHAFT: Genossenschaftsanteile Verwalten: Bescheinigung herunterladen
 
 ### `exports/share_certificate.html`

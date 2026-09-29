@@ -11,10 +11,12 @@ from juntagrico.entity.share import (
     reason_for_cancellation_choices,
     Share,
 )
+from django.shortcuts import render
 from juntagrico.entity.subs import Subscription
 from juntagrico.entity.subtypes import SubscriptionType
 from juntagrico.models import Member
 from juntagrico.util.models import q_isactive
+from juntagrico.views_admin import permission_required
 
 FIELDS = [
     "share__number",
@@ -52,6 +54,16 @@ def get_status(sub: Subscription) -> str:
     return status
 
 
+@permission_required('juntagrico.can_view_exports')
+def export(request):
+    return render(request, 'export.html', {})
+
+
+def _subtype_units(subtype: SubscriptionType) -> Decimal:
+    units = subtype.bundle.product_sizes.aggregate(units=Sum("units"))["units"] or 0
+    return Decimal(str(units))
+
+
 def export_subscriptions(request):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = "attachment; filename=Gemüseanteile_Übersicht.csv"
@@ -85,9 +97,11 @@ def export_subscriptions(request):
             "price": "Preis",
         }
     )
-    sum_units = 0
-    sum_price = 0
+    sum_units = Decimal("0")
+    sum_price = Decimal("0")
     for subtype in SubscriptionType.objects.order_by("name"):
+        units = _subtype_units(subtype)
+        price = subtype.price or Decimal("0")
         for part in subtype.subscription_parts.all():
             sub = part.subscription
             member = sub.primary_member
@@ -103,18 +117,18 @@ def export_subscriptions(request):
                     "tel": member.phone if member else "",
                     "status": get_status(sub),
                     "vs": sub.depot.name,
-                    "size": subtype.size.units,
-                    "price_per_unit": subtype.price / Decimal(subtype.size.units),
-                    "price": subtype.price,
+                    "size": units,
+                    "price_per_unit": price / units if units else "",
+                    "price": price,
                 }
             )
-            sum_units += subtype.size.units
-            sum_price += subtype.price
+            sum_units += units
+            sum_price += price
     writer.writerow(
         {
             "size": sum_units,
             "price": sum_price,
-            "price_per_unit": sum_price / Decimal(sum_units),
+            "price_per_unit": sum_price / sum_units if sum_units else "",
         }
     )
     return response
@@ -219,12 +233,24 @@ def export_members(request):
     )
     row_fields = FIELDS[:]
     row_fields.remove("share__count")
-    for row in (
-        Member.objects.order_by("share__number", "share__creation_date")
-        .distinct("share__number")
-        .values(*row_fields)
+    seen_rows = set()
+    for row in Member.objects.order_by("share__number", "share__creation_date").values(
+        "id", *row_fields
     ):
-        row["share__count"] = Share.objects.filter(number=row["share__number"]).count()
+        share_number = row.get("share__number")
+        dedupe_key = (
+            ("share", share_number)
+            if share_number is not None
+            else ("member", row["id"])
+        )
+        if dedupe_key in seen_rows:
+            continue
+        seen_rows.add(dedupe_key)
+
+        if share_number is not None:
+            row["share__count"] = Share.objects.filter(number=share_number).count()
+        else:
+            row["share__count"] = Share.objects.filter(member_id=row["id"]).count()
         if row.get("share__count", 0) > 0:
             row["share__reason_for_acquisition"] = ACQUISITION_REASONS.get(
                 row["share__reason_for_acquisition"], ""
@@ -232,6 +258,7 @@ def export_members(request):
             row["share__reason_for_cancellation"] = CANCELLATION_REASONS.get(
                 row["share__reason_for_cancellation"], ""
             )
-            row["share__count"] = row.get("share__count") - 1
+            row["share__count"] = int(row.get("share__count") or 0) - 1
+            row.pop("id", None)
             writer.writerow(row)
     return response

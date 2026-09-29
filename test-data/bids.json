@@ -1,0 +1,16 @@
+[
+{
+  "model": "biddings.bid",
+  "pk": 1,
+  "fields": {
+    "bidding_round": 1,
+    "subscription": 3,
+    "green_contribution_amount": "10.00",
+    "yellow_contribution_amount": "20.00",
+    "red_contribution_amount": "30.00",
+    "widerstandskasse": "40.00",
+    "subscription_size": 1,
+    "comment": ""
+  }
+}
+]

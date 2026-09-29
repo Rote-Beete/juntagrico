@@ -2,8 +2,10 @@ from django import template
 from django.utils.formats import localize
 from biddings.models import Bid
 from juntagrico.entity.subtypes import SubscriptionType
-from django.db.models import F, Sum, Q
+from django.db.models import Q
 from django.utils.timezone import now
+
+from biddings.utils import subscription_type_units
 
 register = template.Library()
 
@@ -37,16 +39,12 @@ def get_name(subscription):
     sformat = "GLV-Nr.: {name} / Anzahl Anteile: {amount}"
     types = SubscriptionType.objects.filter(
         subscription_parts__in=subscription.active_and_future_parts
-    ).annotate(
-        size_sum=Sum("size__units"),
-        size_name=F("size__name"),
-        product_name=F("size__product__name"),
-    )
+    ).distinct()
     return delimiter.join(
         [
             sformat.format(
                 name=t.name,
-                amount=localize(t.size_sum),
+                amount=localize(subscription_type_units(t)),
             )
             for t in types
         ]

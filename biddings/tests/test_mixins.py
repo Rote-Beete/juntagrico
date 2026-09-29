@@ -1,5 +1,6 @@
 from django.test import TestCase
 from biddings.tests.mixins import MemberMixin, SubscriptionMixin
+from biddings.utils import subscription_type_units
 
 
 class MemberMixinTestCase(MemberMixin, TestCase):
@@ -23,6 +24,13 @@ class SubscriptionMixinTestCase(SubscriptionMixin, TestCase):
         )
         assert subscription.primary_member.email == "test@roko.li"
         assert (
-            sum([part.type.size.units for part in subscription.active_and_future_parts])
+            float(
+                sum(
+                    (
+                        subscription_type_units(part.type)
+                        for part in subscription.active_and_future_parts
+                    )
+                )
+            )
             == 5.5
         )

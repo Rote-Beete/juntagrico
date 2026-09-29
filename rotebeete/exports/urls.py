@@ -6,9 +6,11 @@ from rotebeete.exports.views import (
     export_depot_list,
     export_subscriptions,
     export_depot_emails,
+    export,
 )
 
 urlpatterns = [
+    path('rb/export', export, name='export'),
     path('rb/export/depots', export_depot_overview, name='lists-depot-amountoverview'),
     path('rb/export/depots/emails', export_depot_emails, name='lists-depot-overview'),
     path('rb/export/depots/subscriptions', export_depot_list, name='lists-depotlist'),

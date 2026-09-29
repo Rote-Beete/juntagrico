@@ -1,6 +1,11 @@
 from django.utils import timezone
 from django.urls import reverse
-from juntagrico.admin import SubscriptionProduct, SubscriptionSize, SubscriptionType
+from juntagrico.entity.subtypes import (
+    ProductSize,
+    SubscriptionBundle,
+    SubscriptionProduct,
+    SubscriptionType,
+)
 from biddings.models import BiddingRound
 from juntagrico.models import Member, Subscription
 from juntagrico.entity.depot import Depot
@@ -30,10 +35,9 @@ class MemberMixin:
     def get_or_create_member(
         self, email="test@roko.li", first_name="John", last_name="Tester", **kwargs
     ):
-        data = {
+        defaults = {
             'first_name': first_name,
             'last_name': last_name,
-            'email': email,
             'addr_street': 'addr_street',
             'addr_zipcode': '1234',
             'addr_location': 'addr_location',
@@ -41,8 +45,8 @@ class MemberMixin:
             'mobile_phone': 'phone',
             'confirmed': True,
         }
-        data.update(kwargs)
-        member, _ = Member.objects.get_or_create(**data)
+        defaults.update(kwargs)
+        member, _ = Member.objects.get_or_create(email=email, defaults=defaults)
         return member
 
 
@@ -64,7 +68,6 @@ class SubscriptionMixin(MemberMixin):
     def get_or_create_depot(self, **kwargs):
         data = {
             'name': 'depot',
-            'contact': self.get_or_create_member(email="test@roko.li"),
             'weekday': 1,
             'location': self.get_or_create_location(),
         }
@@ -80,25 +83,39 @@ class SubscriptionMixin(MemberMixin):
         data.update(kwargs)
         subcription, _ = Subscription.objects.get_or_create(**data)
 
+        product_1 = SubscriptionProduct.objects.create(name="Product 1")
+        product_2 = SubscriptionProduct.objects.create(name="Product 2")
+        size_1 = ProductSize.objects.create(
+            name="Size 1",
+            units=3.5,
+            product=product_1,
+        )
+        size_2 = ProductSize.objects.create(
+            name="Size 2",
+            units=2,
+            product=product_2,
+        )
+
+        bundle_1 = SubscriptionBundle.objects.create(long_name="Bundle 1")
+        bundle_1.product_sizes.add(size_1)
+        bundle_2 = SubscriptionBundle.objects.create(long_name="Bundle 2")
+        bundle_2.product_sizes.add(size_2)
+
         subcription.parts.create(
             type=SubscriptionType.objects.create(
+                name="Type 1",
                 required_assignments=3,
                 price=10,
-                size=SubscriptionSize.objects.create(
-                    units=3.5,
-                    product=SubscriptionProduct.objects.create(name="Product 1"),
-                ),
+                bundle=bundle_1,
             )
         )
 
         subcription.parts.create(
             type=SubscriptionType.objects.create(
+                name="Type 2",
                 required_assignments=2,
                 price=12,
-                size=SubscriptionSize.objects.create(
-                    units=2,
-                    product=SubscriptionProduct.objects.create(name="Product 2"),
-                ),
+                bundle=bundle_2,
             )
         )
 
