@@ -339,3 +339,9 @@ try:
     from rotebeete_settings import *  # noqa: F401,F403
 except ImportError:
     pass
+
+
+# Staging
+if os.environ.get('JUNTAGRICO_STAGING') == '1':
+    # E-Mails Deaktivieren
+    EMAIL_BACKEND = "django.core.mail.backends.dummy.EmailBackend"
