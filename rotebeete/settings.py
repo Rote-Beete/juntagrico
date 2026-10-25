@@ -3,6 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 import sys
 import environ
+from juntagrico import defaults
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -195,15 +196,7 @@ LOCALE_PATHS = (BASE_DIR / "juntagrico/locale",)
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 CRISPY_FAIL_SILENTLY = env("CRISPY_FAIL_SILENTLY", cast=bool, default=True)
 
-DJRICHTEXTFIELD_CONFIG = {
-    "js": ["/static/juntagrico/external/tinymce/tinymce.min.js"],
-    "init_template": "djrichtextfield/init/tinymce.js",
-    "settings": {
-        "menubar": False,
-        "plugins": "link  lists",
-        "toolbar": "undo redo | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | bullist numlist | link",
-    },
-}
+DJRICHTEXTFIELD_CONFIG = defaults.richtextfield_config(LANGUAGE_CODE, use_in_admin=True)
 
 WSGI_APPLICATION = "rotebeete.wsgi.application"
 
@@ -217,8 +210,7 @@ ENABLE_REGISTRATION = False
 
 SHARE_PRICE = 50
 
-USE_X_FORWARDED_HOST = True
-
+EMAIL_BACKEND='juntagrico.backends.email.EmailBackend'
 # this might be used to temporarily disable email sending
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
