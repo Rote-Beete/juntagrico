@@ -270,28 +270,21 @@ LOG_FILE = DATA_DIR / "logs" / "rotebeete.log"
 LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "django.server": {
-            "()": "django.utils.log.ServerFormatter",
-            "format": "[{server_time}] {message}",
-            "style": "{",
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {'format': '[%(asctime)s] %(levelname)s %(message)s'}
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
         }
     },
-    "handlers": {
-        "console": {"class": "logging.StreamHandler"},
-        "file": {
-            "class": "logging.FileHandler",
-            "filename": env("LOGGING_FILE_PATH", default=LOG_FILE),
-            "formatter": "django.server",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console", "file"],
-            "level": env("LOG_LEVEL", cast=str, default="INFO"),
-            "propagate": False,
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': env("LOG_LEVEL", cast=str, default="INFO"),
         },
     },
 }
