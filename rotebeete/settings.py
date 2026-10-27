@@ -326,7 +326,7 @@ try:
             "profile": "Profile scope",
         },
     }
-except (NameError, TypeError):
+except (NameError, TypeError, FileNotFoundError):
     pass
 
 try:
