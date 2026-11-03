@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load juntagrico.config %}
+
+{% block page_title %}
+    <h3>
+        {% blocktrans with v_depot=vocabulary.depot %}{{ v_depot }}-Listen{% endblocktrans %}
+    </h3>
+{% endblock %}
+
+{% block content %}
+    {% if perms.juntagrico.can_view_lists %}
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <ul>
+                    <li>
+                        <a href="{% url 'lists-depot-amountoverview' %}">{% trans "Mengen Übersicht" %}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'lists-depotlist' %}">{% vocabulary "depot" %}-{% trans "Listen" %}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'lists-depot-overview' %}">{% vocabulary "depot" %} {% trans "eMail-Listen" %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
