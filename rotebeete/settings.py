@@ -21,7 +21,7 @@ env.read_env(ENV_FILE)
 DATA_DIR = env("DATA_DIR", cast=Path, default=BASE_DIR / "data")
 DATA_DIR.mkdir(exist_ok=True)
 
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=['localhost'])
 CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 DEBUG = env("DEBUG", default=False)
 ORGANISATION_WEBSITE = {"name": "rotebeete.org", "url": "https://rotebeete.org"}
@@ -207,6 +207,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # https://github.com/juntagrico/juntagrico/blob/main/juntagrico/config.py
 
 ENABLE_REGISTRATION = False
+ENABLE_SHARES = False
 
 SHARE_PRICE = 50
 

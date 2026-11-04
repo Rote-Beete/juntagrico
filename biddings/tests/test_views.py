@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from biddings.tests.mixins import (
     BiddingRoundMixin,
     MemberMixin,
@@ -8,6 +8,12 @@ from django.urls import reverse
 from django.conf import settings
 
 
+@override_settings(
+    STORAGES={
+        'default': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
+        'staticfiles': {'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'},
+    }
+)
 class BiddingRoundViewsTestCase(
     BiddingRoundMixin, MemberMixin, ViewPermissionsMixin, TestCase
 ):

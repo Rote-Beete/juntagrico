@@ -2,7 +2,8 @@ import csv
 from datetime import date
 from decimal import Decimal
 
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, DecimalField
+from django.db.models.functions import Coalesce
 from django.http import HttpResponse
 from django.utils import timezone
 from juntagrico.entity.depot import Depot
@@ -170,7 +171,7 @@ def export_depot_list(request):
                     depot=depot.name,
                     glv=part.type.name,
                     name=sub.nickname if sub.nickname else sub.primary_member,
-                    units=part.type.size.units,
+                    units=_subtype_units(part.type),
                 )
                 writer.writerow(row)
     return response
@@ -182,13 +183,19 @@ def export_depot_overview(request):
     writer = csv.DictWriter(response, fieldnames=["name", "sub_sum"], dialect="unix")
     writer.writerow({"name": "Verteilstation", "sub_sum": "Anteile"})
     for depot in Depot.objects.order_by("name"):
-        row = dict(name=depot.name)
-        row["sub_sum"], *_ = (
+        total = (
             depot.subscription_set.filter(q_isactive())
-            .aggregate(Sum("parts__type__size__units"))
-            .values()
+            .aggregate(
+                total=Coalesce(
+                    Sum(
+                        "parts__type__bundle__product_sizes__units",
+                        output_field=DecimalField(),
+                    ),
+                    Decimal("0"),
+                )
+            )["total"]
         )
-        writer.writerow(row)
+        writer.writerow({"name": depot.name, "sub_sum": total})
     return response
 
 
