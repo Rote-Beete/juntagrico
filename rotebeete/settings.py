@@ -207,7 +207,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 # https://github.com/juntagrico/juntagrico/blob/main/juntagrico/config.py
 
 ENABLE_REGISTRATION = False
-ENABLE_SHARES = False
+ENABLE_SHARES = True
 
 SHARE_PRICE = 50
 
